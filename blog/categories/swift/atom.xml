@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Swift | My Octopress Blog]]></title>
+  <link href="http://yangshebing.github.io/blog/categories/swift/atom.xml" rel="self"/>
+  <link href="http://yangshebing.github.io/"/>
+  <updated>2015-09-17T23:34:12+08:00</updated>
+  <id>http://yangshebing.github.io/</id>
+  <author>
+    <name><![CDATA[Your Name]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Swift语言编程]]></title>
+    <link href="http://yangshebing.github.io/blog/2015/09/12/swift/"/>
+    <updated>2015-09-12T12:53:21+08:00</updated>
+    <id>http://yangshebing.github.io/blog/2015/09/12/swift</id>
+    <content type="html"><![CDATA[<h4>Swift语言基础学习</h4>
+
+<p>1、语法基础</p>
+]]></content>
+  </entry>
+  
+</feed>

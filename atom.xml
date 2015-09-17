@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[My Octopress Blog]]></title>
+  <link href="http://yangshebing.github.io/atom.xml" rel="self"/>
+  <link href="http://yangshebing.github.io/"/>
+  <updated>2015-09-17T23:34:12+08:00</updated>
+  <id>http://yangshebing.github.io/</id>
+  <author>
+    <name><![CDATA[Your Name]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[iOS中点击状态栏让滑动视图回到顶部]]></title>
+    <link href="http://yangshebing.github.io/blog/2015/09/13/arcticle/"/>
+    <updated>2015-09-13T23:28:31+08:00</updated>
+    <id>http://yangshebing.github.io/blog/2015/09/13/arcticle</id>
+    <content type="html"><![CDATA[<h6>在产品开发过程中，有时候会有这种需求，需要点击状态栏让滑动视图（UIScrollView）或者表视图（UITableView）返回到顶部，让用户可以更快的浏览最新的信息。</h6>
+
+<h6>这个时候我们需要设置滑动视图的scrollsToTop属性，让它决定点击状态栏是否返回顶部。</h6>
+
+<!--more-->
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>// When the user taps the status bar, 
+</span><span class='line'>the scroll view beneath the touch which is closest to the status bar will be scrolled to top,
+</span><span class='line'> but only if its scrollsToTop property is YES, 
+</span><span class='line'> its delegate does not return NO from shouldScrollViewScrollToTop,
+</span><span class='line'>  and it is not already at the top. 
+</span><span class='line'>// On iPhone, we execute this gesture only if there’s one on-screen scroll view with scrollsToTop == YES.
+</span><span class='line'> If more than one is found, none will be scrolled.
+</span><span class='line'>@property(nonatomic) BOOL scrollsToTop; // default is YES.</span></code></pre></td></tr></table></div></figure>
+
+
+<h6>设置这个属性，可以让点击状态栏不返回顶部。如果我们需要让它点击状态栏回到顶部，我们可以把这个属性值设置为YES（默认为YES）。按正常情况来说，这个时候点击状态栏是可以返回到顶部。但是点击状态栏还是没有反应怎么办？</h6>
+
+<h6>解决方法如下：</h6>
+
+<h6>按照上面官方文档的说法，只有把当前主控制器需要设置的那个scrollview找到并把它的scrollsToTop属性设置为YES，然后再把其他scrollview的scrollsToTop属性设置为NO 。这样它才会响应这个事件。其中的原理非常简单，如果当前主控制器中有2个scrollview，系统压根就不知道你想要其中的哪个scrollview滑动到顶部。</h6>
+
+<h6>举个栗子：</h6>
+
+<ul>
+<li>假设当前控制器中有三个表视图（UITableView）或者滑动视图(UIScrollView)要切换，把当前显示的滑动视图scrollsToTop属性设置为YES,其他滑动视图的scrollsToTop属性设置为NO即可。</li>
+</ul>
+
+
+<p><strong>注意：如果当前滑动视图中存在子视图也是滑动视图的情况，那么它子视图中的滑动视图scrollsToTop属性也要设置为NO，不然它仍然会造成点击状态栏无法响应返回到顶部操作。</strong></p>
+
+<h6>参考博客地址：</h6>
+
+<ul>
+<li><a href="http://blog.sina.com.cn/s/blog_463dc5b90101k9ib.html">点击状态栏不返回顶部问题</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Swift语言编程]]></title>
+    <link href="http://yangshebing.github.io/blog/2015/09/12/swift/"/>
+    <updated>2015-09-12T12:53:21+08:00</updated>
+    <id>http://yangshebing.github.io/blog/2015/09/12/swift</id>
+    <content type="html"><![CDATA[<h4>Swift语言基础学习</h4>
+
+<p>1、语法基础</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[动态限制UITextField或UITextView用户输入中英文混编字数统计]]></title>
+    <link href="http://yangshebing.github.io/blog/2015/09/12/test/"/>
+    <updated>2015-09-12T11:31:37+08:00</updated>
+    <id>http://yangshebing.github.io/blog/2015/09/12/test</id>
+    <content type="html"><![CDATA[<p><strong>动态限制用户输入字数，这个在很多app中都会涉及，由于NSString的Length属性获取的长度中英文都是一个字节，不满足一个汉字两个字节、一个字符一个字节的需求。网上的方法大致是以下两种：</strong></p>
+
+<h6>1、使用Unicode编码把OC中的NSString字符串转换成C的字符串。然后对字符串遍历进行统计长度。</h6>
+
+<!--more-->
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>-  (int)convertToInt:(NSString*)strtemp {  
+</span><span class='line'>    int strlength = 0;
+</span><span class='line'>    char* p = (char*)[strtemp cStringUsingEncoding:NSUnicodeStringEncoding];
+</span><span class='line'>    for (int i=0 ; i&lt;[strtemp lengthOfBytesUsingEncoding:NSUnicodeStringEncoding];i++) {
+</span><span class='line'>        if (*p) {
+</span><span class='line'>            p++;
+</span><span class='line'>            strlength++;
+</span><span class='line'>        }
+</span><span class='line'>        else {
+</span><span class='line'>            p++;
+</span><span class='line'>        }
+</span><span class='line'>    }
+</span><span class='line'>    return strlength;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h6>2、直接计算OC中的NSString字符串中单词的个数</h6>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (NSInteger)countWordWithStr:(NSString *)s
+</span><span class='line'>{
+</span><span class='line'>    NSInteger i,n=[s length],l=0,a=0,b=0;
+</span><span class='line'>    unichar c;
+</span><span class='line'>    for(i=0;i&lt;n;i++){
+</span><span class='line'>        c=[s characterAtIndex:i];
+</span><span class='line'>        if(isblank(c)){
+</span><span class='line'>            b++;
+</span><span class='line'>        }else if(isascii(c)){
+</span><span class='line'>            a++;
+</span><span class='line'>        }else{
+</span><span class='line'>            l++;
+</span><span class='line'>        }
+</span><span class='line'>    }
+</span><span class='line'>    if(a==0 && l==0) return 0;
+</span><span class='line'>    return l+(NSInteger)ceilf((float)(a+b)/2.0);
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>以上资料均为网上整理得来，仅供学习交流使用。有关于此类问题，欢迎在最下方留言一起探讨优化学习。</strong></p>
+
+<h6>参考博客地址：</h6>
+
+<ul>
+<li>1、<a href="http://mobilesolutions.blog.163.com/blog/static/18922417620116133910181/">统计含中英文混编的NSString 字符串长度 </a></li>
+<li>2、<a href="http://blog.csdn.net/toss156/article/details/8993270">【IOS】IOS开发常用函数</a></li>
+<li>3、<a href="http://code.qtuba.com/article-60968.html">iOS - 推断输入字符串长度函数</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

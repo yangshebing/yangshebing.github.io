@@ -4,7 +4,7 @@
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://yangshebing.github.io/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2015-09-17T23:34:12+08:00</updated>
+  <updated>2015-09-17T23:58:42+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -12,6 +12,122 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[基于GitHub搭建octopress个人技术博客(Mac版)]]></title>
+    <link href="http://yangshebing.github.io/blog/2015/09/17/test/"/>
+    <updated>2015-09-17T23:42:42+08:00</updated>
+    <id>http://yangshebing.github.io/blog/2015/09/17/test</id>
+    <content type="html"><![CDATA[<h6>作为一名屌逼的程序猿，肯定是要有一个屌逼的技术博客。在交流学习的同时，顺便见证自己成长的心路历程。废话不多说，直接进入正题。编程讲究的四门功课，“说，学，逗，唱”。不会就学嘛！没有就找嘛！网上相关的文章简直太多了！其中原理就不多说，我且按照我搭建的顺序写一下步骤吧！</h6>
+
+<p><strong>注意事项：在搭建之前，检查MAC电脑是否已经安装了Git和Ruby 1.9.3及以上版本。（Mac默认均已自带，ruby请自行检查版本：ruby &ndash;version，如果缺少，当自行下载）</strong></p>
+
+<h6>一、开始安装octopress</h6>
+
+<p>1、将octopress从github上clone到本地</p>
+
+<pre><code class="`">git clone git://github.com/imathis/octopress.git octopress
+cd octopress
+</code></pre>
+
+<p>2、  安装octopress</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem install bundler
+</span><span class='line'>bundle install
+</span><span class='line'>rake install</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果当你执行“bundle install”这步失败了，请更改一下本地octopress文件夹下Gemfile文件当中的源（路径：/Users/用户名/octopress/Gemfile），将文件中的source &ldquo;<a href="https://rubygems.org">https://rubygems.org</a>&rdquo; 更换成 source &ldquo;<a href="http://ruby.taobao.org/">http://ruby.taobao.org/</a>&rdquo;,然后保存文件再重新执行bundle install及其后续操作。</p>
+
+<p>3、部署GitHub Pages
+在CitHub中新建一个名为username.github.io的仓库（username为你的GitHub用户名）。</p>
+
+<ul>
+<li>开始配置GitHub Pages</li>
+</ul>
+
+
+<p>在终端继续输入</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake setup_github_pages</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在Repository url后面粘贴username.github.io仓库对应的url地址</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Enter the read/write url for your repository
+</span><span class='line'>(For example, 'git@github.com:your_username/your_username.github.io.git)
+</span><span class='line'>           or 'https://github.com/your_username/your_username.github.io')
+</span><span class='line'>Repository url: </span></code></pre></td></tr></table></div></figure>
+
+
+<p>就把上面代码：“<a href="https://github.com/your_username/your_username.github.io%E2%80%9D%E6%88%96%E8%80%85%E2%80%9Cgit@github.com:your_username/your_username.github.io.git%E2%80%9D%E4%B8%AD%E7%9A%84your_username%E6%9B%BF%E6%8D%A2%E6%88%90%E8%87%AA%E5%B7%B1GitHub%E7%94%A8%E6%88%B7%E5%90%8D%E5%8D%B3%E5%8F%AF%E3%80%82%EF%BC%88%E4%B8%A4%E7%A7%8D%E5%9C%B0%E5%9D%80%EF%BC%8C%E5%89%8D%E8%80%85%E6%98%AFHTTPS%E5%9C%B0%E5%9D%80%EF%BC%8C%E5%90%8E%E8%80%85%E6%98%AFSSH%E5%9C%B0%E5%9D%80%EF%BC%8C%E4%BB%BB%E9%80%89%E4%B8%80%E4%B8%AA%E7%B2%98%E8%B4%B4%E5%8D%B3%E5%8F%AF%EF%BC%89">https://github.com/your_username/your_username.github.io%E2%80%9D%E6%88%96%E8%80%85%E2%80%9Cgit@github.com:your_username/your_username.github.io.git%E2%80%9D%E4%B8%AD%E7%9A%84your_username%E6%9B%BF%E6%8D%A2%E6%88%90%E8%87%AA%E5%B7%B1GitHub%E7%94%A8%E6%88%B7%E5%90%8D%E5%8D%B3%E5%8F%AF%E3%80%82%EF%BC%88%E4%B8%A4%E7%A7%8D%E5%9C%B0%E5%9D%80%EF%BC%8C%E5%89%8D%E8%80%85%E6%98%AFHTTPS%E5%9C%B0%E5%9D%80%EF%BC%8C%E5%90%8E%E8%80%85%E6%98%AFSSH%E5%9C%B0%E5%9D%80%EF%BC%8C%E4%BB%BB%E9%80%89%E4%B8%80%E4%B8%AA%E7%B2%98%E8%B4%B4%E5%8D%B3%E5%8F%AF%EF%BC%89</a></p>
+
+<p>现在可以开始生成自己的第一篇博客并部署放至GitHub上。
+在终端输入以下命令：生成一篇新的博客</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake new_post['test']</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其中test是默认的博客标题（当然博客的标题可以在markdown文件里面更改）。当然你也可以输入rake new_post命令，按照终端的提示输入博客的标题。生成完成的文章内容在octopress/source/_posts目录下。文件名为时间＋标题名，如“2015-09-17-test.markdown”。可以用markdown工具（本文用的markdown工具为“Mou”）进行编辑与修改。</p>
+
+<p>接下来在终端输入rake generate命令生成静态文件</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake generate</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在部署到GitHub上之前，你可以在本地预览一下博客的效果。
+先在终端输入rake preview命令，生成预览blog。然后在浏览器中输入<a href="http://localhost:4000%E6%9F%A5%E7%9C%8B%E5%8D%9A%E5%AE%A2%E7%9A%84%E9%A2%84%E8%A7%88%E6%95%88%E6%9E%9C%E3%80%82">http://localhost:4000%E6%9F%A5%E7%9C%8B%E5%8D%9A%E5%AE%A2%E7%9A%84%E9%A2%84%E8%A7%88%E6%95%88%E6%9E%9C%E3%80%82</a></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake preview</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在终端退出预览效果：ctrl+c</p>
+
+<p>确认效果之后，开始部署至GitHub。rake deploy命令会将octopress/public目录下的文件上传至仓库的master分支。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake deploy</span></code></pre></td></tr></table></div></figure>
+
+
+<p>最后一步，将octopress的源码提交至GitHub</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git add .
+</span><span class='line'>git commit -m 'commit source file'
+</span><span class='line'>git push origin source</span></code></pre></td></tr></table></div></figure>
+
+
+<p>完工，屌逼的第一篇博客就已经发布到GitHub Pages上了。你现在可以输入:username.github.io在线查看自己的博客了（如：yangshebing.github.io）。
+至于其中的相关原理分析我就不一一赘述了。请参看文章末尾的参考文章链接或者自行网上搜索。</p>
+
+<p>参考文章链接：</p>
+
+<p>（1）<a href="http://blog.devtang.com/blog/2012/02/10/setup-blog-based-on-github/">象写程序一样写博客：搭建基于github的博客</a></p>
+
+<p>（2）<a href="http://matrixzk.github.io/blog/20141020/octopress-setup-and-analysis/#section">使用 Octopress 2.0 搭建基于 Github Pages 个人博客的详细过程及原理分析</a></p>
+
+<p>（3）<a href="http://www.jianshu.com/p/0ac2ac1a8e45">octopress博客搭建和个性化配置</a></p>
+
+<p>（4）<a href="https://liuchungui.github.io/blog/2015/09/11/macdian-nao-shang-da-jian-octopressbo-ke/">Mac电脑上搭建octopress博客</a></p>
+
+<p>（5）<a href="http://www.cnblogs.com/sawyerzhu/p/3710374.html">Mac环境下octopress个人博客搭建</a></p>
+
+<p>（6）<a href="http://foggry.com/blog/2014/04/28/custom-your-octopress-blog/">自定义你的Octopress博客</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[iOS中点击状态栏让滑动视图回到顶部]]></title>

@@ -1,0 +1,58 @@
+---
+layout: post
+title: "动态限制UITextField或UITextView用户输入中英文混编字数统计"
+date: 2015-09-12 11:31:37 +0800
+comments: true
+tags: [iOS, xcode, Objective-C]
+keywords: ios开发, 限制用户输入, UITextField, UITextView
+description: ios开发中如何动态限制UITextField或UITextView用户输入中英文混编字数统计
+categories: Objective-C
+---
+**动态限制用户输入字数，这个在很多app中都会涉及，由于NSString的Length属性获取的长度中英文都是一个字节，不满足一个汉字两个字节、一个字符一个字节的需求。网上的方法大致是以下两种：**
+######1、使用Unicode编码把OC中的NSString字符串转换成C的字符串。然后对字符串遍历进行统计长度。
+<!--more-->
+
+```
+
+-  (int)convertToInt:(NSString*)strtemp {  
+    int strlength = 0;
+    char* p = (char*)[strtemp cStringUsingEncoding:NSUnicodeStringEncoding];
+    for (int i=0 ; i<[strtemp lengthOfBytesUsingEncoding:NSUnicodeStringEncoding];i++) {
+        if (*p) {
+            p++;
+            strlength++;
+        }
+        else {
+            p++;
+        }
+    }
+    return strlength;
+}
+```
+
+######2、直接计算OC中的NSString字符串中单词的个数
+```
+- (NSInteger)countWordWithStr:(NSString *)s
+{
+    NSInteger i,n=[s length],l=0,a=0,b=0;
+    unichar c;
+    for(i=0;i<n;i++){
+        c=[s characterAtIndex:i];
+        if(isblank(c)){
+            b++;
+        }else if(isascii(c)){
+            a++;
+        }else{
+            l++;
+        }
+    }
+    if(a==0 && l==0) return 0;
+    return l+(NSInteger)ceilf((float)(a+b)/2.0);
+}
+```
+**以上资料均为网上整理得来，仅供学习交流使用。有关于此类问题，欢迎在最下方留言一起探讨优化学习。**
+
+######参考博客地址：
+* 1、<a href="http://mobilesolutions.blog.163.com/blog/static/18922417620116133910181/">统计含中英文混编的NSString 字符串长度 </a>
+* 2、<a href="http://blog.csdn.net/toss156/article/details/8993270">【IOS】IOS开发常用函数</a>
+* 3、<a href="http://code.qtuba.com/article-60968.html">iOS - 推断输入字符串长度函数</a>

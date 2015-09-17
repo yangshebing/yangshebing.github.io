@@ -4,7 +4,7 @@
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://yangshebing.github.io/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2015-09-18T00:34:07+08:00</updated>
+  <updated>2015-09-18T01:17:44+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -123,8 +123,9 @@ cd octopress
 </span><span class='line'>git push origin source</span></code></pre></td></tr></table></div></figure>
 
 
-<p>完工，屌逼的第一篇博客就已经发布到GitHub Pages上了。你现在可以输入:username.github.io在线查看自己的博客了（如：yangshebing.github.io）。
-至于其中的相关原理分析我就不一一赘述了。请参看文章末尾的参考文章链接或者自行网上搜索。</p>
+<p>完工，屌逼的第一篇博客就已经发布到GitHub Pages上了。你现在可以输入:username.github.io在线查看自己的博客了（如：yangshebing.github.io）。</p>
+
+<p>至于其中的相关原理分析我就不一一赘述了。请参看文章末尾的参考文章链接或者自行网上搜索。</p>
 
 <h4>二、简单的配置Octopress</h4>
 
@@ -132,13 +133,39 @@ cd octopress
 
 <ul>
 <li>设置博客的标题，子标题以及作者相关信息。</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>title: 杨社兵的技术博客
+</span><span class='line'>subtitle: 业精于勤荒于嬉，行成于思毁于随.
+</span><span class='line'>author: 杨社兵</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
 <li>删除twitter相关信息（GFW造成页面加载慢）</li>
-<li>修改source/_includes目录下的head.html文件：将<code>//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js</code>替换成<code>http://cdn.staticfile.org/jquery/1.9.1/jquery.min.js</code>（解决页面加载过慢问题）</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Twitter
+</span><span class='line'>twitter_user:
+</span><span class='line'>twitter_tweet_button: true</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>修改source/_includes目录下的head.html文件：将* <code>//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.jst&gt;</code>替换成<code>`http://cdn.staticfile.org/jquery/1.9.1/jquery.min.jst&gt;</code>（解决页面加载过慢问题）</li>
 <li>修改source/_includes/custom目录下的自定义head.html文件，去掉google自定义字体（解决页面加载过慢问题）</li>
 </ul>
 
 
 <h6>2、添加统计工具（百度统计）</h6>
+
+<p>去<a href="http://tongji.baidu.com">百度统计</a>官网申请一个账号，在管理界面选择“代码获取”，复制代码至<code>source/_includes/custom/footer.html</code>文件中。</p>
 
 <p>参考文章链接：</p>
 

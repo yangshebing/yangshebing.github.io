@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>基于GitHub搭建octopress个人技术博客(Mac版) - My Octopress Blog</title>
+  <title>基于GitHub搭建Octopress个人技术博客(Mac版) - My Octopress Blog</title>
   <meta name="author" content="Your Name">
 
   
@@ -68,7 +68,7 @@
   
   <header>
     
-      <h1 class="entry-title">基于GitHub搭建octopress个人技术博客(Mac版)</h1>
+      <h1 class="entry-title">基于GitHub搭建Octopress个人技术博客(Mac版)</h1>
     
     
       <p class="meta">
@@ -90,13 +90,16 @@
 
 <h6>一、开始安装octopress</h6>
 
-<p>1、将octopress从github上clone到本地</p>
+<!--more-->
+
+
+<p>1、将Octopress从github上clone到本地</p>
 
 <pre><code class="`">git clone git://github.com/imathis/octopress.git octopress
 cd octopress
 </code></pre>
 
-<p>2、  安装octopress</p>
+<p>2、安装Octopress</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -106,7 +109,7 @@ cd octopress
 </span><span class='line'>rake install</span></code></pre></td></tr></table></div></figure>
 
 
-<p>如果当你执行“bundle install”这步失败了，请更改一下本地octopress文件夹下Gemfile文件当中的源（路径：/Users/用户名/octopress/Gemfile），将文件中的source &ldquo;<a href="https://rubygems.org">https://rubygems.org</a>&rdquo; 更换成 source &ldquo;<a href="http://ruby.taobao.org/">http://ruby.taobao.org/</a>&rdquo;,然后保存文件再重新执行bundle install及其后续操作。</p>
+<p>如果当你执行“bundle install”这步失败了，请更改一下本地octopress文件夹下Gemfile文件当中的源（路径：/Users/用户名/octopress/Gemfile），将文件中的“source &ldquo;<a href="https://rubygems.org">https://rubygems.org</a>"” 更换成 “source "<a href="http://ruby.taobao.org/">http://ruby.taobao.org/</a>"”,然后保存文件再重新执行bundle install及其后续操作。</p>
 
 <p>3、部署GitHub Pages
 在CitHub中新建一个名为username.github.io的仓库（username为你的GitHub用户名）。</p>
@@ -134,7 +137,17 @@ cd octopress
 </span><span class='line'>Repository url: </span></code></pre></td></tr></table></div></figure>
 
 
-<p>就把上面代码：“<a href="https://github.com/your_username/your_username.github.io%E2%80%9D%E6%88%96%E8%80%85%E2%80%9Cgit@github.com:your_username/your_username.github.io.git%E2%80%9D%E4%B8%AD%E7%9A%84your_username%E6%9B%BF%E6%8D%A2%E6%88%90%E8%87%AA%E5%B7%B1GitHub%E7%94%A8%E6%88%B7%E5%90%8D%E5%8D%B3%E5%8F%AF%E3%80%82%EF%BC%88%E4%B8%A4%E7%A7%8D%E5%9C%B0%E5%9D%80%EF%BC%8C%E5%89%8D%E8%80%85%E6%98%AFHTTPS%E5%9C%B0%E5%9D%80%EF%BC%8C%E5%90%8E%E8%80%85%E6%98%AFSSH%E5%9C%B0%E5%9D%80%EF%BC%8C%E4%BB%BB%E9%80%89%E4%B8%80%E4%B8%AA%E7%B2%98%E8%B4%B4%E5%8D%B3%E5%8F%AF%EF%BC%89">https://github.com/your_username/your_username.github.io%E2%80%9D%E6%88%96%E8%80%85%E2%80%9Cgit@github.com:your_username/your_username.github.io.git%E2%80%9D%E4%B8%AD%E7%9A%84your_username%E6%9B%BF%E6%8D%A2%E6%88%90%E8%87%AA%E5%B7%B1GitHub%E7%94%A8%E6%88%B7%E5%90%8D%E5%8D%B3%E5%8F%AF%E3%80%82%EF%BC%88%E4%B8%A4%E7%A7%8D%E5%9C%B0%E5%9D%80%EF%BC%8C%E5%89%8D%E8%80%85%E6%98%AFHTTPS%E5%9C%B0%E5%9D%80%EF%BC%8C%E5%90%8E%E8%80%85%E6%98%AFSSH%E5%9C%B0%E5%9D%80%EF%BC%8C%E4%BB%BB%E9%80%89%E4%B8%80%E4%B8%AA%E7%B2%98%E8%B4%B4%E5%8D%B3%E5%8F%AF%EF%BC%89</a></p>
+<p>把上面代码：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>https://github.com/your_username/your_username.github.io”
+</span><span class='line'>或者
+</span><span class='line'>“git@github.com:your_username/your_username.github.io.git</span></code></pre></td></tr></table></div></figure>
+
+
+<p>中的your_username替换成自己GitHub用户名即可。（两种地址，前者是HTTPS地址，后者是SSH地址，任选一个粘贴即可）</p>
 
 <p>现在可以开始生成自己的第一篇博客并部署放至GitHub上。
 在终端输入以下命令：生成一篇新的博客</p>
@@ -152,7 +165,7 @@ cd octopress
 
 
 <p>在部署到GitHub上之前，你可以在本地预览一下博客的效果。
-先在终端输入rake preview命令，生成预览blog。然后在浏览器中输入<a href="http://localhost:4000%E6%9F%A5%E7%9C%8B%E5%8D%9A%E5%AE%A2%E7%9A%84%E9%A2%84%E8%A7%88%E6%95%88%E6%9E%9C%E3%80%82">http://localhost:4000%E6%9F%A5%E7%9C%8B%E5%8D%9A%E5%AE%A2%E7%9A%84%E9%A2%84%E8%A7%88%E6%95%88%E6%9E%9C%E3%80%82</a></p>
+先在终端输入rake preview命令，生成预览blog。然后在浏览器中输入<code>http://localhost:4000</code>查看博客的预览效果。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>rake preview</span></code></pre></td></tr></table></div></figure>
@@ -166,7 +179,7 @@ cd octopress
 </pre></td><td class='code'><pre><code class=''><span class='line'>rake deploy</span></code></pre></td></tr></table></div></figure>
 
 
-<p>最后一步，将octopress的源码提交至GitHub</p>
+<p>最后一步，将Octopress的源码提交至GitHub</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -240,7 +253,7 @@ cd octopress
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2015/09/17/test/">基于GitHub搭建octopress个人技术博客(Mac版)</a>
+        <a href="/blog/2015/09/17/test/">基于GitHub搭建Octopress个人技术博客(Mac版)</a>
       </li>
     
       <li class="post">

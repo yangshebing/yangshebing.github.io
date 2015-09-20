@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Others | 杨社兵的技术博客]]></title>
   <link href="http://yangshebing.github.io/blog/categories/others/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2015-09-20T22:02:13+08:00</updated>
+  <updated>2015-09-20T22:18:16+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
     <name><![CDATA[杨社兵]]></name>
@@ -143,15 +143,16 @@ twitter_tweet_button: true
 
 <p>去<a href="http://tongji.baidu.com">百度统计</a>官网申请一个账号，在管理界面选择“代码获取”，复制代码至<code>source/_includes/custom/footer.html</code>文件中。</p>
 
-<p>3、自定义博客导航栏
-部署好博客之后，你会发现导航栏上默认的只有两项：Blog、Archives，无法满足我们的需求。比如我们想在导航栏上添加一个选项为“关于我”。</p>
+<h6>3、自定义博客导航栏</h6>
+
+<p>部署好博客之后，你会发现导航栏上默认的只有两项：Blog、Archives，无法满足我们的需求。比如我们想在导航栏上添加一个选项为“关于我”。</p>
 
 <p>打开“/source/_includes/custom”目录的navigation.html文件进行编辑：</p>
 
 <pre><code>*&lt;ul class="main-navigation"&gt;
   &lt;li&gt;&lt;a href="/"&gt;我的博客&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href="/blog/archives"&gt;所有文章&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="http://weibo.com/yangshebing"&gt;新浪微博&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="http://weibo.com/yangshebing" target="_blank"&gt;新浪微博&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href="/about"&gt;关于我&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </code></pre>
@@ -162,6 +163,8 @@ twitter_tweet_button: true
 </code></pre>
 
 <p>它的默认保存路径是：“source/about/index.markdown”，编辑index.markdown文件，即可定制“关于我”页面内容。</p>
+
+<h6>4、关于博客的评论和分享到微博功能，请参考末尾文章链接《象写程序一样写博客：搭建基于github的博客》一文。</h6>
 
 <p>参考文章链接：</p>
 

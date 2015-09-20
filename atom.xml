@@ -4,7 +4,7 @@
   <title><![CDATA[杨社兵的技术博客]]></title>
   <link href="http://yangshebing.github.io/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2015-09-20T21:12:34+08:00</updated>
+  <updated>2015-09-20T21:59:12+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
     <name><![CDATA[杨社兵]]></name>
@@ -170,7 +170,30 @@ cd octopress
 <p>3、自定义博客导航栏
 部署好博客之后，你会发现导航栏上默认的只有两项：Blog、Archives，无法满足我们的需求。比如我们想在导航栏上添加一个选项为“关于我”。</p>
 
-<p>打开“/source/_includes/custom”目录，找到navigation.html文件。</p>
+<p>打开“/source/_includes/custom”目录的navigation.html文件进行编辑：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>*&lt;ul class="main-navigation"&gt;
+</span><span class='line'>  &lt;li&gt;&lt;a href="http://yangshebing.github.io/"&gt;我的博客&lt;/a&gt;&lt;/li&gt;
+</span><span class='line'>  &lt;li&gt;&lt;a href="http://yangshebing.github.io/blog/archives"&gt;所有文章&lt;/a&gt;&lt;/li&gt;
+</span><span class='line'>  &lt;li&gt;&lt;a href="http://weibo.com/yangshebing"&gt;新浪微博&lt;/a&gt;&lt;/li&gt;
+</span><span class='line'>  &lt;li&gt;&lt;a href="http://yangshebing.github.io/about"&gt;关于我&lt;/a&gt;&lt;/li&gt;
+</span><span class='line'>&lt;/ul&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>接下来在终端输入rake new_page命令，生成一个index.markdown文件，</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake new_page['about']</span></code></pre></td></tr></table></div></figure>
+
+
+<p>它的默认保存路径是：“source/about/index.markdown”，编辑index.markdown文件，即可定制“关于我”页面内容。</p>
 
 <p>参考文章链接：</p>
 

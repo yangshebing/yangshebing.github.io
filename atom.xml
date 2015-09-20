@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
+  <title><![CDATA[杨社兵的技术博客]]></title>
   <link href="http://yangshebing.github.io/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2015-09-18T01:17:44+08:00</updated>
+  <updated>2015-09-20T20:50:47+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[杨社兵]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
@@ -158,7 +158,7 @@ cd octopress
 
 
 <ul>
-<li>修改source/_includes目录下的head.html文件：将* <code>//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.jst&gt;</code>替换成<code>`http://cdn.staticfile.org/jquery/1.9.1/jquery.min.jst&gt;</code>（解决页面加载过慢问题）</li>
+<li>修改source/_includes目录下的head.html文件：将<code>//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.jst</code>替换成<code>http://cdn.staticfile.org/jquery/1.9.1/jquery.min.jst</code>（解决页面加载过慢问题）</li>
 <li>修改source/_includes/custom目录下的自定义head.html文件，去掉google自定义字体（解决页面加载过慢问题）</li>
 </ul>
 

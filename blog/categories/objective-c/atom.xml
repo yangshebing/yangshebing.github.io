@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Objective-c | My Octopress Blog]]></title>
+  <title><![CDATA[Category: Objective-c | 杨社兵的技术博客]]></title>
   <link href="http://yangshebing.github.io/blog/categories/objective-c/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2015-09-18T01:17:44+08:00</updated>
+  <updated>2015-09-20T20:50:47+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[杨社兵]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>

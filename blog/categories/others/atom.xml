@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Others | 杨社兵的技术博客]]></title>
   <link href="http://yangshebing.github.io/blog/categories/others/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2015-09-20T22:35:49+08:00</updated>
+  <updated>2015-10-13T00:55:25+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
     <name><![CDATA[杨社兵]]></name>
@@ -179,6 +179,8 @@ twitter_tweet_button: true
 <p>（5）<a href="http://www.cnblogs.com/sawyerzhu/p/3710374.html">Mac环境下octopress个人博客搭建</a></p>
 
 <p>（6）<a href="http://foggry.com/blog/2014/04/28/custom-your-octopress-blog/">自定义你的Octopress博客</a></p>
+
+<p>（7）<a href="http://blog.devtang.com/blog/2014/06/02/use-gitcafe-to-host-blog/">将博客从GitHub迁移到GitCafe</a></p>
 ]]></content>
   </entry>
   

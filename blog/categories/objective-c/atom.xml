@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Objective-c | 杨社兵的技术博客]]></title>
   <link href="http://yangshebing.github.io/blog/categories/objective-c/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2015-10-13T01:06:34+08:00</updated>
+  <updated>2015-10-13T22:13:23+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
     <name><![CDATA[杨社兵]]></name>
@@ -49,8 +49,8 @@ CGContextRef currentContext = UIGraphicsGetCurrentContext();
 <p>2、采用CAShapeLayer方式绘制虚线</p>
 
 <pre><code>CAShapeLayer *shapeLayer = [CAShapeLayer layer];
-[shapeLayer setBounds:lineView.bounds];
-[shapeLayer setPosition:CGPointMake(self.frame.size.width / 2, self.frame.size.height)];
+[shapeLayer setBounds:self.bounds];
+[shapeLayer setPosition:CGPointMake(self.frame.size.width / 2.0, self.frame.size.height)];
 [shapeLayer setFillColor:[UIColor clearColor].CGColor];
 //设置虚线颜色
 shapeLayer setStrokeColor:[UIColor BlackColor].CGColor];

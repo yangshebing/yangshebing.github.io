@@ -159,8 +159,8 @@
 <span class='line-number'>22</span>
 <span class='line-number'>23</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>CAShapeLayer *shapeLayer = [CAShapeLayer layer];
-</span><span class='line'>[shapeLayer setBounds:lineView.bounds];
-</span><span class='line'>[shapeLayer setPosition:CGPointMake(self.frame.size.width / 2, self.frame.size.height)];
+</span><span class='line'>[shapeLayer setBounds:self.bounds];
+</span><span class='line'>[shapeLayer setPosition:CGPointMake(self.frame.size.width / 2.0, self.frame.size.height)];
 </span><span class='line'>[shapeLayer setFillColor:[UIColor clearColor].CGColor];
 </span><span class='line'>//设置虚线颜色
 </span><span class='line'>shapeLayer setStrokeColor:[UIColor BlackColor].CGColor];

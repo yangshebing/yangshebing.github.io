@@ -180,7 +180,7 @@ UICollectionView布局中的三种显示内容视图：Cells、Supplementary vie
 </span><span class='line'>    </span></code></pre></td></tr></table></div></figure>
 
 
-<p>完成以上两步，集成上下拉刷新的功能总算完成了，接下来你可以运行一下工程，看结果是否符合预期。这里还有一点需要注意的是，如果你的CollectionView中存在多组，最好是把上下拉刷新所在的组头或者组尾与其他组（section）的组头或组尾分开，相应的需要多注册一个组头或者组尾视图，分情况进行判断(这部分如果还有问题，可以在文章末尾留言，我会及时回复)。</p>
+<p>完成以上两步，集成上下拉刷新的功能总算完成了。接下来你可以运行一下工程，看结果是否符合预期。如果你CollectionView使用的是系统的UICollectionViewFlowLayout布局，一定要返回组头或者组尾的高度，否则就会出现组头或者组尾无法显示（本文的下拉刷新视图所在的组头不返回高度不受影响，是因为它的纵坐标（y值）本来就是负数）。另外，还有一点需要注意的是，如果你的CollectionView中存在多组，最好是把上下拉刷新所在的组头或者组尾与其他组（section）的组头或组尾分开，相应的需要多注册一个组头或者组尾视图，分情况进行判断(这部分如果还有问题，可以在文章末尾留言，我会及时回复)。</p>
 
 <h4>二、自定义瀑布流（WaterFlow）式布局</h4>
 
@@ -284,15 +284,23 @@ UICollectionView布局中的三种显示内容视图：Cells、Supplementary vie
 <span class='line-number'>68</span>
 <span class='line-number'>69</span>
 <span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>- (void)prepareLayout{
 </span><span class='line'>    [super prepareLayout];
 </span><span class='line'>    ...
 </span><span class='line'>    
-</span><span class='line'>    //计算每个显示项的宽度，horizontalItemSpacing代表项与项之间的水平间隔， columnNum代表总列数，contentInset代表上下左右的内填充。详见下图
+</span><span class='line'>    //计算每个显示项的宽度，horizontalItemSpacing代表项与项之间的水平间隔， 
+</span><span class='line'>    columnNum代表总列数，contentInset代表上下左右的内填充。详见下图说明
 </span><span class='line'>    
 </span><span class='line'>    self.itemWidth = (self.collectionView.frame.size.width - (self.horizontalItemSpacing * (self.columnNum - 1)) - self.contentInset.left - self.contentInset.right) / self.columnNum;
 </span><span class='line'>    
-</span><span class='line'>    //如有下拉刷新需求的则需要提供头视图（Supplementary view）布局属性。demo中的headerHeight属性可设置是否显示头视图（是否计算头视图的布局属性）。
+</span><span class='line'>    //如有下拉刷新需求的则需要提供头视图（Supplementary view）布局属性。
+</span><span class='line'>    demo中的headerHeight属性可设置是否显示头视图（是否计算头视图的布局属性）。
+</span><span class='line'>    
 </span><span class='line'>    if(self.headerHeight &gt; 0){
 </span><span class='line'>    
 </span><span class='line'>    //通过layoutAttributesForSupplementaryViewOfKind:withIndexPath:方法来创建Supplementary视图布局属性对象，kind用来区分Supplementary视图类型（header或者footer）。
@@ -343,7 +351,10 @@ UICollectionView布局中的三种显示内容视图：Cells、Supplementary vie
 </span><span class='line'>    
 </span><span class='line'>    //按照前面的排序逻辑，列高数组中的最后一个元素，就是高度最大的一列。
 </span><span class='line'>    BGWaterFlowModel *lastModel = columnInfoArray.lastObject;
-</span><span class='line'>    //如有上拉刷新需求的则需要提供尾视图布局属性。demo中的footerHeight属性可设置是否显示尾视图（是否计算尾视图的布局属性）。
+</span><span class='line'>    
+</span><span class='line'>    //如有上拉刷新需求的则需要提供尾视图布局属性。
+</span><span class='line'>    demo中的footerHeight属性可设置是否显示尾视图（是否计算尾视图的布局属性）。
+</span><span class='line'>    
 </span><span class='line'>    if(self.footerHeight &gt; 0){
 </span><span class='line'>        self.footerLayoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionFooter withIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
 </span><span class='line'>        //计算尾视图的布局属性
@@ -352,14 +363,14 @@ UICollectionView布局中的三种显示内容视图：Cells、Supplementary vie
 </span><span class='line'>    
 </span><span class='line'>    //直接计算出collectionView的contentSize
 </span><span class='line'>    self.contentSize = CGSizeMake(self.collectionView.frame.size.width, lastModel.height+self.headerHeight+self.contentInset.top+self.contentInset.bottom+self.footerHeight);
-</span><span class='line'>
 </span><span class='line'>}
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p><strong>好吧，这么一大坨代码看到就头疼了，来张图帮助理解一下！图糙理不糙，理解万岁</strong>
-<img src="http://ww4.sinaimg.cn/mw690/7f266405jw1ey25ujzticj218a0xmjww.jpg" alt="" />
-<strong>这样看上去是不是更清晰了？</strong></p>
+<img src="http://ww4.sinaimg.cn/mw690/7f266405jw1ey25ujzticj218a0xmjww.jpg" alt="" /></p>
+
+<p><strong>这样看上去是不是更清晰了？</strong></p>
 
 <ul>
 <li><strong>重写"collectionViewContentSize"方法返回collectionView的内容高度。</strong></li>

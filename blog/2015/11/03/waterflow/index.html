@@ -1,0 +1,605 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>UICollectionView（纯代码方式）实现带上下拉刷新的瀑布流式（WaterFlow）布局 - 杨社兵的技术博客</title>
+  <meta name="author" content="杨社兵">
+
+  
+  <meta name="description" content="如何使用UICollectionView（纯代码方式）实现带上下拉刷新的瀑布流式（WaterFlow）布局">
+  <meta name="keywords" content="UICollectionView, WaterFlow, FlowLayout, 下拉刷新">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://yangshebing.github.io/blog/2015/11/03/waterflow/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="杨社兵的技术博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="http://cdn.staticfile.org/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">杨社兵的技术博客</a></h1>
+  
+    <h2>业精于勤荒于嬉，行成于思毁于随.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="yangshebing.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">我的博客</a></li>
+  <li><a href="/blog/archives">所有文章</a></li>
+  <li><a href="http://weibo.com/yangshebing" target="_blank">新浪微博</a></li>
+  <li><a href="/about">关于我</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">UICollectionView（纯代码方式）实现带上下拉刷新的瀑布流式（WaterFlow）布局</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-11-03T22:40:32+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>10:40 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>瀑布流（WaterFlow）是项目开发过程中的常见布局，有关于瀑布流（WaterFlow）的实现方式：在UICollectionView未出现之前，瀑布流的实现多半是采用UIScrollView或是UITableView。对于我们这种用惯了表视图的人来说，UICollectionView倒略显陌生。有关于UICollectionView的介绍我就不一一赘述，因为一两句话也很难说清楚。网上有很多优秀的文章专门对其进行了一系列的解说，另有苹果官方文档可以查阅。本文主要是介绍如何采用纯代码的方式利用UICollectionView实现带上下拉刷新的瀑布流式（WaterFlow）布局。废话少说，直接入题。</p>
+
+<!--more-->
+
+
+<h4>一、UICollectionView集成上下拉刷新</h4>
+
+<p>（1）简单的介绍UICollectionView</p>
+
+<p>UICollectionView和UITableView很相似，如果你对表视图非常熟悉，上手的速度也会快很多。使用它时需要相应的设置DataSource（UICollectionViewDataSoure)数据源协议和Delegate（UICollectionViewDelegate)事件协议，并实现相应的协议方法。它与UITableView不同的地方是它有UICollectionViewLayout，可以通过它的子类来定制布局。系统默认的布局方式是UICollectionViewDelegateFlowLayout，实现相应的协议（UICollectionViewDelegateFlowLayout）方法，便可达到默认布局效果。</p>
+
+<p>UICollectionViewCell与UITableViewCell的使用也差不多，一样的有ReuseIdentifier,可以复用。使用UICollectionViewCell时，需要先注册，然后再出列使用。至于注册并出列使用Cell的具体方式，请自行下载文章末尾的BGWaterFlowView或者自行Google。</p>
+
+<p>（2）集成上下拉刷新方式</p>
+
+<p>一般UITableView添加上下拉刷新的方式，是把下拉或者上拉刷新视图的UI放置UITableView的表头属性(tableHeaderView)或者表尾属性（tableFooterView）。但是，在UICollectionView中没有这两个属性。那么我们该如何来集成上下拉刷新呢？这就得说到
+UICollectionView布局中的三种显示内容视图：Cells、Supplementary views、Decoration views。(关于这三种视图的介绍可以去官网查阅相关文档，上面有详细的解释)。我们一般是把上下拉刷新的UI放置在Supplementary views（官方解释：它能显示数据但是不同于Cells。不像Cell,Supplementary views是不能被用户选定的。相反，你可以用它去实现类似于给一个指定的section或者整个CollectionView添加页眉和页脚视图这样的功能）上面，其实，Supplementary views就和TableView的section头视图和尾视图差不多。但是用法却大不相同。在自定义瀑布流布局中一定要把它也计算进去，不然显示就会有异常。</p>
+
+<ul>
+<li><strong>注册头视图和尾视图单元格类型</strong></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>//注册头视图：kind代表Supplementary视图类型，UICollectionElementKindSectionHeader表示组头
+</span><span class='line'>
+</span><span class='line'>[self registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"bGCollectionHeaderView"];
+</span><span class='line'>
+</span><span class='line'>//注册尾视图：UICollectionElementKindSectionHeader表示组尾
+</span><span class='line'>
+</span><span class='line'>    [self registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"bGCollectionFooterView"];
+</span><span class='line'>    </span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><strong>实现自定义组视图viewForSupplementaryElementOfKind代理方法</strong></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+</span><span class='line'>
+</span><span class='line'>  //kind代表Supplementary视图类型：头或尾视图（header OR footer）
+</span><span class='line'>  
+</span><span class='line'>    if([kind isEqual:UICollectionElementKindSectionHeader]) {
+</span><span class='line'>        UICollectionReusableView *collectionHeaderView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"bGCollectionHeaderView" forIndexPath:indexPath];
+</span><span class='line'>        
+</span><span class='line'>        //初始化下拉刷新或者自定义页眉视图UI界面
+</span><span class='line'>        ...
+</span><span class='line'>        
+</span><span class='line'>        return collectionHeaderView;
+</span><span class='line'>    } else if([kind isEqual:UICollectionElementKindSectionFooter]) {
+</span><span class='line'>        UICollectionReusableView *collectionFooterView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"bGCollectionFooterView" forIndexPath:indexPath];
+</span><span class='line'>        
+</span><span class='line'>        //初始化上拉刷新或者自定义页脚视图UI界面
+</span><span class='line'>        ...
+</span><span class='line'>        
+</span><span class='line'>        return collectionFooterView;
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    return nil;
+</span><span class='line'>}
+</span><span class='line'>    </span></code></pre></td></tr></table></div></figure>
+
+
+<p>完成以上两步，集成上下拉刷新的功能总算完成了，接下来你可以运行一下工程，看结果是否符合预期。这里还有一点需要注意的是，如果你的CollectionView中存在多组，最好是把上下拉刷新所在的组头或者组尾与其他组（section）的组头或组尾分开，相应的需要多注册一个组头或者组尾，分情况进行判断(这部分如果还有问题，可以在文章末尾留言，我会及时回复)。</p>
+
+<h4>二、自定义瀑布流（WaterFlow）式布局</h4>
+
+<p>（1）简单的介绍UICollectionView布局形式</p>
+
+<p>一般来讲，UICollectionView的布局形式分为两种：</p>
+
+<ul>
+<li><p>布局与内容独立，其布局不需要根据显示的单元格内容来计算。Cell的显示顺序与内容顺序一致。Cell排满一行则换至下一行继续排列。系统的UICollectionViewFlowLayout就是这样。</p></li>
+<li><p>布局需要计算内容，本文的瀑布流Demo局部正是如此。UICollectionViewFlowLayout系统布局在换行的时候，由于每个item高度不同，从而导致布局错乱，无法满足你的需求。所以，这个时候你需要计算每个item的高度，最终用来确定item显示的位置。</p></li>
+</ul>
+
+
+<p>从上述内容我们可以看出，一般如果布局需要计算内容的时候，我们就不应该直接使用UICollectionViewFlowLayout布局了，而是应该子类化一个UICollectionViewLayout，从而达到私人定制的目的。</p>
+
+<p>（2）创建自定义布局</p>
+
+<p><a href = "https://developer.apple.com/library/ios/documentation/WindowsViews/Conceptual/CollectionViewPGforIOS/CreatingCustomLayouts/CreatingCustomLayouts.html#//apple_ref/doc/uid/TP40012334-CH5-SW1">官方文档</a>中有提到，在布局的过程中，CollectionView会调用布局对象的具体方法。这些方法有机会使你计算这些项的位置以及给CollectionView提供它所需要的主要信息。其他的方法也有可能会被调用，但是在布局的过程中这些方法总是会按照以下的顺序调用：</p>
+
+<ol>
+<li>使用"prepareLayout"方法去执行一些CollectionView所需要的布局信息的预先计算操作。</li>
+<li>使用"collectionViewContentSize"方法去返回根据你最初计算的整个内容区域的总体大小。</li>
+<li>使用"layoutAttributesForElementsInRect:&ldquo;方法来返回指定区域的单元格与视图属性。</li>
+</ol>
+
+
+<p>下面我们通过Demo来详细的讲解一下如何自定义瀑布流，废话不多说，直接上代码（本文采用的Demo为<strong>BGWaterFlowView</strong>,<strong>GitHub传送门</strong>：<a href = 'https://github.com/liuchungui/BGWaterFlowView'>请点击这里</a>）：</p>
+
+<ul>
+<li><strong>重写"prepareLayout"方法计算布局信息。</strong></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)prepareLayout{
+</span><span class='line'>    [super prepareLayout];
+</span><span class='line'>    ...
+</span><span class='line'>    
+</span><span class='line'>    //计算每个显示项的宽度，itemSpacing代表项与项之间的间隔，columnNum代表总列数，contentInset代表上下左右的内填充。详见下图
+</span><span class='line'>    
+</span><span class='line'>    self.itemWidth = (self.collectionView.frame.size.width - (self.itemSpacing * (self.columnNum - 1)) - self.contentInset.left - self.contentInset.right) / self.columnNum;
+</span><span class='line'>    
+</span><span class='line'>    //如有下拉刷新需求的则需要提供头视图（Supplementary view）布局属性。demo中的headerHeight属性可设置是否显示头视图（是否计算头视图的布局属性）。
+</span><span class='line'>    if(self.headerHeight &gt; 0){
+</span><span class='line'>    
+</span><span class='line'>    //通过layoutAttributesForSupplementaryViewOfKind:withIndexPath:方法来创建Supplementary视图布局属性对象，kind用来区分Supplementary视图类型（header或者footer）。
+</span><span class='line'>    
+</span><span class='line'>        self.headerLayoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader withIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+</span><span class='line'>        
+</span><span class='line'>        //修改布局参数frame属性
+</span><span class='line'>        
+</span><span class='line'>        self.headerLayoutAttributes.frame = CGRectMake(0, 0, self.collectionView.frame.size.width, self.headerHeight);
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    //初始化保存布局属性的字典
+</span><span class='line'>    NSMutableDictionary *cellLayoutInfoDic = [NSMutableDictionary dictionary];
+</span><span class='line'>    //初始化列高数组
+</span><span class='line'>    NSMutableArray *columnInfoArray = [self columnInfoArray];
+</span><span class='line'>    NSInteger numSections = [self.collectionView numberOfSections];
+</span><span class='line'>    for(NSInteger section = 0; section &lt; numSections; section++)  {
+</span><span class='line'>        NSInteger numItems = [self.collectionView numberOfItemsInSection:section];
+</span><span class='line'>        for(NSInteger item = 0; item &lt; numItems; item++){
+</span><span class='line'>            //获取列高最小的model，以它的高作为y坐标
+</span><span class='line'>            BGWaterFlowModel *firstModel = columnInfoArray.firstObject;
+</span><span class='line'>            CGFloat y = firstModel.height;
+</span><span class='line'>            CGFloat x = self.contentInset.left + (self.itemSpacing + self.itemWidth) * firstModel.column;
+</span><span class='line'>            
+</span><span class='line'>            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
+</span><span class='line'>            
+</span><span class='line'>            //通过代理方法传入对应item的高度。
+</span><span class='line'>            
+</span><span class='line'>            CGFloat itemHeight = [((id&lt;BGWaterFlowLayoutDelegate&gt;)self.collectionView.delegate) collectionView:self.collectionView layout:self heightForItemAtIndexPath:indexPath];
+</span><span class='line'>            
+</span><span class='line'>            //通过layoutAttributesForCellWithIndexPath:方法来创建cell的布局属性对象。
+</span><span class='line'>            
+</span><span class='line'>            UICollectionViewLayoutAttributes *itemAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
+</span><span class='line'>            //计算item的布局属性
+</span><span class='line'>            itemAttributes.frame = CGRectMake(x, y+self.contentInset.top+self.headerHeight, self.itemWidth, itemHeight);
+</span><span class='line'>            计算当前列高
+</span><span class='line'>            firstModel.height += (itemHeight + self.itemSpacing);
+</span><span class='line'>            //保存新的列高，并进行排序：第一个model与后面model比较，直到找到height比它大的对象为止。
+</span><span class='line'>            [self sortArrayByHeight:columnInfoArray];
+</span><span class='line'>            
+</span><span class='line'>     //保存计算好的item布局属性
+</span><span class='line'>     cellLayoutInfoDic[indexPath] = itemAttributes;
+</span><span class='line'>        }
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    //保存到全局字典中
+</span><span class='line'>    self.cellLayoutInfoDic = [cellLayoutInfoDic copy];
+</span><span class='line'>    
+</span><span class='line'>    //按照前面的排序逻辑，列高数组中的最后一个元素，就是高度最大的一列。
+</span><span class='line'>    BGWaterFlowModel *lastModel = columnInfoArray.lastObject;
+</span><span class='line'>    //如有上拉刷新需求的则需要提供尾视图布局属性。demo中的footerHeight属性可设置是否显示尾视图（是否计算尾视图的布局属性）。
+</span><span class='line'>    if(self.footerHeight &gt; 0){
+</span><span class='line'>        self.footerLayoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionFooter withIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+</span><span class='line'>        //计算尾视图的布局属性
+</span><span class='line'>        self.footerLayoutAttributes.frame = CGRectMake(0, lastModel.height+self.headerHeight+self.contentInset.top+self.contentInset.bottom, self.collectionView.frame.size.width, self.footerHeight);
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    //直接计算出collectionView的contentSize
+</span><span class='line'>    self.contentSize = CGSizeMake(self.collectionView.frame.size.width, lastModel.height+self.headerHeight+self.contentInset.top+self.contentInset.bottom+self.footerHeight);
+</span><span class='line'>
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>好吧，这么一大坨代码看到就头疼了，来张图帮助理解一下！图糙理不糙，理解万岁</strong>
+<img src="http://ww1.sinaimg.cn/mw690/7f266405jw1ey1emaapzaj216q0xadl3.jpg" alt="" />
+<strong>这样看上去是不是更清晰了？</strong></p>
+
+<ul>
+<li><strong>重写"collectionViewContentSize"方法返回collectionView的内容高度。</strong></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>- (CGSize)collectionViewContentSize{
+</span><span class='line'>  //返回计算好的collectionView内容高度
+</span><span class='line'>    return self.contentSize;
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><strong>重写"layoutAttributesForElementsInRect"方法返回指定矩形区域中的cell或者其他类型视图布局属性。</strong></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect {
+</span><span class='line'>
+</span><span class='line'>  //返回一组已经计算好的布局属性。
+</span><span class='line'>  
+</span><span class='line'>    NSMutableArray *attributesArrs = [NSMutableArray array];
+</span><span class='line'>    [self.cellLayoutInfoDic enumerateKeysAndObjectsUsingBlock:^(NSIndexPath *indexPath,
+</span><span class='line'>                                                                UICollectionViewLayoutAttributes *attributes,
+</span><span class='line'>                                                                BOOL *stop) { 
+</span><span class='line'>        //遍历布局属性保存字典，添加布局属性至数组中                                                       
+</span><span class='line'>        if (CGRectIntersectsRect(rect, attributes.frame)) {
+</span><span class='line'>            [attributesArrs addObject:attributes];
+</span><span class='line'>        }
+</span><span class='line'>    }];
+</span><span class='line'>    
+</span><span class='line'>    //如果有头视图或者尾视图则需要添加头视图与尾视图的布局属性
+</span><span class='line'>    
+</span><span class='line'>    if (self.headerLayoutAttributes && CGRectIntersectsRect(rect, self.headerLayoutAttributes.frame)) {
+</span><span class='line'>        [attributesArrs addObject:self.headerLayoutAttributes];
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    
+</span><span class='line'>    if (self.footerLayoutAttributes && CGRectIntersectsRect(rect, self.footerLayoutAttributes.frame)) {
+</span><span class='line'>        [attributesArrs addObject:self.footerLayoutAttributes];
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    return attributesArrs;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>结语：</h4>
+
+<p><a href = "https://developer.apple.com/library/ios/documentation/UIKit/Reference/UICollectionViewLayout_class/index.html#//apple_ref/occ/cl/UICollectionViewLayout">UICollectionViewLayout</a>相关的内容姿势非常多，相关文章也非常多。本文介绍的瀑布流布局也只是其中的冰山一角，很多东西官方文档中已经介绍的非常详细了。所以，还是建议多看官方文档。本文主要注重项目的实用性，在后面就直接上代码了，可能在理论方面还是有所欠缺，对于不足的地方，希望大家多提建议，一起交流学习，一起进步。如果文中有看不懂的地方，还请您留言。我会及时进行回复。最后，本文的Demo就在于方便徒手撸代码的人使用。你懂的。后期会不断的更新优化，进一步的完善。敬请期待&hellip;</p>
+
+<p>点击此处下载本文的Demo:<a href = 'https://github.com/liuchungui/BGWaterFlowView'><strong>BGWaterFlowView</strong></a></p>
+
+<p>Demo使用方式详见:<a href = "https://github.com/liuchungui/BGWaterFlowView/blob/master/README.md"><strong>README.md</strong></a></p>
+
+<p>Demo运行瀑布流效果截图如下所示:</p>
+
+<p><img src="http://ww2.sinaimg.cn/large/7f266405jw1ey0z6x4xf9j20ku12aqb5.jpg"/ width = "375" height = "677" align = "center"></p>
+
+<h6>参考博客地址：</h6>
+
+<ul>
+<li><a http://objccn.io/issue-3-3/">自定义 Collection View 布局</a></li>
+</ul>
+
+
+<p>转载请注明出处</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">杨社兵</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-11-03T22:40:32+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>10:40 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/objective-c/'>objective-c</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+  <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <span class="jiathis_txt">分享到：</span>
+  <a class="jiathis_button_tools_1"></a>
+  <a class="jiathis_button_tools_2"></a>
+  <a class="jiathis_button_tools_3"></a>
+  <a class="jiathis_button_tools_4"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2059530"></script>
+<!-- UY END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/10/12/ioshui-zhi-xu-xian-fang-shi-zong-jie/" title="Previous Post: iOS绘制虚线方式总结">&laquo; iOS绘制虚线方式总结</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/11/03/waterflow/">UICollectionView（纯代码方式）实现带上下拉刷新的瀑布流式（WaterFlow）布局</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/12/ioshui-zhi-xu-xian-fang-shi-zong-jie/">iOS绘制虚线方式总结</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/09/17/test/">基于GitHub搭建Octopress个人技术博客(Mac版)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/09/13/arcticle/">iOS中点击状态栏让滑动视图回到顶部</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/09/12/swift/">Swift语言编程</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+ <h1>iOS开发</h1>
+ <ul id="categories">
+  <li class='category'><a href='/blog/categories/objective-c/'>objective-c (4)</a></li>
+<li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
+<li class='category'><a href='/blog/categories/swift/'>swift (1)</a></li>
+
+ </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - 杨社兵 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  <span class="credit">, 感谢 <a href="http://gitcafe.com/signup?invited_by=yangshebing" target="_blank">GitCafe</a> 为本站提供存储空间</span>
+
+  	<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?be50b7d5e40e390ecfdd9cc1a14fe0e6";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

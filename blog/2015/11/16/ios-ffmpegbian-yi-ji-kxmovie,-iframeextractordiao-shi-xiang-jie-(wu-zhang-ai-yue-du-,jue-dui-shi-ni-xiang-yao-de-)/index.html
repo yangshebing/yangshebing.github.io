@@ -98,15 +98,16 @@
 
 <p><strong>开发环境：ffmpeg-2.5.4/Xcode6.1</strong></p>
 
-<p>1、下载ffmpeg源码：</p>
+<p>（一）、下载ffmpeg源码：</p>
 
 <p>请点击此链接<a href = "http://ffmpeg.org/download.html"><a href="http://ffmpeg.org/download.html">http://ffmpeg.org/download.html</a></a></p>
 
 <p> <font color = "red"><b>注：我的ffmpeg-2.5.4是解压放至Desktop的</b></font></p>
 
-<p> 2、调试编译ffmpeg源码</p>
+<p>（二）、调试编译ffmpeg源码</p>
 
-<p> （1）安装yasm:</p>
+<p> 1、安装yasm:
+ <!--more--></p>
 
 <p> 方法一:</p>
 
@@ -117,38 +118,38 @@
 
 <p>方法二：</p>
 
-<p>1、Download yasm sourcecode from：
+<p>（1）Download yasm sourcecode from：
   <a href = "http://www.tortall.net/projects/yasm/releases/yasm-1.2.0.tar.gz"><a href="http://www.tortall.net/projects/yasm/releases/yasm-1.2.0.tar.gz">http://www.tortall.net/projects/yasm/releases/yasm-1.2.0.tar.gz</a></a></p>
 
-<p>2、Unpack tar xvzfyasm-1.2.0.tar.gz</p>
+<p>（2）Unpack tar xvzfyasm-1.2.0.tar.gz</p>
 
-<p>3、cd yasm-1.2.0</p>
+<p>（3）cd yasm-1.2.0</p>
 
-<p>4、Configure and build:</p>
+<p>（4）Configure and build:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>./configure && make -j 4 &&sudo make install</span></code></pre></td></tr></table></div></figure>
 
 
-<p>（2）下载pearl脚本文件：gas-preprocessor.pl：</p>
+<p>2、下载pearl脚本文件：gas-preprocessor.pl：</p>
 
 <p>下载地址： <a href = "https://github.com/libav/gas-preprocessor"><a href="https://github.com/libav/gas-preprocessor">https://github.com/libav/gas-preprocessor</a></a></p>
 
-<p>（一）拷贝gas-preprocessor.pl文件到 /usr/bin 目录下。</p>
+<p>（1）拷贝gas-preprocessor.pl文件到 /usr/bin 目录下。</p>
 
 <p>如果找不到/usr/bin目录，直接使用”Finder—>前往—> 前往文件夹—>/usr/bin”或者使用快捷键“shift+command+G”前往文件夹，到指定目录下粘贴gas-preprocessor.pl文件</p>
 
-<p>（二）修改gas-preprocessor.pl文件的读写权限，使用 chmod a+rwxgas-preprocessor.pl</p>
+<p>（2）修改gas-preprocessor.pl文件的读写权限，使用 chmod a+rwxgas-preprocessor.pl</p>
 
 <p>用终端命令cd定位到 gas-preprocessor.pl文件夹下执行：<code>chmod a+rwxgas-preprocessor.pl</code>命令</p>
 
-<p>（3）下载build-shell.sh脚本文件：</p>
+<p>3、下载build-shell.sh脚本文件：</p>
 
 <p>下载地址：<a href = "https://github.com/kewlbear/FFmpeg-iOS-build-script"><a href="https://github.com/kewlbear/FFmpeg-iOS-build-script">https://github.com/kewlbear/FFmpeg-iOS-build-script</a></a></p>
 
-<p>（一）下载解压build-shell.sh文件</p>
+<p>（1）下载解压build-shell.sh文件</p>
 
-<p>（二）定位至build-shell.sh文件夹执行build-shell.sh脚本文件</p>
+<p>（2）定位至build-shell.sh文件夹执行build-shell.sh脚本文件</p>
 
 <p>使用方式有4种，我们可以根据特定的使用环境来执行对应的脚本，一般我们就直接执行：<code>./build-ffmpeg.sh</code></p>
 
@@ -182,7 +183,7 @@
 
 <p>注：我的build-shell.sh是解压放至Desktop的，以上四种shell脚本的使用方式来自<a href = "https://github.com/kewlbear/FFmpeg-iOS-build-script"><a href="https://github.com/kewlbear/FFmpeg-iOS-build-script">https://github.com/kewlbear/FFmpeg-iOS-build-script</a></a>，后面几种方式大家可以自己去尝试。</p>
 
-<p>（4）脚本执行完成之后，会在桌面上生成三个文件夹：“FFmpeg-iOS”“scratch”和”thin”文件夹</p>
+<p>4、脚本执行完成之后，会在桌面上生成三个文件夹：“FFmpeg-iOS”“scratch”和”thin”文件夹</p>
 
 <p>scratch文件夹里面是单独编译的库，FFmpeg-iOS文件夹里面是合并编译的库。在使用的过程中，我们主要会用到FFmpeg-iOS 文件夹下的“include”文件夹和"lib"文件夹中的文件。</p>
 
@@ -234,7 +235,7 @@
 
 <h3>三、iFrameExtractor-master（iFrameExtractor）工程编译和运行</h3>
 
-<p>   （1）运行iFrameExtractor-master工程，与上面kxmovie工程操作一样，把FFmpeg文件夹拷贝至工程目录下:
+<p>（1）运行iFrameExtractor-master工程，与上面kxmovie工程操作一样，把FFmpeg文件夹拷贝至工程目录下:
        (工程目录下本来是没有FFmpeg文件夹的)</p>
 
 <p><img src="http://ww1.sinaimg.cn/large/7f266405jw1ey37tiypu8j20gx07b75s.jpg" alt="" /></p>
@@ -247,27 +248,41 @@
 
 <p><img src="http://ww2.sinaimg.cn/large/7f266405jw1ey37v057v9j20kg07p40a.jpg" alt="" /></p>
 
-<p>（3）最后还是会报链接错误：
-                  Undefined symbols for architecture i386:
-                        &ldquo;<em>iconv&rdquo;, referenced from:    <br/>
-                     </em>avcodec_decode_subtitle2 in libavcodec.a(utils.o)<br/>
-                &ldquo;<em>iconv_close&rdquo;, referenced from:
-               </em>avcodec_open2 in libavcodec.a(utils.o)
-                    <em>avcodec_decode_subtitle2 in libavcodec.a(utils.o)
-                  &ldquo;</em>iconv_open&rdquo;, referenced from:
-              <em>avcodec_open2 in libavcodec.a(utils.o)
-             </em>avcodec_decode_subtitle2 in libavcodec.a(utils.o)
-                 ld: symbol(s) not found for architecture i386
-                clang: error: linker command failed with exit code 1 (use -v to see invocation)</p>
+<p>（3）最后还是会报链接错误：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Undefined symbols for architecture i386:
+</span><span class='line'>"_iconv", referenced from:      
+</span><span class='line'>    _avcodec_decode_subtitle2 in libavcodec.a(utils.o)  
+</span><span class='line'>"_iconv_close", referenced from:
+</span><span class='line'>    _avcodec_open2 in libavcodec.a(utils.o)
+</span><span class='line'>    _avcodec_decode_subtitle2 in libavcodec.a(utils.o)
+</span><span class='line'>"_iconv_open", referenced from:
+</span><span class='line'>    _avcodec_open2 in libavcodec.a(utils.o)
+</span><span class='line'>    _avcodec_decode_subtitle2 in libavcodec.a(utils.o)
+</span><span class='line'>ld: symbol(s) not found for architecture i386
+</span><span class='line'>clang: error: linker command failed with exit code 1 (use -v to see invocation)</span></code></pre></td></tr></table></div></figure>
+
 
 <p><img src="http://ww2.sinaimg.cn/large/7f266405jw1ey37vhigjfj20fq0a8djf.jpg" alt="" /></p>
 
-<p>解决办法："TARGETS" - > &ldquo;BuildSettings&rdquo; - > &ldquo;Other Linker Flags&rdquo; 添加other Linker Flags 项：-liconv</p>
+<p><strong>解决办法："TARGETS" - > &ldquo;BuildSettings&rdquo; - > &ldquo;Other Linker Flags&rdquo; 添加other Linker Flags 项：-liconv</strong></p>
 
 <p><img src="http://ww1.sinaimg.cn/large/7f266405jw1ey37wvjqv1j20dl01s74f.jpg" alt="" /></p>
 
-<p>此报错问题出自：<a href="http://stackoverflow.com/questions/21211215/ffmpeg-wont-build-in-my-project-works-fine-in-example-app/28777851#28777851">http://stackoverflow.com/questions/21211215/ffmpeg-wont-build-in-my-project-works-fine-in-example-app/28777851#28777851</a>
-至此完成iFrameExtractor-master工程编译和运行</p>
+<p>此报错问题出自：<a href = "http://stackoverflow.com/questions/21211215/ffmpeg-wont-build-in-my-project-works-fine-in-example-app/28777851#28777851"><a href="http://stackoverflow.com/questions/21211215/ffmpeg-wont-build-in-my-project-works-fine-in-example-app/28777851#28777851">http://stackoverflow.com/questions/21211215/ffmpeg-wont-build-in-my-project-works-fine-in-example-app/28777851#28777851</a></a></p>
+
+<p>至此完成iFrameExtractor-master工程编译和运行</p>
 
 <h3>本文参考文章资料：</h3>
 

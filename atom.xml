@@ -4,7 +4,7 @@
   <title><![CDATA[杨社兵的技术博客]]></title>
   <link href="http://yangshebing.github.io/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2015-11-16T23:27:02+08:00</updated>
+  <updated>2015-11-16T23:30:42+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
     <name><![CDATA[杨社兵]]></name>
@@ -30,13 +30,13 @@
 
 <p><strong>开发环境：ffmpeg-2.5.4/Xcode6.1</strong></p>
 
-<p>（一）、下载ffmpeg源码：</p>
+<h4>（一）、下载ffmpeg源码：</h4>
 
 <p>请点击此链接<a href = "http://ffmpeg.org/download.html"><a href="http://ffmpeg.org/download.html">http://ffmpeg.org/download.html</a></a></p>
 
 <p> <font color = "red"><b>注：我的ffmpeg-2.5.4是解压放至Desktop的</b></font></p>
 
-<p>（二）、调试编译ffmpeg源码</p>
+<h4>（二）、调试编译ffmpeg源码</h4>
 
 <p> 1、安装yasm:
  <!--more--></p>

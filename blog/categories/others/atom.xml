@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Others | 杨社兵的技术博客]]></title>
   <link href="http://yangshebing.github.io/blog/categories/others/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2015-11-16T01:40:44+08:00</updated>
+  <updated>2015-11-16T23:10:56+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
     <name><![CDATA[杨社兵]]></name>
@@ -12,6 +12,204 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[iOS FFmpeg编译及kxmovie、iFrameExtractor调试详解（无障碍阅读，绝对是你想要的）]]></title>
+    <link href="http://yangshebing.github.io/blog/2015/11/16/ios-ffmpegbian-yi-ji-kxmovie,-iframeextractordiao-shi-xiang-jie-(wu-zhang-ai-yue-du-,jue-dui-shi-ni-xiang-yao-de-)/"/>
+    <updated>2015-11-16T01:44:27+08:00</updated>
+    <id>http://yangshebing.github.io/blog/2015/11/16/ios-ffmpegbian-yi-ji-kxmovie,-iframeextractordiao-shi-xiang-jie-(wu-zhang-ai-yue-du-,jue-dui-shi-ni-xiang-yao-de-)</id>
+    <content type="html"><![CDATA[<p><strong>特此声明：本文是通过网上收集整理加上自己亲自实验得来的。感谢所有网上分享的辛勤劳动者，本文仅供iOS学习使用。在学习的过程中，如果有问题或者不清楚的地方，欢迎留言，我们共同探讨互相学习。欢迎批评指正。</strong></p>
+
+<p><strong>如需转载，请注明出处：<a href = "http://blog.csdn.net/yangshebing21/article/details/43986913"><a href="http://blog.csdn.net/yangshebing21/article/details/43986913">http://blog.csdn.net/yangshebing21/article/details/43986913</a></a></strong></p>
+
+<h4>开发环境：最新 ffmpeg-2.5.4/iOS SDK8.1/Xcode6.1/OS X Yosemite版本10.10.2</h4>
+
+<h3>一、编译ffmpeg库</h3>
+
+<h4>编译调试ffmpeg库的步骤：</h4>
+
+<p><strong>开发环境：ffmpeg-2.5.4/Xcode6.1</strong></p>
+
+<p>1、下载ffmpeg源码：</p>
+
+<p>请点击此链接<a href = "http://ffmpeg.org/download.html"><a href="http://ffmpeg.org/download.html">http://ffmpeg.org/download.html</a></a></p>
+
+<p> <font color = "red"><b>注：我的ffmpeg-2.5.4是解压放至Desktop的</b></font></p>
+
+<p> 2、调试编译ffmpeg源码</p>
+
+<p> （1）安装yasm:</p>
+
+<p> 方法一:</p>
+
+<p> 在终端输入</p>
+
+<pre><code class="`"> sudo curlhttp://www.tortall.net/projects/yasm/releases/yasm-1.2.0.tar.gz &gt;yasm.tar.gz
+</code></pre>
+
+<p>方法二：</p>
+
+<p>1、Download yasm sourcecode from：
+  <a href = "http://www.tortall.net/projects/yasm/releases/yasm-1.2.0.tar.gz"><a href="http://www.tortall.net/projects/yasm/releases/yasm-1.2.0.tar.gz">http://www.tortall.net/projects/yasm/releases/yasm-1.2.0.tar.gz</a></a></p>
+
+<p>2、Unpack tar xvzfyasm-1.2.0.tar.gz</p>
+
+<p>3、cd yasm-1.2.0</p>
+
+<p>4、Configure and build:</p>
+
+<pre><code>./configure &amp;&amp; make -j 4 &amp;&amp;sudo make install
+</code></pre>
+
+<p>（2）下载pearl脚本文件：gas-preprocessor.pl：</p>
+
+<p>下载地址： <a href = "https://github.com/libav/gas-preprocessor"><a href="https://github.com/libav/gas-preprocessor">https://github.com/libav/gas-preprocessor</a></a></p>
+
+<p>（一）拷贝gas-preprocessor.pl文件到 /usr/bin 目录下。</p>
+
+<p>如果找不到/usr/bin目录，直接使用”Finder—>前往—> 前往文件夹—>/usr/bin”或者使用快捷键“shift+command+G”前往文件夹，到指定目录下粘贴gas-preprocessor.pl文件</p>
+
+<p>（二）修改gas-preprocessor.pl文件的读写权限，使用 chmod a+rwxgas-preprocessor.pl</p>
+
+<p>用终端命令cd定位到 gas-preprocessor.pl文件夹下执行：<code>chmod a+rwxgas-preprocessor.pl</code>命令</p>
+
+<p>（3）下载build-shell.sh脚本文件：</p>
+
+<p>下载地址：<a href = "https://github.com/kewlbear/FFmpeg-iOS-build-script"><a href="https://github.com/kewlbear/FFmpeg-iOS-build-script">https://github.com/kewlbear/FFmpeg-iOS-build-script</a></a></p>
+
+<p>（一）下载解压build-shell.sh文件</p>
+
+<p>（二）定位至build-shell.sh文件夹执行build-shell.sh脚本文件</p>
+
+<p>使用方式有4种，我们可以根据特定的使用环境来执行对应的脚本，一般我们就直接执行：<code>./build-ffmpeg.sh</code></p>
+
+<ul>
+<li>To build everything:</li>
+</ul>
+
+
+<p><strong><code>./build-ffmpeg.sh</code></strong></p>
+
+<ul>
+<li>To build arm64 libraries：</li>
+</ul>
+
+
+<p><strong><code>./build-ffmpeg.sh arm64</code></strong></p>
+
+<ul>
+<li>To build fat libraries for armv7 and x86_64 (64-bit simulator)：</li>
+</ul>
+
+
+<p><strong><code>./build-ffmpeg.sh armv7 x86_64</code></strong></p>
+
+<ul>
+<li>To build fat libraries from separately built thin libraries:</li>
+</ul>
+
+
+<p><strong><code>./build-ffmpeg.sh lipo</code></strong></p>
+
+<p>注：我的build-shell.sh是解压放至Desktop的，以上四种shell脚本的使用方式来自<a href = "https://github.com/kewlbear/FFmpeg-iOS-build-script"><a href="https://github.com/kewlbear/FFmpeg-iOS-build-script">https://github.com/kewlbear/FFmpeg-iOS-build-script</a></a>，后面几种方式大家可以自己去尝试。</p>
+
+<p>（4）脚本执行完成之后，会在桌面上生成三个文件夹：“FFmpeg-iOS”“scratch”和”thin”文件夹</p>
+
+<p>scratch文件夹里面是单独编译的库，FFmpeg-iOS文件夹里面是合并编译的库。在使用的过程中，我们主要会用到FFmpeg-iOS 文件夹下的“include”文件夹和"lib"文件夹中的文件。</p>
+
+<h3>二、在工程中使用FFmpeg，网上成熟的有kxmovie。</h3>
+
+<p>1、下载kxmovie工程进行测试：</p>
+
+<p>下载地址： <a href = "https://github.com/kolyvan/kxmovie"><a href="https://github.com/kolyvan/kxmovie">https://github.com/kolyvan/kxmovie</a></a></p>
+
+<p>把FFmpeg编译出来的.a文件添加到工程中。</p>
+
+<p><img src="http://ww2.sinaimg.cn/large/7f266405jw1ey37q81fp5j205r09xwfq.jpg" alt="" /></p>
+
+<p>在使用的时候得注意添加下面的动态链接库文件:</p>
+
+<pre><code>libz.dylib
+libbz2.dylib
+libiconv.dylib
+</code></pre>
+
+<p><strong>运行工程</strong></p>
+
+<p>以下是在编译运行工程中可能会报的错误：</p>
+
+<p>注意：如果在FFmpeg编译的时候出现“ffmpeg yasm not found，use &ndash;disable for a crippled build”，原因是 yasm是汇编编译器，因为FFmpeg中为了提高效率用到了汇编指令，解决这个问题有两种方法，一是下载一个yasm.exe安装在mingw/bin下面；二是不使用汇编指令，在配置上加上 即 ./configure &ndash;disable-yash 。(这就是为什么前面提到了要安装yasm)
+成功通过编译（这里是指FFmpeg编译成静态库文件）</p>
+
+<p>通过后会生成一个compiled(FFmpeg-iOS)的文件夹，里面有include和lib两个文件夹，这两个文件夹都要拷贝至工程目录下面。include是静态链接库要用到的头文件，lib是存放静态链接库的文件，然后把这些文件存放在项目里面即可，一定要把文件也copy进去，然后在项目的build settings中的header search paths字段加入include文件的路径 如：“$(SRCROOT)/ffmpeg/include” 前面的复选框选不选都可以；再在library search paths字段中加入a文件的路径 如：“$(SRCROOT)/ffmpeg/lib” 。否则可能会出现libavformat/avformat.h file not found 的错误。（出现这个错误是指编译kxmovie工程找不到相应的头文件）</p>
+
+<p><img src="http://ww2.sinaimg.cn/large/7f266405jw1ey37rw3nknj20m207wwgg.jpg" alt="" /></p>
+
+<p>上面图示：在工程目录下有个“FFmpeg”的文件夹，分别把编译FFmpeg完成后产生的“ FFmpeg-iOS ”文件夹中的“include”和”lib”文件夹拷贝至”FFmpeg”文件夹中，include文件夹中存放的是头文件，lib文件夹中存放的是.a静态库文件。最后就是在工程目录下的FFmpeg文件夹包含“include”和”lib”两个文件夹。设置Header Search Paths和Library Search Paths时直接include和lib两个文件夹拖上去，自动显示路径。</p>
+
+<p><img src="http://ww4.sinaimg.cn/large/7f266405jw1ey37subv8hj20gu06omye.jpg" alt="" /></p>
+
+<p>如果还出现找不到 avformat_open_input 的错误（我的没有出现过这个错误），说明你的ffmpeg还是太新了，之前的那个方法名已经改成了这个名字，把avformat_open_input改成av_open_input_file 就可以了。其他错误请自行谷歌或者留言，我们共同探讨。
+上面报错总结文章来自：<a href="http://www.dnetzj.com/Content/267.html">http://www.dnetzj.com/Content/267.html</a></p>
+
+<p>最后一步，别忘了安装kxmovie.xcworkspace的cocoapods</p>
+
+<p><strong><code>pod install --verbose --no-repo-update</code></strong></p>
+
+<p>否则会报链接错误</p>
+
+<p>以上kxmovie工程编译调试完毕，模拟器真机都通过测试。目前没有进一步的去研究这个工程，发现播放的视频质量有点粗糙。有时间再做进一步的研究。</p>
+
+<h3>三、iFrameExtractor-master（iFrameExtractor）工程编译和运行</h3>
+
+<p>   （1）运行iFrameExtractor-master工程，与上面kxmovie工程操作一样，把FFmpeg文件夹拷贝至工程目录下:
+       (工程目录下本来是没有FFmpeg文件夹的)</p>
+
+<p><img src="http://ww1.sinaimg.cn/large/7f266405jw1ey37tiypu8j20gx07b75s.jpg" alt="" /></p>
+
+<p>iFrameExtractor-master下载地址：<a href="https://github.com/lajos/iFrameExtractor">https://github.com/lajos/iFrameExtractor</a></p>
+
+<p>(2)设置好Header Search Paths和Library Search Paths</p>
+
+<p><img src="http://ww2.sinaimg.cn/large/7f266405jw1ey37u3v6q5j20kj02x0ts.jpg" alt="" /></p>
+
+<p><img src="http://ww2.sinaimg.cn/large/7f266405jw1ey37v057v9j20kg07p40a.jpg" alt="" /></p>
+
+<p>（3）最后还是会报链接错误：
+                  Undefined symbols for architecture i386:
+                        &ldquo;<em>iconv&rdquo;, referenced from:    <br/>
+                     </em>avcodec_decode_subtitle2 in libavcodec.a(utils.o)<br/>
+                &ldquo;<em>iconv_close&rdquo;, referenced from:
+               </em>avcodec_open2 in libavcodec.a(utils.o)
+                    <em>avcodec_decode_subtitle2 in libavcodec.a(utils.o)
+                  &ldquo;</em>iconv_open&rdquo;, referenced from:
+              <em>avcodec_open2 in libavcodec.a(utils.o)
+             </em>avcodec_decode_subtitle2 in libavcodec.a(utils.o)
+                 ld: symbol(s) not found for architecture i386
+                clang: error: linker command failed with exit code 1 (use -v to see invocation)</p>
+
+<p><img src="http://ww2.sinaimg.cn/large/7f266405jw1ey37vhigjfj20fq0a8djf.jpg" alt="" /></p>
+
+<p>解决办法："TARGETS" - > &ldquo;BuildSettings&rdquo; - > &ldquo;Other Linker Flags&rdquo; 添加other Linker Flags 项：-liconv</p>
+
+<p><img src="http://ww1.sinaimg.cn/large/7f266405jw1ey37wvjqv1j20dl01s74f.jpg" alt="" /></p>
+
+<p>此报错问题出自：<a href="http://stackoverflow.com/questions/21211215/ffmpeg-wont-build-in-my-project-works-fine-in-example-app/28777851#28777851">http://stackoverflow.com/questions/21211215/ffmpeg-wont-build-in-my-project-works-fine-in-example-app/28777851#28777851</a>
+至此完成iFrameExtractor-master工程编译和运行</p>
+
+<h3>本文参考文章资料：</h3>
+
+<ul>
+<li><a href = "http://blog.csdn.net/oqqQuZi1234567/article/details/43152689">iOS－－kxmovie之FFmpeg编译和使用</a></li>
+<li><a href = "http://www.th7.cn/Program/Ruby/201502/385491.shtml">iOS ffmpeg kxmovie 编译 调试</a></li>
+</ul>
+
+
+<p><strong>欢迎共同学习进步，本着分享的精神，只是为了让你学习起来更加轻松。</strong></p>
+
+<p><strong>如需转载，请注明出处：<a href = "http://blog.csdn.net/yangshebing21/article/details/43986913"><a href="http://blog.csdn.net/yangshebing21/article/details/43986913">http://blog.csdn.net/yangshebing21/article/details/43986913</a></a></strong></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[基于GitHub搭建Octopress个人技术博客(Mac版)]]></title>

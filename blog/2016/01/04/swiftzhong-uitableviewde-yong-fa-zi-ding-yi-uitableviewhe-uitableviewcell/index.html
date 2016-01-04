@@ -1,0 +1,463 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Swift中UITableView的用法(自定义UITableView和UITableViewCell) - 杨社兵的技术博客</title>
+  <meta name="author" content="杨社兵">
+
+  
+  <meta name="description" content="如果在Swift中自定义UITableView与UITableViewCell">
+  <meta name="keywords" content="Swift, UITableView, UITableViewCell">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://yangshebing.github.io/blog/2016/01/04/swiftzhong-uitableviewde-yong-fa-zi-ding-yi-uitableviewhe-uitableviewcell/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="杨社兵的技术博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="http://cdn.staticfile.org/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">杨社兵的技术博客</a></h1>
+  
+    <h2>业精于勤荒于嬉，行成于思毁于随.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="yangshebing.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">我的博客</a></li>
+  <li><a href="/blog/archives">所有文章</a></li>
+  <li><a href="http://weibo.com/yangshebing" target="_blank">新浪微博</a></li>
+  <li><a href="/about">关于我</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Swift中UITableView的用法(自定义UITableView和UITableViewCell)</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-01-04T21:23:33+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:23 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>一、自定义表视图（UITableView）</p>
+
+<!--more-->
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>import UIKit
+</span><span class='line'>class HomeTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
+</span><span class='line'>//表视图的数据源：dataList
+</span><span class='line'>    var dataList = [AnyObject]()
+</span><span class='line'>//单元格的标识符：homeCellId
+</span><span class='line'>    let identify = "homeCellId"
+</span><span class='line'>    //重写表视图初始化方法
+</span><span class='line'>    override init(frame: CGRect, style: UITableViewStyle) {
+</span><span class='line'>        super.init(frame:frame, style:style)
+</span><span class='line'>        //调用初始化子视图方法
+</span><span class='line'>        initSubviews()
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    required init?(coder aDecoder: NSCoder) {
+</span><span class='line'>        fatalError("init(coder:) has not been implemented")
+</span><span class='line'>    }
+</span><span class='line'>    //初始化表视图的子视图方法
+</span><span class='line'>    func initSubviews () {
+</span><span class='line'>    //设置数据源代理
+</span><span class='line'>        dataSource = self;
+</span><span class='line'>   //设置表视图代理
+</span><span class='line'>        delegate = self;
+</span><span class='line'>        //注册单元格class方式
+</span><span class='line'>        registerClass(HomeCell.self, forCellReuseIdentifier: identify)
+</span><span class='line'>       //设置表视图的分割线显示风格
+</span><span class='line'>        separatorStyle = .None;
+</span><span class='line'>        //注册单元格xib方式
+</span><span class='line'>        //registerNib(UINib(nibName: "HomeCell", bundle: nil), forCellReuseIdentifier:identify)
+</span><span class='line'>    }
+</span><span class='line'>   //实现表视图返回组数代理方法：不实现默认为1
+</span><span class='line'>    func numberOfSectionsInTableView(tableView: UITableView) -&gt; Int {
+</span><span class='line'>        return 1;
+</span><span class='line'>    }
+</span><span class='line'>//实现表视图返回行数代理方法
+</span><span class='line'>    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int {
+</span><span class='line'>        return dataList.count;
+</span><span class='line'>    }
+</span><span class='line'>    //实现表视图返回单元格代理方法
+</span><span class='line'>    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -&gt; UITableViewCell {
+</span><span class='line'>    //取单元格
+</span><span class='line'>        let cell = tableView.dequeueReusableCellWithIdentifier(identify) as! HomeCell
+</span><span class='line'>        //设置单元格的选中风格
+</span><span class='line'>        cell.selectionStyle = .None;
+</span><span class='line'>        cell.titleStr = dataList[indexPath.row] as? String
+</span><span class='line'>        return cell
+</span><span class='line'>    }
+</span><span class='line'>    //选中单元格的代理方法
+</span><span class='line'>    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+</span><span class='line'>        print("the indexpath row is \(indexPath.row)")
+</span><span class='line'>    }
+</span><span class='line'>    //返回单元格高度的代理方法
+</span><span class='line'>    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -&gt; CGFloat {
+</span><span class='line'>        return 80;
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>二、自定义单元格（UITableViewCell）</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>import UIKit
+</span><span class='line'>
+</span><span class='line'>class HomeCell: UITableViewCell {
+</span><span class='line'>//定义子视图变量
+</span><span class='line'>    var imgView: UIImageView!
+</span><span class='line'>    var titleLabel: UILabel!
+</span><span class='line'>    var button: UIButton!
+</span><span class='line'>    var titleStr: String?
+</span><span class='line'>    // 重写单元格初始化方法
+</span><span class='line'>    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+</span><span class='line'>        super.init(style: style, reuseIdentifier: reuseIdentifier);
+</span><span class='line'>        //调用单元格初始化方法
+</span><span class='line'>        initSubviews()
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    required init?(coder aDecoder: NSCoder) {
+</span><span class='line'>        fatalError("init(coder:)has not been implemented")
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    override func awakeFromNib() {
+</span><span class='line'>        super.awakeFromNib()
+</span><span class='line'>        // Initialization code
+</span><span class='line'>    }
+</span><span class='line'>    //单元格子视图初始化方法
+</span><span class='line'>    func initSubviews () {
+</span><span class='line'>        imgView = UIImageView(frame: CGRectMake(0, 0, 30, 30))
+</span><span class='line'>        imgView.image = UIImage(named: "exam.png")
+</span><span class='line'>        contentView.addSubview(imgView);
+</span><span class='line'>        
+</span><span class='line'>        titleLabel = UILabel(frame: CGRectMake(0, 0, frame.size.width, frame.size.height))
+</span><span class='line'>        titleLabel.textAlignment = .Left;
+</span><span class='line'>        titleLabel.textColor = UIColor.lightGrayColor();
+</span><span class='line'>        titleLabel.font = UIFont.systemFontOfSize(15);
+</span><span class='line'>        titleLabel.text = "心灵鸡汤，每天一起干"
+</span><span class='line'>        contentView.addSubview(titleLabel)
+</span><span class='line'>        
+</span><span class='line'>        button = UIButton(type: .Custom)
+</span><span class='line'>        button.frame = CGRectMake(0, 0, frame.size.width, frame.size.height)
+</span><span class='line'>        button.setTitle("关注", forState: .Normal)
+</span><span class='line'>        button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+</span><span class='line'>        button.backgroundColor = UIColor.grayColor()
+</span><span class='line'>        contentView.addSubview(button)
+</span><span class='line'>    }
+</span><span class='line'>    //重写单元格布局子视图方法
+</span><span class='line'>    override func layoutSubviews() {
+</span><span class='line'>        super.layoutSubviews()
+</span><span class='line'>        titleLabel.text = titleStr
+</span><span class='line'>      //...
+</span><span class='line'>      //布局单元格子视图
+</span><span class='line'>      //...
+</span><span class='line'>    override func setSelected(selected: Bool, animated: Bool) {
+</span><span class='line'>        super.setSelected(selected, animated: animated)
+</span><span class='line'>        // Configure the view for the selected state
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">杨社兵</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-01-04T21:23:33+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:23 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/swift/'>swift</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+  <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <span class="jiathis_txt">分享到：</span>
+  <a class="jiathis_button_tools_1"></a>
+  <a class="jiathis_button_tools_2"></a>
+  <a class="jiathis_button_tools_3"></a>
+  <a class="jiathis_button_tools_4"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2059530"></script>
+<!-- UY END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/01/02/ioskai-fa-zhi-ji-chu-kong-jian-(swiftban-)/" title="Previous Post: iOS开发之基础控件（Swift版）">&laquo; iOS开发之基础控件（Swift版）</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/01/04/swiftzhong-uitableviewde-yong-fa-zi-ding-yi-uitableviewhe-uitableviewcell/">Swift中UITableView的用法(自定义UITableView和UITableViewCell)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/02/ioskai-fa-zhi-ji-chu-kong-jian-(swiftban-)/">iOS开发之基础控件（Swift版）</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/01/2015nian-zhong-zong-jie/">2015年终总结</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/16/ios-ffmpegbian-yi-ji-kxmovie,-iframeextractordiao-shi-xiang-jie-(wu-zhang-ai-yue-du-,jue-dui-shi-ni-xiang-yao-de-)/">iOS FFmpeg编译及kxmovie、iFrameExtractor调试详解（无障碍阅读，绝对是你想要的）</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/03/waterflow/">UICollectionView（纯代码方式）实现带上下拉刷新的瀑布流式（WaterFlow）布局</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+ <h1>iOS开发</h1>
+ <ul id="categories">
+  <li class='category'><a href='/blog/categories/objective-c/'>objective-c (4)</a></li>
+<li class='category'><a href='/blog/categories/others/'>others (3)</a></li>
+<li class='category'><a href='/blog/categories/swift/'>swift (3)</a></li>
+
+ </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - 杨社兵 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  <span class="credit">, 感谢 <a href="http://gitcafe.com/signup?invited_by=yangshebing" target="_blank">GitCafe</a> 为本站提供存储空间</span>
+
+  	<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?be50b7d5e40e390ecfdd9cc1a14fe0e6";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

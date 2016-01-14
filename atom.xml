@@ -4,7 +4,7 @@
   <title><![CDATA[杨社兵的技术博客]]></title>
   <link href="http://yangshebing.github.io/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2016-01-15T01:43:25+08:00</updated>
+  <updated>2016-01-15T01:46:34+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
     <name><![CDATA[杨社兵]]></name>
@@ -52,6 +52,9 @@
 </span><span class='line'>    }
 </span><span class='line'>}
 </span></code></pre></td></tr></table></div></figure>
+
+
+<!--more-->
 
 
 <p>接下来定义三个变量类型为:Cat?用来对一个新的Cat对象建立多个引用。因为变量是一个可选类型（是Cat?而不是Cat）， 他们会自动给变量初始化为nil，所有当前它不需要引用一个Cat对象。</p>

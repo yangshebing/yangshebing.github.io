@@ -88,7 +88,7 @@
 
 <div class="entry-content"><p>Swift中是采用自动引用计数(ARC，AutomaticReferenceCounting)机制来对内存进行管理的。</p>
 
-<h6>一、简述ARC如何工作：</h6>
+<h4>一、简述ARC如何工作：</h4>
 
 <p>每当你每创建一个新的对象，它便会分配一块内存来存储该对象的相关信息。当你不再需要这个对象的时候，它就会自动释放这个对象，避免它再占用内存空间。当然，如果该对象只要至少存在一个引用就不会被释放。另外，你如果访问了一个已经被释放的对象，则很有可能会出现崩溃（野指针）。
 拿《The Swift Programming Language》里面的例子来套一下：</p>
@@ -175,7 +175,7 @@
 
 <p>当最后一个强引用被打破后，这个Cat对象被成功释放，输出：jack 对象释放成功！</p>
 
-<h6> 二、循环引用</h6>
+<h4>二、循环引用</h4>
 
 <p>1、什么是循环引用？
 简单的来说就是两个对象互相持有对方，使对方处于活跃状态不被释放，从而导致了循环引用。套个例子：</p>
@@ -502,7 +502,7 @@ Block(闭包)的循环引用在于它会持有所有引用的元素。比如我�
 </span><span class='line'>jack 释放了</span></code></pre></td></tr></table></div></figure>
 
 
-<h6>参考资料及文章</h6>
+<h4>参考资料及文章</h4>
 
 <ul>
 <li><a herf="https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/">《The Swift Programming Language》</a></li>

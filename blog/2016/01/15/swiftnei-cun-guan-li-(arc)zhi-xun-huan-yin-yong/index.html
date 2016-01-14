@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>杨社兵的技术博客</title>
+  <title>Swift内存管理（ARC）之循环引用 - 杨社兵的技术博客</title>
   <meta name="author" content="杨社兵">
 
   
-  <meta name="description" content="Swift中是采用自动引用计数(ARC，AutomaticReferenceCounting)机制来对内存进行管理的。 一、简述ARC如何工作： 每当你每创建一个新的对象，它便会分配一块内存来存储该对象的相关信息。当你不再需要这个对象的时候，它就会自动释放这个对象，避免它再占用内存空间。当然， &hellip;">
-  
+  <meta name="description" content="介绍Swift中的内存管理及循环引用问题">
+  <meta name="keywords" content="Swift, ARC, 循环引用, 内存管理">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://yangshebing.github.io/">
+  <link rel="canonical" href="http://yangshebing.github.io/blog/2016/01/15/swiftnei-cun-guan-li-(arc)zhi-xun-huan-yin-yong/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="杨社兵的技术博客" type="application/atom+xml">
@@ -65,15 +65,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2016/01/15/swiftnei-cun-guan-li-(arc)zhi-xun-huan-yin-yong/">Swift内存管理（ARC）之循环引用</a></h1>
+      <h1 class="entry-title">Swift内存管理（ARC）之循环引用</h1>
     
     
       <p class="meta">
@@ -89,7 +86,7 @@
   </header>
 
 
-  <div class="entry-content"><p>Swift中是采用自动引用计数(ARC，AutomaticReferenceCounting)机制来对内存进行管理的。</p>
+<div class="entry-content"><p>Swift中是采用自动引用计数(ARC，AutomaticReferenceCounting)机制来对内存进行管理的。</p>
 
 <h6>一、简述ARC如何工作：</h6>
 
@@ -514,469 +511,69 @@ Block(闭包)的循环引用在于它会持有所有引用的元素。比如我�
 </ul>
 
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
+  
+
+<span class="byline author vcard">Posted by <span class="fn">杨社兵</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-01-15T01:37:31+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>1:37 am</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/swift/'>swift</a>
+  
+</span>
+
+
+    </p>
     
-      <h1 class="entry-title"><a href="/blog/2016/01/04/swiftzhong-uitableviewde-yong-fa-zi-ding-yi-uitableviewhe-uitableviewcell/">Swift中UITableView的用法(自定义UITableView和UITableViewCell)</a></h1>
+      <div class="sharing">
+  
+  
+  
+  
+  <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <span class="jiathis_txt">分享到：</span>
+  <a class="jiathis_button_tools_1"></a>
+  <a class="jiathis_button_tools_2"></a>
+  <a class="jiathis_button_tools_3"></a>
+  <a class="jiathis_button_tools_4"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2059530"></script>
+<!-- UY END -->
+  
+</div>
+
     
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-01-04T21:23:33+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:23 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>一、自定义表视图（UITableView）</p>
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/01/04/swiftzhong-uitableviewde-yong-fa-zi-ding-yi-uitableviewhe-uitableviewcell/" title="Previous Post: Swift中UITableView的用法(自定义UITableView和UITableViewCell)">&laquo; Swift中UITableView的用法(自定义UITableView和UITableViewCell)</a>
+      
+      
+    </p>
+  </footer>
+</article>
 
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2016/01/04/swiftzhong-uitableviewde-yong-fa-zi-ding-yi-uitableviewhe-uitableviewcell/">阅读全篇...</a>
-    </footer>
-  
 
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/01/02/ioskai-fa-zhi-ji-chu-kong-jian-(swiftban-)/">iOS开发之基础控件（Swift版）</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-01-02T11:08:19+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2016</span></span> <span class='time'>11:08 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>  1、文本（UILabel）：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>  let titleLabel = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
-</span><span class='line'>        //设置titleLabel的文本对齐方式：左：.Left, 中:.Center, 右:.Right
-</span><span class='line'>        titleLabel.textAlignment = .Center
-</span><span class='line'>        //设置titleLabel的文本颜色
-</span><span class='line'>        titleLabel.textColor = UIColor.lightGrayColor()
-</span><span class='line'>        //设置titleLabel文字的字体为系统字体，大小为15
-</span><span class='line'>        titleLabel.font = UIFont.systemFontOfSize(15)
-</span><span class='line'>        //设置titleLabel文字的字体为"Helvetica", 大小为15
-</span><span class='line'>        titleLabel.font = UIFont(name: "Helvetica", size: 15)
-</span><span class='line'>        titleLabel.text = "心灵鸡汤，每天一起干"
-</span><span class='line'>        //titleLabel字体大小自适应宽度，根据指定宽度titleLabel自动调整字体显示大小
-</span><span class='line'>        titleLabel.adjustsFontSizeToFitWidth = true
-</span><span class='line'>        //指定titleLabel的显示行数，0代表自动折行
-</span><span class='line'>        titleLabel.numberOfLines = 1
-</span><span class='line'>        //获取系统所有字体名称
-</span><span class='line'>        let fontFamily = UIFont.familyNames()
-</span><span class='line'>        print(fontFamily)
-</span><span class='line'>        view.addSubview(titleLabel)</span></code></pre></td></tr></table></div></figure>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2016/01/02/ioskai-fa-zhi-ji-chu-kong-jian-(swiftban-)/">阅读全篇...</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/01/01/2015nian-zhong-zong-jie/">2015年终总结</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-01-01T13:26:26+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>1:26 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h4>总结：</h4>
-
-<p>回首过去一年，好像没有什么能说出口的成绩，专业没啥进步。在公司做了两款App，上半年主要开发的是一款叫“在线等”的手机应用，这是一款解决人们选择困难症的应用，经过重重困难，最终上线。没啥成绩可言。下半年主要研发的是一款叫“斗图神器”的应用，由于Android版早就开发好了，所以iOS版开发起来就快很多了。总的来说成绩还不错，其中也有点小波折。</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2016/01/01/2015nian-zhong-zong-jie/">阅读全篇...</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/11/16/ios-ffmpegbian-yi-ji-kxmovie,-iframeextractordiao-shi-xiang-jie-(wu-zhang-ai-yue-du-,jue-dui-shi-ni-xiang-yao-de-)/">iOS FFmpeg编译及kxmovie、iFrameExtractor调试详解（无障碍阅读，绝对是你想要的）</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-11-16T01:44:27+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>1:44 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong>特此声明：本文是通过网上收集整理加上自己亲自实验得来的。感谢所有网上分享的辛勤劳动者，本文仅供iOS学习使用。在学习的过程中，如果有问题或者不清楚的地方，欢迎留言，我们共同探讨互相学习。欢迎批评指正。</strong></p>
-
-<p><strong>如需转载，请注明出处：<a href = "http://blog.csdn.net/yangshebing21/article/details/43986913"><a href="http://blog.csdn.net/yangshebing21/article/details/43986913">http://blog.csdn.net/yangshebing21/article/details/43986913</a></a></strong></p>
-
-<h4>开发环境：最新 ffmpeg-2.5.4/iOS SDK8.1/Xcode6.1/OS X Yosemite版本10.10.2</h4>
-
-<h3>一、编译ffmpeg库</h3>
-
-<h4>编译调试ffmpeg库的步骤：</h4>
-
-<p><strong>开发环境：ffmpeg-2.5.4/Xcode6.1</strong></p>
-
-<h4>（一）、下载ffmpeg源码：</h4>
-
-<p>请点击此链接<a href = "http://ffmpeg.org/download.html"><a href="http://ffmpeg.org/download.html">http://ffmpeg.org/download.html</a></a></p>
-
-<p> <font color = "red"><b>注：我的ffmpeg-2.5.4是解压放至Desktop的</b></font></p>
-
-<h4>（二）、调试编译ffmpeg源码</h4>
-
-<p> 1、安装yasm:
- </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/11/16/ios-ffmpegbian-yi-ji-kxmovie,-iframeextractordiao-shi-xiang-jie-(wu-zhang-ai-yue-du-,jue-dui-shi-ni-xiang-yao-de-)/">阅读全篇...</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/11/03/waterflow/">UICollectionView（纯代码方式）实现带上下拉刷新的瀑布流式（WaterFlow）布局</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-11-03T22:40:32+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>10:40 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>瀑布流（WaterFlow）是项目开发过程中的常见布局，有关于瀑布流（WaterFlow）的实现方式：在UICollectionView未出现之前，瀑布流的实现多半是采用UIScrollView或是UITableView。对于我们这种用惯了表视图的人来说，UICollectionView倒略显陌生。有关于UICollectionView的介绍我就不一一赘述，因为一两句话也很难说清楚。网上有很多优秀的文章专门对其进行了一系列的解说，另有苹果官方文档可以查阅。本文主要是介绍如何采用纯代码的方式利用UICollectionView实现带上下拉刷新的瀑布流式（WaterFlow）布局。废话少说，直接入题。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/11/03/waterflow/">阅读全篇...</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/10/12/ioshui-zhi-xu-xian-fang-shi-zong-jie/">iOS绘制虚线方式总结</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-10-12T23:44:28+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:44 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>一、iOS中绘制虚线常见的几种方式：</h3>
-
-<p>1、重写drawRect方法。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)drawRect:(CGRect)rect
-</span><span class='line'>{
-</span><span class='line'>    [super drawRect:rect];
-</span><span class='line'>CGContextRef currentContext = UIGraphicsGetCurrentContext();
-</span><span class='line'>//设置虚线颜色
-</span><span class='line'>    CGContextSetStrokeColorWithColor(currentContext, [UIColor BlackColor].CGColor);
-</span><span class='line'>    //设置虚线宽度
-</span><span class='line'>    CGContextSetLineWidth(currentContext, 1);
-</span><span class='line'>    //设置虚线绘制起点
-</span><span class='line'>    CGContextMoveToPoint(currentContext, 0, 0);
-</span><span class='line'>    //设置虚线绘制终点
-</span><span class='line'>    CGContextAddLineToPoint(currentContext, self.frame.origin.x + self.frame.size.width, 0);
-</span><span class='line'>    //设置虚线排列的宽度间隔:下面的arr中的数字表示先绘制3个点再绘制1个点
-</span><span class='line'>    CGFloat arr[] = {3,1};
-</span><span class='line'>    //下面最后一个参数“2”代表排列的个数。
-</span><span class='line'>    CGContextSetLineDash(currentContext, 0, arr, 2);
-</span><span class='line'>    CGContextDrawPath(currentContext, kCGPathStroke);
-</span><span class='line'>    
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/10/12/ioshui-zhi-xu-xian-fang-shi-zong-jie/">阅读全篇...</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/09/17/test/">基于GitHub搭建Octopress个人技术博客(Mac版)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-09-17T23:42:42+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:42 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h6>作为一名屌逼的程序猿，肯定是要有一个屌逼的技术博客。在交流学习的同时，顺便见证自己成长的心路历程。废话不多说，直接进入正题。编程讲究的四门功课，“说，学，逗，唱”。不会就学嘛！没有就找嘛！网上相关的文章简直太多了！其中原理就不多说，我且按照我搭建的顺序写一下步骤吧！</h6>
-
-<p><strong>注意事项：在搭建之前，检查MAC电脑是否已经安装了Git和Ruby 1.9.3及以上版本。（Mac默认均已自带，ruby请自行检查版本：ruby &ndash;version，如果缺少，当自行下载）</strong></p>
-
-<h4>一、开始安装octopress</h4>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/09/17/test/">阅读全篇...</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/09/13/arcticle/">iOS中点击状态栏让滑动视图回到顶部</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-09-13T23:28:31+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:28 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h6>在产品开发过程中，有时候会有这种需求，需要点击状态栏让滑动视图（UIScrollView）或者表视图（UITableView）返回到顶部，让用户可以更快的浏览最新的信息。</h6>
-
-<h6>这个时候我们需要设置滑动视图的scrollsToTop属性，让它决定点击状态栏是否返回顶部。</h6>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/09/13/arcticle/">阅读全篇...</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/09/12/swift/">Swift语言编程</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-09-12T12:53:21+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:53 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h4>Swift语言基础学习</h4>
-
-<ul>
-<li>导入系统类库头文件（swift中称之为模块）</li>
-</ul>
-
-
-<p><code>
-import UIKit
-</code></p>
-
-<ul>
-<li>定义一个常量</li>
-</ul>
-
-
-<p><code>
-let a = 5
-</code></p>
-
-<ul>
-<li>定义一个变量</li>
-</ul>
-
-
-<p><code>
-var str = "Hello, World!"
-</code></p>
-
-<ul>
-<li>swift中打印输出</li>
-</ul>
-
-
-<p><code>
-print("Hi,Girl!");
-</code></p>
-
-<p><strong>注意事项：如果在一行内想要写多条语句时需要用分号隔开，一行内写一句代码分号可加可不加（不推荐加）</strong></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/09/12/swift/">阅读全篇...</a>
-    </footer>
-  
-
-
-    </article>
-  
-  <div class="pagination">
-    
-      <a class="prev" href="/posts/2">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -1021,6 +618,7 @@ print("Hi,Girl!");
 
   
 </aside>
+
 
     </div>
   </div>

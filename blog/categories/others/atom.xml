@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Others | 杨社兵的技术博客]]></title>
   <link href="http://yangshebing.github.io/blog/categories/others/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2016-01-15T01:46:34+08:00</updated>
+  <updated>2016-01-21T01:14:48+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
     <name><![CDATA[杨社兵]]></name>
@@ -12,6 +12,202 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[React Native iOS 开发环境搭建]]></title>
+    <link href="http://yangshebing.github.io/blog/2016/01/21/react-native-ios-kai-fa-huan-jing-da-jian/"/>
+    <updated>2016-01-21T01:07:09+08:00</updated>
+    <id>http://yangshebing.github.io/blog/2016/01/21/react-native-ios-kai-fa-huan-jing-da-jian</id>
+    <content type="html"><![CDATA[<h4>一、React Native基础环境搭建</h4>
+
+<p>1、安装<a href="http://brew.sh">Homebrew</a></p>
+
+<p>打开终端输入：
+<code>
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+</code></p>
+
+<p>2、安装<a href="https://github.com/creationix/nvm#installation">nvm方法</a></p>
+
+<p>通过脚本安装方式，在终端执行：
+<code>
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.30.1/install.sh | bash
+</code>
+激活nvm,在安装脚本执行完之后，在终端执行:
+<code>
+. ~/.nvm/nvm.sh
+</code></p>
+
+<p>nvm其他安装方式详见<a href="https://github.com/creationix/nvm#installation">安装向导</a></p>
+
+<p>3、默认安装最新版本的Node.js并且设置好命令行的环境变量
+<code>
+nvm install node &amp;&amp; nvm alias default node
+</code></p>
+
+<p>可以输入node命令启动Node.js环境，npm(node package manager)文档传送门:<a href="https://docs.npmjs.com">&ldquo;点击此处&rdquo;</a></p>
+
+<p>4、安装watchman</p>
+
+<p>在终端输入：
+<code>
+brew install watchman
+</code></p>
+
+<p>到此处React Native基础环境搭建基本完成，推荐经常运行<code>brew update &amp;&amp; brew upgrade</code>命令保持你的程序是最新的。</p>
+
+<!--more-->
+
+
+<h4>二、iOS开发环境</h4>
+
+<p>1、iOS开发环境：（默认读者已经安装<strong>Xcode7.0或以上版本</strong>，没有可自行前往AppStore下载）</p>
+
+<ul>
+<li>使用npm（node包管理工具）安装react-native-cli(此处应注意权限问题，如果遇到权限问题，请在下面的命令前加上sudo)</li>
+</ul>
+
+
+<p><code>
+npm install -g react-native-cli
+</code></p>
+
+<ul>
+<li>初始化工程（下面的语句中千万不要加sudo，后果自负）</li>
+</ul>
+
+
+<p><code>
+react-native init ReactNativeProject（工程名）
+</code></p>
+
+<p>在初始化的过程中，如果进度缓慢，推荐你将npm仓库源换成国内镜像：(翻墙用户请忽略)
+在终端输入：</p>
+
+<pre><code>npm config set registry https://registry.npm.taobao.org
+npm config set disturl https://npm.taobao.org/dist
+</code></pre>
+
+<p>2、使用Xcode运行调试程序</p>
+
+<ul>
+<li>查找ReactNativeProject文件目录</li>
+</ul>
+
+
+<p>按住快捷键<code>Command+Shift+G</code>，在弹出的“前往文件夹”对话框中输入路径<code>/Users/yangshebing/ReactNativeProject</code>（yangshebing表示电脑用户名，请自行更改）,点击前往。在文件目中的ios文件夹下找到“ReactNativeProject.xcodeproj”工程文件。如图所示：（有关终端查找该文件目录方法，请自行到文章末尾的参考文章中寻找）
+<img src="http://ww4.sinaimg.cn/large/7f266405jw1f0651k88wij216s0oa42t.jpg" alt="" /></p>
+
+<ul>
+<li>运行ReactNativeProject工程</li>
+</ul>
+
+
+<p>使用Xcode打开“ReactNativeProject.xcodeproj”工程文件，按住快捷键"Command+R"运行此项目，运行成功后便可在模拟器上看到效果。</p>
+
+<ul>
+<li>编辑index.ios.js文件修改界面</li>
+</ul>
+
+
+<p>笔者编辑index.ios.js文件工具是Vim，每当编辑完index.ios.js文件并保存之后，在模拟器(Simulator)中，按<code>Command+R</code>可刷新界面查看改变后的效果。</p>
+
+<p>下面我们也试着稍微修改一下index.ios.js文件：</p>
+
+<pre><code>/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ */
+'use strict';
+import React, {
+  AppRegistry,
+  Component,
+  StyleSheet,
+  //添加Image全局变量
+  Image,
+  Text,
+  View
+} from 'react-native';
+
+class ReactNativeProject extends Component {
+  render() {
+    return (
+      &lt;View style={styles.container}&gt;
+      //添加文本展示
+        &lt;Text style={styles.welcome}&gt;
+          美女
+        &lt;/Text&gt;
+        //添加图片展示
+        &lt;Image 
+        source= 
+        //这里需要指定图片的大小
+        style={styles.picture} /&gt;
+      &lt;/View&gt;
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  //这里可以设置文本的字体，对齐方式等
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  //新增图片style，设置图片大小
+  picture: {
+    width: 80,
+    height: 150,
+  },
+});
+
+AppRegistry.registerComponent('ReactNativeProject', () =&gt; ReactNativeProject);
+</code></pre>
+
+<p>刷新后运行效果如下图所示：
+<img src="http://ww3.sinaimg.cn/mw690/7f266405jw1f06flkcxxgj20ku12a3zr.jpg" alt="" /></p>
+
+<ul>
+<li>真机运行调试项目</li>
+</ul>
+
+
+<p>在<code>ReactNativeProject</code>工程中找到AppDelegate.m文件，将<code>localhost</code>替换成自己电脑的IP地址。</p>
+
+<pre><code>//  jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&amp;dev=true"];
+
+  jsCodeLocation = [NSURL URLWithString:@"http://192.168.31.168:8081/index.ios.bundle?platform=ios&amp;dev=true"];
+</code></pre>
+
+<p>替换完成之后再次运行程序，这个时候可以通过摇晃设备唤出开发菜单。</p>
+
+<ul>
+<li>禁用开发菜单</li>
+</ul>
+
+
+<p>在打包提交市场前，需要禁用开发菜单。禁用开发菜单方法如下：
+打开工程，选择<code>Product → Scheme → Edit Scheme</code>或使用快捷键“Command + &lt;”,在弹出的窗口中选择左边的Run菜单项。更改“Build Configuration” 设置项为“Release”。
+<img src="http://ww1.sinaimg.cn/large/7f266405jw1f06e3sf5qjj21ds0s0tc2.jpg" alt="" /></p>
+
+<h4>三、参考资料地址：</h4>
+
+<ul>
+<li><a href="https://facebook.github.io/react-native/docs/tutorial.html">React Native开发指南英文版（官方）</a></li>
+<li><a href="http://reactnative.cn/docs/getting-started.html#content">React Native开发指南中文版</a></li>
+<li><a href="http://www.cnblogs.com/meteoric_cry/p/4862314.html">React Native入门遇到的一些问题</a></li>
+</ul>
+
+
+<p><strong>此文仅供学习交流，转载请注明出处！</strong></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[2015年终总结]]></title>

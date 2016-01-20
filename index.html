@@ -9,7 +9,7 @@
   <meta name="author" content="杨社兵">
 
   
-  <meta name="description" content="Swift中是采用自动引用计数(ARC，AutomaticReferenceCounting)机制来对内存进行管理的。 一、简述ARC如何工作： 每当你每创建一个新的对象，它便会分配一块内存来存储该对象的相关信息。当你不再需要这个对象的时候，它就会自动释放这个对象，避免它再占用内存空间。当然， &hellip;">
+  <meta name="description" content="一、React Native基础环境搭建 1、安装Homebrew 打开终端输入： ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" 2、安装nvm方法 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,76 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/01/21/react-native-ios-kai-fa-huan-jing-da-jian/">React Native iOS 开发环境搭建</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-01-21T01:07:09+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>1:07 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>一、React Native基础环境搭建</h4>
+
+<p>1、安装<a href="http://brew.sh">Homebrew</a></p>
+
+<p>打开终端输入：
+<code>
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+</code></p>
+
+<p>2、安装<a href="https://github.com/creationix/nvm#installation">nvm方法</a></p>
+
+<p>通过脚本安装方式，在终端执行：
+<code>
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.30.1/install.sh | bash
+</code>
+激活nvm,在安装脚本执行完之后，在终端执行:
+<code>
+. ~/.nvm/nvm.sh
+</code></p>
+
+<p>nvm其他安装方式详见<a href="https://github.com/creationix/nvm#installation">安装向导</a></p>
+
+<p>3、默认安装最新版本的Node.js并且设置好命令行的环境变量
+<code>
+nvm install node &amp;&amp; nvm alias default node
+</code></p>
+
+<p>可以输入node命令启动Node.js环境，npm(node package manager)文档传送门:<a href="https://docs.npmjs.com">&ldquo;点击此处&rdquo;</a></p>
+
+<p>4、安装watchman</p>
+
+<p>在终端输入：
+<code>
+brew install watchman
+</code></p>
+
+<p>到此处React Native基础环境搭建基本完成，推荐经常运行<code>brew update &amp;&amp; brew upgrade</code>命令保持你的程序是最新的。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/01/21/react-native-ios-kai-fa-huan-jing-da-jian/">阅读全篇...</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -513,78 +583,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/09/12/swift/">Swift语言编程</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-09-12T12:53:21+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:53 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h4>Swift语言基础学习</h4>
-
-<ul>
-<li>导入系统类库头文件（swift中称之为模块）</li>
-</ul>
-
-
-<p><code>
-import UIKit
-</code></p>
-
-<ul>
-<li>定义一个常量</li>
-</ul>
-
-
-<p><code>
-let a = 5
-</code></p>
-
-<ul>
-<li>定义一个变量</li>
-</ul>
-
-
-<p><code>
-var str = "Hello, World!"
-</code></p>
-
-<ul>
-<li>swift中打印输出</li>
-</ul>
-
-
-<p><code>
-print("Hi,Girl!");
-</code></p>
-
-<p><strong>注意事项：如果在一行内想要写多条语句时需要用分号隔开，一行内写一句代码分号可加可不加（不推荐加）</strong></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/09/12/swift/">阅读全篇...</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -598,6 +596,10 @@ print("Hi,Girl!");
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/01/21/react-native-ios-kai-fa-huan-jing-da-jian/">React Native iOS 开发环境搭建</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2016/01/15/swiftnei-cun-guan-li-(arc)zhi-xun-huan-yin-yong/">Swift内存管理（ARC）之循环引用</a>
@@ -615,17 +617,13 @@ print("Hi,Girl!");
         <a href="/blog/2016/01/01/2015nian-zhong-zong-jie/">2015年终总结</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2015/11/16/ios-ffmpegbian-yi-ji-kxmovie,-iframeextractordiao-shi-xiang-jie-(wu-zhang-ai-yue-du-,jue-dui-shi-ni-xiang-yao-de-)/">iOS FFmpeg编译及kxmovie、iFrameExtractor调试详解（无障碍阅读，绝对是你想要的）</a>
-      </li>
-    
   </ul>
 </section>
 <section>
  <h1>iOS开发</h1>
  <ul id="categories">
   <li class='category'><a href='/blog/categories/objective-c/'>objective-c (4)</a></li>
-<li class='category'><a href='/blog/categories/others/'>others (3)</a></li>
+<li class='category'><a href='/blog/categories/others/'>others (4)</a></li>
 <li class='category'><a href='/blog/categories/swift/'>swift (4)</a></li>
 
  </ul>

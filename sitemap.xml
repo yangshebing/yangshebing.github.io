@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://yangshebing.github.io/blog/2016/01/21/react-native-ios-kai-fa-huan-jing-da-jian/</loc>
+    <lastmod>2016-01-21T01:07:09+08:00</lastmod>
+  </url>
+  <url>
     <loc>http://yangshebing.github.io/blog/2016/01/15/swiftnei-cun-guan-li-(arc)zhi-xun-huan-yin-yong/</loc>
     <lastmod>2016-01-15T01:37:31+08:00</lastmod>
   </url>

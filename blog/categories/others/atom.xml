@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Others | 杨社兵的技术博客]]></title>
   <link href="http://yangshebing.github.io/blog/categories/others/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2016-04-25T02:01:20+08:00</updated>
+  <updated>2016-04-25T02:05:36+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
     <name><![CDATA[杨社兵]]></name>
@@ -149,7 +149,9 @@ sort(a, i+1, right);
             }        for (i = startIndex; i &lt;= endIndex; i++) {
             sourceArr[i] = tempArr[i];
             }
-    }void sort(int souceArr[], int tempArr[], int startIndex, int endIndex) {
+    }
+
+void sort(int souceArr[], int tempArr[], int startIndex, int endIndex) {
     int midIndex;
         if (startIndex &lt; endIndex) {
             midIndex = (startIndex + endIndex) / 2;
@@ -157,7 +159,9 @@ sort(a, i+1, right);
                 sort(souceArr, tempArr, midIndex + 1, endIndex);
                 merge(souceArr, tempArr, startIndex, midIndex, endIndex);
             }
-    }int main(int argc, const char * argv[]) {
+    }
+
+int main(int argc, const char * argv[]) {
     int numArr[10] = {86, 37, 56, 29, 92, 73, 15, 63, 30, 8};
         int tempArr[10];
         sort(numArr, tempArr, 0, 9);
@@ -203,10 +207,13 @@ return binary_search(arr, mid+1, high, key);
 <p>6、    如何实现链表翻转（链表逆序）？思路：每次把第二个元素提到最前面来。</p>
 
 <pre><code>#include &lt;stdio.h&gt;
-#include &lt;stdlib.h&gt;typedef struct NODE {
+#include &lt;stdlib.h&gt;
+typedef struct NODE {
     struct NODE *next;
         int num;
-    }node;node *createLinkList(int length) {
+    }node;
+
+node *createLinkList(int length) {
     if (length &lt;= 0) {
             return NULL;
             }
@@ -223,7 +230,9 @@ return binary_search(arr, mid+1, high, key);
                 q-&gt;next = p;
                 q = p;
             }
-        return head;}void printLinkList(node *head) {
+        return head;}
+
+void printLinkList(node *head) {
     if (head == NULL) {
             return;
             }
@@ -234,6 +243,7 @@ return binary_search(arr, mid+1, high, key);
             }
         printf("\n");
     }
+
 node *reverseFunc1(node *head) {
     if (head == NULL) {
             return head;
@@ -247,7 +257,9 @@ node *reverseFunc1(node *head) {
                 q = p;
                 p = pNext;
             }
-        return q;}int main(int argc, const char * argv[]) {
+        return q;}
+
+int main(int argc, const char * argv[]) {
     node *head = createLinkList(7);
         if (head) {
             printLinkList(head);
@@ -289,11 +301,16 @@ node *reverseFunc1(node *head) {
 
 <pre><code>
 char *strOutPut(char *);
-int compareDifferentChar(char, char *);int main(int argc, const char * argv[]) {        char *inputStr = "abaccddeeef";
+
+int compareDifferentChar(char, char *);
+
+int main(int argc, const char * argv[]) {        char *inputStr = "abaccddeeef";
         char *outputStr = strOutPut(inputStr);
         printf("%c \n", *outputStr);
         return 0;
-    }char *strOutPut(char *s) {
+    }
+
+char *strOutPut(char *s) {
     char str[100];
         char *p = s;
         int index = 0;
@@ -304,7 +321,9 @@ int compareDifferentChar(char, char *);int main(int argc, const char * argv[]) {
                     }
                 s++;
             }
-        return &amp;str;}int compareDifferentChar(char c, char *s) {
+        return &amp;str;}
+
+int compareDifferentChar(char c, char *s) {
     int i = 0;
         while (*s != '\0' &amp;&amp; i&lt;= 1) {
             if (*s == c) {
@@ -347,6 +366,7 @@ int compareDifferentChar(char, char *);int main(int argc, const char * argv[]) {
             }
         return 0;
     }
+
 int isPrime(int n){
     int i, s;
         for(i = 2; i &lt;= sqrt(n); i++)

@@ -335,6 +335,10 @@
 <span class='line-number'>33</span>
 <span class='line-number'>34</span>
 <span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>void merge(int sourceArr[], int tempArr[], int startIndex, int midIndex, int endIndex) {
 </span><span class='line'>    int i = startIndex;
 </span><span class='line'>        int j = midIndex + 1;
@@ -352,7 +356,9 @@
 </span><span class='line'>            }        for (i = startIndex; i &lt;= endIndex; i++) {
 </span><span class='line'>            sourceArr[i] = tempArr[i];
 </span><span class='line'>            }
-</span><span class='line'>    }void sort(int souceArr[], int tempArr[], int startIndex, int endIndex) {
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>void sort(int souceArr[], int tempArr[], int startIndex, int endIndex) {
 </span><span class='line'>    int midIndex;
 </span><span class='line'>        if (startIndex &lt; endIndex) {
 </span><span class='line'>            midIndex = (startIndex + endIndex) / 2;
@@ -360,7 +366,9 @@
 </span><span class='line'>                sort(souceArr, tempArr, midIndex + 1, endIndex);
 </span><span class='line'>                merge(souceArr, tempArr, startIndex, midIndex, endIndex);
 </span><span class='line'>            }
-</span><span class='line'>    }int main(int argc, const char * argv[]) {
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>int main(int argc, const char * argv[]) {
 </span><span class='line'>    int numArr[10] = {86, 37, 56, 29, 92, 73, 15, 63, 30, 8};
 </span><span class='line'>        int tempArr[10];
 </span><span class='line'>        sort(numArr, tempArr, 0, 9);
@@ -490,11 +498,22 @@
 <span class='line-number'>53</span>
 <span class='line-number'>54</span>
 <span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>#include &lt;stdio.h&gt;
-</span><span class='line'>#include &lt;stdlib.h&gt;typedef struct NODE {
+</span><span class='line'>#include &lt;stdlib.h&gt;
+</span><span class='line'>typedef struct NODE {
 </span><span class='line'>    struct NODE *next;
 </span><span class='line'>        int num;
-</span><span class='line'>    }node;node *createLinkList(int length) {
+</span><span class='line'>    }node;
+</span><span class='line'>
+</span><span class='line'>node *createLinkList(int length) {
 </span><span class='line'>    if (length &lt;= 0) {
 </span><span class='line'>            return NULL;
 </span><span class='line'>            }
@@ -511,7 +530,9 @@
 </span><span class='line'>                q-&gt;next = p;
 </span><span class='line'>                q = p;
 </span><span class='line'>            }
-</span><span class='line'>        return head;}void printLinkList(node *head) {
+</span><span class='line'>        return head;}
+</span><span class='line'>
+</span><span class='line'>void printLinkList(node *head) {
 </span><span class='line'>    if (head == NULL) {
 </span><span class='line'>            return;
 </span><span class='line'>            }
@@ -522,6 +543,7 @@
 </span><span class='line'>            }
 </span><span class='line'>        printf("\n");
 </span><span class='line'>    }
+</span><span class='line'>
 </span><span class='line'>node *reverseFunc1(node *head) {
 </span><span class='line'>    if (head == NULL) {
 </span><span class='line'>            return head;
@@ -535,7 +557,9 @@
 </span><span class='line'>                q = p;
 </span><span class='line'>                p = pNext;
 </span><span class='line'>            }
-</span><span class='line'>        return q;}int main(int argc, const char * argv[]) {
+</span><span class='line'>        return q;}
+</span><span class='line'>
+</span><span class='line'>int main(int argc, const char * argv[]) {
 </span><span class='line'>    node *head = createLinkList(7);
 </span><span class='line'>        if (head) {
 </span><span class='line'>            printLinkList(head);
@@ -637,23 +661,18 @@
 <span class='line-number'>35</span>
 <span class='line-number'>36</span>
 <span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>
 </span><span class='line'>char *strOutPut(char *);
-</span><span class='line'>int compareDifferentChar(char, char *);int main(int argc, const char * argv[]) {        char *inputStr = "abaccddeeef";
+</span><span class='line'>
+</span><span class='line'>int compareDifferentChar(char, char *);
+</span><span class='line'>
+</span><span class='line'>int main(int argc, const char * argv[]) {        char *inputStr = "abaccddeeef";
 </span><span class='line'>        char *outputStr = strOutPut(inputStr);
 </span><span class='line'>        printf("%c \n", *outputStr);
 </span><span class='line'>        return 0;
-</span><span class='line'>    }char *strOutPut(char *s) {
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>char *strOutPut(char *s) {
 </span><span class='line'>    char str[100];
 </span><span class='line'>        char *p = s;
 </span><span class='line'>        int index = 0;
@@ -664,7 +683,9 @@
 </span><span class='line'>                    }
 </span><span class='line'>                s++;
 </span><span class='line'>            }
-</span><span class='line'>        return &str;}int compareDifferentChar(char c, char *s) {
+</span><span class='line'>        return &str;}
+</span><span class='line'>
+</span><span class='line'>int compareDifferentChar(char c, char *s) {
 </span><span class='line'>    int i = 0;
 </span><span class='line'>        while (*s != '\0' && i&lt;= 1) {
 </span><span class='line'>            if (*s == c) {
@@ -677,48 +698,66 @@
 </span><span class='line'>            return 0;
 </span><span class='line'>            }
 </span><span class='line'>    }
-</span><span class='line'>```
-</span><span class='line'>
-</span><span class='line'>9、  二叉树的先序遍历为FBACDEGH,中序遍历为：ABDCEFGH,请写出这个二叉树的后序遍历结果。
-</span><span class='line'>**ADECBHGF**
-</span><span class='line'>
-</span><span class='line'>* 先序+中序遍历还原二叉树：先序遍历是：ABDEGCFH 中序遍历是：DBGEACHF
-</span><span class='line'>
-</span><span class='line'>首先从先序得到第一个为A，就是二叉树的根，回到中序，可以将其分为三部分：
-</span><span class='line'>
-</span><span class='line'>左子树的中序序列DBGE，根A，右子树的中序序列CHF
-</span><span class='line'>接着将左子树的序列回到先序可以得到B为根，这样回到左子树的中序再次将左子树分割为三部分：
-</span><span class='line'>左子树的左子树D，左子树的根B，左子树的右子树GE
-</span><span class='line'>同样地，可以得到右子树的根为C
-</span><span class='line'>类似地将右子树分割为根C，右子树的右子树HF，注意其左子树为空 
-</span><span class='line'>如果只有一个就是叶子不用再进行了，刚才的GE和HF再次这样运作，就可以将二叉树还原了。
-</span><span class='line'>
-</span><span class='line'>10、 打印2-100之间的素数。
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>int main(int argc, const char * argv[]) {
-    for (int i = 2; i &lt; 100; i++) {
-            int r = isPrime(i);
-                if (r == 1) {
-                    printf(&ldquo;%ld &rdquo;, i);
-                    }
-            }
-        return 0;
-    }
-int isPrime(int n){
-    int i, s;
-        for(i = 2; i &lt;= sqrt(n); i++)
-            if(n % i == 0)  return 0;
-            return 1;
-    }</p>
+<p>9、    二叉树的先序遍历为FBACDEGH,中序遍历为：ABDCEFGH,请写出这个二叉树的后序遍历结果。
+<strong>ADECBHGF</strong></p>
+
+<ul>
+<li>先序+中序遍历还原二叉树：先序遍历是：ABDEGCFH 中序遍历是：DBGEACHF</li>
+</ul>
+
+
+<p>首先从先序得到第一个为A，就是二叉树的根，回到中序，可以将其分为三部分：</p>
+
+<p>左子树的中序序列DBGE，根A，右子树的中序序列CHF
+接着将左子树的序列回到先序可以得到B为根，这样回到左子树的中序再次将左子树分割为三部分：
+左子树的左子树D，左子树的根B，左子树的右子树GE
+同样地，可以得到右子树的根为C
+类似地将右子树分割为根C，右子树的右子树HF，注意其左子树为空
+如果只有一个就是叶子不用再进行了，刚才的GE和HF再次这样运作，就可以将二叉树还原了。</p>
+
+<p>10、   打印2-100之间的素数。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>11、    求两个整数的最大公约数。
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>int main(int argc, const char * argv[]) {
+</span><span class='line'>    for (int i = 2; i &lt; 100; i++) {
+</span><span class='line'>            int r = isPrime(i);
+</span><span class='line'>                if (r == 1) {
+</span><span class='line'>                    printf("%ld ", i);
+</span><span class='line'>                    }
+</span><span class='line'>            }
+</span><span class='line'>        return 0;
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>int isPrime(int n){
+</span><span class='line'>    int i, s;
+</span><span class='line'>        for(i = 2; i &lt;= sqrt(n); i++)
+</span><span class='line'>            if(n % i == 0)  return 0;
+</span><span class='line'>            return 1;
+</span><span class='line'>    }
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>int gcd(int a, int b) {
+<p>11、   求两个整数的最大公约数。</p>
+
+<pre><code>int gcd(int a, int b) {
     int temp = 0;
         if (a &lt; b) {
             temp = a;
@@ -731,7 +770,7 @@ int isPrime(int n){
             }
         return a;
     }
-```</p>
+</code></pre>
 
 <p><strong>本文内容中部分来自网络，后续会持续更新完善。欢迎一起学习交流！</strong></p>
 

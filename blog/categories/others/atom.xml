@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Others | 杨社兵的技术博客]]></title>
   <link href="http://yangshebing.github.io/blog/categories/others/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2016-01-21T01:21:02+08:00</updated>
+  <updated>2016-04-25T00:42:21+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
     <name><![CDATA[杨社兵]]></name>
@@ -12,6 +12,129 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[iOS面试题系列之常见算法]]></title>
+    <link href="http://yangshebing.github.io/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-chang-jian-suan-fa/"/>
+    <updated>2016-04-24T23:59:06+08:00</updated>
+    <id>http://yangshebing.github.io/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-chang-jian-suan-fa</id>
+    <content type="html"><![CDATA[<h4>iOS面试中熟悉常见算法</h4>
+
+<p>1、    对以下一组数据进行降序排序（冒泡排序）。“24，17，85，13，9，54，76，45，5，63”</p>
+
+<!--more-->
+
+
+<p><code>int main(int argc, char *argv[]) {   int array[10] = {24, 17, 85, 13, 9, 54, 76, 45, 5, 63}; int num = sizeof(array)/sizeof(int);    for(int i = 0; i &lt; num-1; i++) {        for(int j = 0; j &lt; num - 1 - i; j++) {          if(array[j] &lt; array[j+1]) {             int tmp = array[j];             array[j] = array[j+1];              array[j+1] = tmp;           }       }   }   for(int i = 0; i &lt; num; i++) {      printf("%d", array[i]);     if(i == num-1) {            printf("\n");       }       else {          printf(" ");        }   }}
+</code></p>
+
+<p>2、    对以下一组数据进行升序排序（选择排序）。“86, 37, 56, 29, 92, 73, 15, 63, 30, 8”</p>
+
+<pre><code>void sort(int a[],int n)
+{
+    int i, j, index;
+    for(i = 0; i &lt; n - 1; i++) {
+
+        index = i;
+
+        for(j = i + 1; j &lt; n; j++) {
+            if(a[index] &gt; a[j])
+            {
+                index = j;
+            }
+        }
+
+        if(index != i) {
+            int temp = a[i];
+            a[i] = a[index];
+            a[index] = temp;
+        }
+    }
+}
+int main(int argc, const char * argv[]) {
+    int numArr[10] = {86, 37, 56, 29, 92, 73, 15, 63, 30, 8};
+    sort(numArr, 10);
+    for (int i = 0; i &lt; 10; i++) {
+        printf("%d, ", numArr[i]);
+    }
+    printf("\n");
+    return 0;
+}
+</code></pre>
+
+<p>3、    快速排序算法</p>
+
+<p><code>void sort(int *a, int left, int right) {if(left &gt;= right) {return ;}int i = left;int j = right;int key = a[left];while (i &lt; j) {while (i &lt; j &amp;&amp; key &gt;= a[j]) {j--;}a[i] = a[j];while (i &lt; j &amp;&amp; key &lt;= a[i]) {    i++;}a[j] = a[i];}a[i] = key;sort(a, left, i-1);sort(a, i+1, right);}
+</code></p>
+
+<p>4、    归并排序</p>
+
+<p><code>void merge(int sourceArr[], int tempArr[], int startIndex, int midIndex, int endIndex) {    int i = startIndex;    int j = midIndex + 1;    int k = startIndex;    while (i != midIndex + 1 &amp;&amp; j != endIndex + 1) {        if (sourceArr[i] &gt;= sourceArr[j]) {            tempArr[k++] = sourceArr[j++];        } else {            tempArr[k++] = sourceArr[i++];        }    }        while (i != midIndex + 1) {        tempArr[k++] = sourceArr[i++];    }        while (j != endIndex + 1) {        tempArr[k++] = sourceArr[j++];    }        for (i = startIndex; i &lt;= endIndex; i++) {        sourceArr[i] = tempArr[i];    }}void sort(int souceArr[], int tempArr[], int startIndex, int endIndex) {    int midIndex;    if (startIndex &lt; endIndex) {        midIndex = (startIndex + endIndex) / 2;        sort(souceArr, tempArr, startIndex, midIndex);        sort(souceArr, tempArr, midIndex + 1, endIndex);        merge(souceArr, tempArr, startIndex, midIndex, endIndex);    }}int main(int argc, const char * argv[]) {    int numArr[10] = {86, 37, 56, 29, 92, 73, 15, 63, 30, 8};    int tempArr[10];    sort(numArr, tempArr, 0, 9);    for (int i = 0; i &lt; 10; i++) {        printf("%d, ", numArr[i]);    }    printf("\n");    return 0;}
+</code></p>
+
+<p>5、    实现二分查找算法（编程语言不限）</p>
+
+<p><code>int bsearchWithoutRecursion(intarray[],int low,int high,int target){while(low&lt;=high){int mid=(low+high)/2;if(array[mid]&gt;target)high=mid-1;elseif(array[mid]&lt;target)low=mid+1;else//findthetargetreturn mid;}//the array does not contain the targetreturn-1;}----------------------------------------递归实现intbinary_search(constintarr[],intlow,inthigh,intkey){intmid=low+(high-low)/2;if(low&gt;high)return-1;else{if(arr[mid]==key)returnmid;elseif(arr[mid]&gt;key)returnbinary_search(arr,low,mid-1,key);elsereturnbinary_search(arr,mid+1,high,key);}}
+</code></p>
+
+<p>6、    如何实现链表翻转（链表逆序）？思路：每次把第二个元素提到最前面来。</p>
+
+<p><code>#include &lt;stdio.h&gt;#include &lt;stdlib.h&gt;typedef struct NODE {    struct NODE *next;    int num;}node;node *createLinkList(int length) {    if (length &lt;= 0) {        return NULL;    }    node *head,*p,*q;    int number = 1;    head = (node *)malloc(sizeof(node));    head-&gt;num = 1;    head-&gt;next = head;    p = q = head;    while (++number &lt;= length) {        p = (node *)malloc(sizeof(node));        p-&gt;num = number;        p-&gt;next = NULL;        q-&gt;next = p;        q = p;    }    return head;}void printLinkList(node *head) {    if (head == NULL) {        return;    }    node *p = head;    while (p) {        printf("%d ", p-&gt;num);        p = p -&gt; next;    }    printf("\n");}node *reverseFunc1(node *head) {    if (head == NULL) {        return head;    }    node *p,*q;    p = head;    q = NULL;    while (p) {        node *pNext = p -&gt; next;        p -&gt; next = q;        q = p;        p = pNext;    }    return q;}int main(int argc, const char * argv[]) {    node *head = createLinkList(7);    if (head) {        printLinkList(head);        node *reHead = reverseFunc1(head);        printLinkList(reHead);        free(reHead);    }    free(head);    return 0;}
+</code></p>
+
+<p>7、    实现一个字符串“how are you”的逆序输出（编程语言不限）。如给定字符串为“hello world”,输出结果应当为“world hello”。</p>
+
+<p><code>int spliterFunc(char *p) {    char c[100][100];    int i = 0;    int j = 0;    while (*p != '\0') {        if (*p == ' ') {            i++;            j = 0;        } else {            c[i][j] = *p;            j++;        }        p++;    }    for (int k = i; k &gt;= 0; k--) {        printf("%s", c[k]);        if (k &gt; 0) {            printf(" ");        } else {            printf("\n");           }    }    return 0;}
+</code>
+8、    给定一个字符串，输出本字符串中只出现一次并且最靠前的那个字符的位置？如“abaccddeeef”,字符是b,输出应该是2。</p>
+
+<pre><code>char *strOutPut(char *);int compareDifferentChar(char, char *);int main(int argc, const char * argv[]) {        char *inputStr = "abaccddeeef";    char *outputStr = strOutPut(inputStr);    printf("%c \n", *outputStr);    return 0;}char *strOutPut(char *s) {    char str[100];    char *p = s;    int index = 0;    while (*s != '\0') {        if (compareDifferentChar(*s, p) == 1) {            str[index] = *s;            index++;        }        s++;    }    return &amp;str;}int compareDifferentChar(char c, char *s) {    int i = 0;    while (*s != '\0' &amp;&amp; i&lt;= 1) {        if (*s == c) {            i++;        }        s++;    }    if (i == 1) {        return 1;    } else {        return 0;    }}```
+9、    二叉树的先序遍历为FBACDEGH,中序遍历为：ABDCEFGH,请写出这个二叉树的后序遍历结果。
+**ADECBHGF**
+
+* 先序+中序遍历还原二叉树：先序遍历是：ABDEGCFH 中序遍历是：DBGEACHF
+
+首先从先序得到第一个为A，就是二叉树的根，回到中序，可以将其分为三部分：
+
+左子树的中序序列DBGE，根A，右子树的中序序列CHF
+接着将左子树的序列回到先序可以得到B为根，这样回到左子树的中序再次将左子树分割为三部分：
+左子树的左子树D，左子树的根B，左子树的右子树GE
+同样地，可以得到右子树的根为C
+类似地将右子树分割为根C，右子树的右子树HF，注意其左子树为空 
+如果只有一个就是叶子不用再进行了，刚才的GE和HF再次这样运作，就可以将二叉树还原了。
+
+10、   打印2-100之间的素数。
+
+```int main(int argc, const char * argv[]) {    for (int i = 2; i &lt; 100; i++) {        int r = isPrime(i);        if (r == 1) {            printf("%ld ", i);        }    }    return 0;}int isPrime(int n){    int i, s;    for(i = 2; i &lt;= sqrt(n); i++)        if(n % i == 0)  return 0;    return 1;}
+</code></pre>
+
+<p>11、   求两个整数的最大公约数。</p>
+
+<p><code>int gcd(int a, int b) {    int temp = 0;    if (a &lt; b) {        temp = a;        a = b;        b = temp;    }        while (b != 0) {        temp = a % b;        a = b;        b = temp;    }    return a;}</code></p>
+
+<p><strong>本文内容中部分来自网络，后续会持续更新完善。欢迎一起学习交流！</strong></p>
+
+<p><strong>如需转载，请注明出处</strong></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iOS面试题系列之UI基础]]></title>
+    <link href="http://yangshebing.github.io/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-uiji-chu/"/>
+    <updated>2016-04-24T23:58:39+08:00</updated>
+    <id>http://yangshebing.github.io/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-uiji-chu</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iOS面试题系列之Objective-C基础]]></title>
+    <link href="http://yangshebing.github.io/blog/2016/04/24/iosmian-shi-ti-zhi-objective-cji-chu/"/>
+    <updated>2016-04-24T23:58:04+08:00</updated>
+    <id>http://yangshebing.github.io/blog/2016/04/24/iosmian-shi-ti-zhi-objective-cji-chu</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[React Native iOS 开发环境搭建]]></title>
@@ -140,7 +263,7 @@ class ReactNativeProject extends Component {
         &lt;/Text&gt;
         //添加图片展示
         &lt;Image 
-        source= 
+        source={{uri: 'http://h.hiphotos.baidu.com/image/pic/item/6609c93d70cf3bc7f0f5b7eed300baa1cd112a3e.jpg'}} 
         //这里需要指定图片的大小
         style={styles.picture} /&gt;
       &lt;/View&gt;
@@ -242,379 +365,6 @@ AppRegistry.registerComponent('ReactNativeProject', () =&gt; ReactNativeProject)
 <h4>展望：</h4>
 
 <p>马上迎来全新的2016年，又是一个全新的开始。时间匆匆，趁着年轻就要好好努力，物尽其用。希望在新的一年里，事业蒸蒸日上，身体健健康康（身体是革命的本钱，是实现计划的基石），愿家人幸福安康。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[iOS FFmpeg编译及kxmovie、iFrameExtractor调试详解（无障碍阅读，绝对是你想要的）]]></title>
-    <link href="http://yangshebing.github.io/blog/2015/11/16/ios-ffmpegbian-yi-ji-kxmovie,-iframeextractordiao-shi-xiang-jie-(wu-zhang-ai-yue-du-,jue-dui-shi-ni-xiang-yao-de-)/"/>
-    <updated>2015-11-16T01:44:27+08:00</updated>
-    <id>http://yangshebing.github.io/blog/2015/11/16/ios-ffmpegbian-yi-ji-kxmovie,-iframeextractordiao-shi-xiang-jie-(wu-zhang-ai-yue-du-,jue-dui-shi-ni-xiang-yao-de-)</id>
-    <content type="html"><![CDATA[<p><strong>特此声明：本文是通过网上收集整理加上自己亲自实验得来的。感谢所有网上分享的辛勤劳动者，本文仅供iOS学习使用。在学习的过程中，如果有问题或者不清楚的地方，欢迎留言，我们共同探讨互相学习。欢迎批评指正。</strong></p>
-
-<p><strong>如需转载，请注明出处：<a href = "http://blog.csdn.net/yangshebing21/article/details/43986913"><a href="http://blog.csdn.net/yangshebing21/article/details/43986913">http://blog.csdn.net/yangshebing21/article/details/43986913</a></a></strong></p>
-
-<h4>开发环境：最新 ffmpeg-2.5.4/iOS SDK8.1/Xcode6.1/OS X Yosemite版本10.10.2</h4>
-
-<h3>一、编译ffmpeg库</h3>
-
-<h4>编译调试ffmpeg库的步骤：</h4>
-
-<p><strong>开发环境：ffmpeg-2.5.4/Xcode6.1</strong></p>
-
-<h4>（一）、下载ffmpeg源码：</h4>
-
-<p>请点击此链接<a href = "http://ffmpeg.org/download.html"><a href="http://ffmpeg.org/download.html">http://ffmpeg.org/download.html</a></a></p>
-
-<p> <font color = "red"><b>注：我的ffmpeg-2.5.4是解压放至Desktop的</b></font></p>
-
-<h4>（二）、调试编译ffmpeg源码</h4>
-
-<p> 1、安装yasm:
- <!--more--></p>
-
-<p> 方法一:</p>
-
-<p> 在终端输入</p>
-
-<pre><code class="`"> sudo curlhttp://www.tortall.net/projects/yasm/releases/yasm-1.2.0.tar.gz &gt;yasm.tar.gz
-</code></pre>
-
-<p>方法二：</p>
-
-<p>（1）Download yasm sourcecode from：
-  <a href = "http://www.tortall.net/projects/yasm/releases/yasm-1.2.0.tar.gz"><a href="http://www.tortall.net/projects/yasm/releases/yasm-1.2.0.tar.gz">http://www.tortall.net/projects/yasm/releases/yasm-1.2.0.tar.gz</a></a></p>
-
-<p>（2）Unpack tar xvzfyasm-1.2.0.tar.gz</p>
-
-<p>（3）cd yasm-1.2.0</p>
-
-<p>（4）Configure and build:</p>
-
-<pre><code>./configure &amp;&amp; make -j 4 &amp;&amp;sudo make install
-</code></pre>
-
-<p>2、下载pearl脚本文件：gas-preprocessor.pl：</p>
-
-<p>下载地址： <a href = "https://github.com/libav/gas-preprocessor"><a href="https://github.com/libav/gas-preprocessor">https://github.com/libav/gas-preprocessor</a></a></p>
-
-<p>（1）拷贝gas-preprocessor.pl文件到 /usr/bin 目录下。</p>
-
-<p>如果找不到/usr/bin目录，直接使用”Finder—>前往—> 前往文件夹—>/usr/bin”或者使用快捷键“shift+command+G”前往文件夹，到指定目录下粘贴gas-preprocessor.pl文件</p>
-
-<p>（2）修改gas-preprocessor.pl文件的读写权限，使用 chmod a+rwxgas-preprocessor.pl</p>
-
-<p>用终端命令cd定位到 gas-preprocessor.pl文件夹下执行：<code>chmod a+rwxgas-preprocessor.pl</code>命令</p>
-
-<p>3、下载build-shell.sh脚本文件：</p>
-
-<p>下载地址：<a href = "https://github.com/kewlbear/FFmpeg-iOS-build-script"><a href="https://github.com/kewlbear/FFmpeg-iOS-build-script">https://github.com/kewlbear/FFmpeg-iOS-build-script</a></a></p>
-
-<p>（1）下载解压build-shell.sh文件</p>
-
-<p>（2）定位至build-shell.sh文件夹执行build-shell.sh脚本文件</p>
-
-<p>使用方式有4种，我们可以根据特定的使用环境来执行对应的脚本，一般我们就直接执行：<code>./build-ffmpeg.sh</code></p>
-
-<ul>
-<li>To build everything:</li>
-</ul>
-
-
-<p><strong><code>./build-ffmpeg.sh</code></strong></p>
-
-<ul>
-<li>To build arm64 libraries：</li>
-</ul>
-
-
-<p><strong><code>./build-ffmpeg.sh arm64</code></strong></p>
-
-<ul>
-<li>To build fat libraries for armv7 and x86_64 (64-bit simulator)：</li>
-</ul>
-
-
-<p><strong><code>./build-ffmpeg.sh armv7 x86_64</code></strong></p>
-
-<ul>
-<li>To build fat libraries from separately built thin libraries:</li>
-</ul>
-
-
-<p><strong><code>./build-ffmpeg.sh lipo</code></strong></p>
-
-<p>注：我的build-shell.sh是解压放至Desktop的，以上四种shell脚本的使用方式来自<a href = "https://github.com/kewlbear/FFmpeg-iOS-build-script"><a href="https://github.com/kewlbear/FFmpeg-iOS-build-script">https://github.com/kewlbear/FFmpeg-iOS-build-script</a></a>，后面几种方式大家可以自己去尝试。</p>
-
-<p>4、脚本执行完成之后，会在桌面上生成三个文件夹：“FFmpeg-iOS”“scratch”和”thin”文件夹</p>
-
-<p>scratch文件夹里面是单独编译的库，FFmpeg-iOS文件夹里面是合并编译的库。在使用的过程中，我们主要会用到FFmpeg-iOS 文件夹下的“include”文件夹和"lib"文件夹中的文件。</p>
-
-<h3>二、在工程中使用FFmpeg，网上成熟的有kxmovie。</h3>
-
-<p>1、下载kxmovie工程进行测试：</p>
-
-<p>下载地址： <a href = "https://github.com/kolyvan/kxmovie"><a href="https://github.com/kolyvan/kxmovie">https://github.com/kolyvan/kxmovie</a></a></p>
-
-<p>把FFmpeg编译出来的.a文件添加到工程中。</p>
-
-<p><img src="http://ww2.sinaimg.cn/large/7f266405jw1ey37q81fp5j205r09xwfq.jpg" alt="" /></p>
-
-<p>在使用的时候得注意添加下面的动态链接库文件:</p>
-
-<pre><code>libz.dylib
-libbz2.dylib
-libiconv.dylib
-</code></pre>
-
-<p><strong>运行工程</strong></p>
-
-<p>以下是在编译运行工程中可能会报的错误：</p>
-
-<p>注意：如果在FFmpeg编译的时候出现“ffmpeg yasm not found，use &ndash;disable for a crippled build”，原因是 yasm是汇编编译器，因为FFmpeg中为了提高效率用到了汇编指令，解决这个问题有两种方法，一是下载一个yasm.exe安装在mingw/bin下面；二是不使用汇编指令，在配置上加上 即 ./configure &ndash;disable-yash 。(这就是为什么前面提到了要安装yasm)
-成功通过编译（这里是指FFmpeg编译成静态库文件）</p>
-
-<p>通过后会生成一个compiled(FFmpeg-iOS)的文件夹，里面有include和lib两个文件夹，这两个文件夹都要拷贝至工程目录下面。include是静态链接库要用到的头文件，lib是存放静态链接库的文件，然后把这些文件存放在项目里面即可，一定要把文件也copy进去，然后在项目的build settings中的header search paths字段加入include文件的路径 如：“$(SRCROOT)/ffmpeg/include” 前面的复选框选不选都可以；再在library search paths字段中加入a文件的路径 如：“$(SRCROOT)/ffmpeg/lib” 。否则可能会出现libavformat/avformat.h file not found 的错误。（出现这个错误是指编译kxmovie工程找不到相应的头文件）</p>
-
-<p><img src="http://ww2.sinaimg.cn/large/7f266405jw1ey37rw3nknj20m207wwgg.jpg" alt="" /></p>
-
-<p>上面图示：在工程目录下有个“FFmpeg”的文件夹，分别把编译FFmpeg完成后产生的“ FFmpeg-iOS ”文件夹中的“include”和”lib”文件夹拷贝至”FFmpeg”文件夹中，include文件夹中存放的是头文件，lib文件夹中存放的是.a静态库文件。最后就是在工程目录下的FFmpeg文件夹包含“include”和”lib”两个文件夹。设置Header Search Paths和Library Search Paths时直接include和lib两个文件夹拖上去，自动显示路径。</p>
-
-<p><img src="http://ww4.sinaimg.cn/large/7f266405jw1ey37subv8hj20gu06omye.jpg" alt="" /></p>
-
-<p>如果还出现找不到 avformat_open_input 的错误（我的没有出现过这个错误），说明你的ffmpeg还是太新了，之前的那个方法名已经改成了这个名字，把avformat_open_input改成av_open_input_file 就可以了。其他错误请自行谷歌或者留言，我们共同探讨。
-上面报错总结文章来自：<a href="http://www.dnetzj.com/Content/267.html">http://www.dnetzj.com/Content/267.html</a></p>
-
-<p>最后一步，别忘了安装kxmovie.xcworkspace的cocoapods</p>
-
-<p><strong><code>pod install --verbose --no-repo-update</code></strong></p>
-
-<p>否则会报链接错误</p>
-
-<p>以上kxmovie工程编译调试完毕，模拟器真机都通过测试。目前没有进一步的去研究这个工程，发现播放的视频质量有点粗糙。有时间再做进一步的研究。</p>
-
-<h3>三、iFrameExtractor-master（iFrameExtractor）工程编译和运行</h3>
-
-<p>（1）运行iFrameExtractor-master工程，与上面kxmovie工程操作一样，把FFmpeg文件夹拷贝至工程目录下:
-       (工程目录下本来是没有FFmpeg文件夹的)</p>
-
-<p><img src="http://ww1.sinaimg.cn/large/7f266405jw1ey37tiypu8j20gx07b75s.jpg" alt="" /></p>
-
-<p>iFrameExtractor-master下载地址：<a href="https://github.com/lajos/iFrameExtractor">https://github.com/lajos/iFrameExtractor</a></p>
-
-<p>(2)设置好Header Search Paths和Library Search Paths</p>
-
-<p><img src="http://ww2.sinaimg.cn/large/7f266405jw1ey37u3v6q5j20kj02x0ts.jpg" alt="" /></p>
-
-<p><img src="http://ww2.sinaimg.cn/large/7f266405jw1ey37v057v9j20kg07p40a.jpg" alt="" /></p>
-
-<p>（3）最后还是会报链接错误：</p>
-
-<pre><code>Undefined symbols for architecture i386:
-"_iconv", referenced from:      
-    _avcodec_decode_subtitle2 in libavcodec.a(utils.o)  
-"_iconv_close", referenced from:
-    _avcodec_open2 in libavcodec.a(utils.o)
-    _avcodec_decode_subtitle2 in libavcodec.a(utils.o)
-"_iconv_open", referenced from:
-    _avcodec_open2 in libavcodec.a(utils.o)
-    _avcodec_decode_subtitle2 in libavcodec.a(utils.o)
-ld: symbol(s) not found for architecture i386
-clang: error: linker command failed with exit code 1 (use -v to see invocation)
-</code></pre>
-
-<p><img src="http://ww2.sinaimg.cn/large/7f266405jw1ey37vhigjfj20fq0a8djf.jpg" alt="" /></p>
-
-<p><strong>解决办法："TARGETS" - > &ldquo;BuildSettings&rdquo; - > &ldquo;Other Linker Flags&rdquo; 添加other Linker Flags 项：-liconv</strong></p>
-
-<p><img src="http://ww1.sinaimg.cn/large/7f266405jw1ey37wvjqv1j20dl01s74f.jpg" alt="" /></p>
-
-<p>此报错问题出自：<a href = "http://stackoverflow.com/questions/21211215/ffmpeg-wont-build-in-my-project-works-fine-in-example-app/28777851#28777851"><a href="http://stackoverflow.com/questions/21211215/ffmpeg-wont-build-in-my-project-works-fine-in-example-app/28777851#28777851">http://stackoverflow.com/questions/21211215/ffmpeg-wont-build-in-my-project-works-fine-in-example-app/28777851#28777851</a></a></p>
-
-<p>至此完成iFrameExtractor-master工程编译和运行</p>
-
-<h3>本文参考文章资料：</h3>
-
-<ul>
-<li><a href = "http://blog.csdn.net/oqqQuZi1234567/article/details/43152689">iOS－－kxmovie之FFmpeg编译和使用</a></li>
-<li><a href = "http://www.th7.cn/Program/Ruby/201502/385491.shtml">iOS ffmpeg kxmovie 编译 调试</a></li>
-</ul>
-
-
-<p><strong>欢迎共同学习进步，本着分享的精神，只是为了让你学习起来更加轻松。</strong></p>
-
-<p><strong>如需转载，请注明出处：<a href = "http://blog.csdn.net/yangshebing21/article/details/43986913"><a href="http://blog.csdn.net/yangshebing21/article/details/43986913">http://blog.csdn.net/yangshebing21/article/details/43986913</a></a></strong></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[基于GitHub搭建Octopress个人技术博客(Mac版)]]></title>
-    <link href="http://yangshebing.github.io/blog/2015/09/17/test/"/>
-    <updated>2015-09-17T23:42:42+08:00</updated>
-    <id>http://yangshebing.github.io/blog/2015/09/17/test</id>
-    <content type="html"><![CDATA[<h6>作为一名屌逼的程序猿，肯定是要有一个屌逼的技术博客。在交流学习的同时，顺便见证自己成长的心路历程。废话不多说，直接进入正题。编程讲究的四门功课，“说，学，逗，唱”。不会就学嘛！没有就找嘛！网上相关的文章简直太多了！其中原理就不多说，我且按照我搭建的顺序写一下步骤吧！</h6>
-
-<p><strong>注意事项：在搭建之前，检查MAC电脑是否已经安装了Git和Ruby 1.9.3及以上版本。（Mac默认均已自带，ruby请自行检查版本：ruby &ndash;version，如果缺少，当自行下载）</strong></p>
-
-<h4>一、开始安装octopress</h4>
-
-<!--more-->
-
-
-<p>1、将Octopress从github上clone到本地</p>
-
-<pre><code class="`">git clone git://github.com/imathis/octopress.git octopress
-cd octopress
-</code></pre>
-
-<p>2、安装Octopress</p>
-
-<pre><code>gem install bundler
-bundle install
-rake install
-</code></pre>
-
-<p>如果当你执行“bundle install”这步失败了，请更改一下本地octopress文件夹下Gemfile文件当中的源（路径：/Users/用户名/octopress/Gemfile），将文件中的<code>source "https://rubygems.org"</code>更换成 <code>source "http://ruby.taobao.org/"</code>,然后保存文件再重新执行bundle install及其后续操作。</p>
-
-<p>3、部署GitHub Pages
-在CitHub中新建一个名为username.github.io的仓库（username为你的GitHub用户名）。</p>
-
-<ul>
-<li>开始配置GitHub Pages</li>
-</ul>
-
-
-<p>在终端继续输入</p>
-
-<pre><code>rake setup_github_pages
-</code></pre>
-
-<p>在Repository url后面粘贴username.github.io仓库对应的url地址</p>
-
-<pre><code>Enter the read/write url for your repository
-(For example, 'git@github.com:your_username/your_username.github.io.git)
-           or 'https://github.com/your_username/your_username.github.io')
-Repository url: 
-</code></pre>
-
-<p>把上面代码：</p>
-
-<pre><code>https://github.com/your_username/your_username.github.io”
-或者
-“git@github.com:your_username/your_username.github.io.git
-</code></pre>
-
-<p>中的your_username替换成自己GitHub用户名即可。（两种地址，前者是HTTPS地址，后者是SSH地址，任选一个粘贴即可）</p>
-
-<p>现在可以开始生成自己的第一篇博客并部署放至GitHub上。
-在终端输入以下命令：生成一篇新的博客</p>
-
-<pre><code>rake new_post['test']
-</code></pre>
-
-<p>其中test是默认的博客标题（当然博客的标题可以在markdown文件里面更改）。当然你也可以输入rake new_post命令，按照终端的提示输入博客的标题。生成完成的文章内容在octopress/source/_posts目录下。文件名为时间＋标题名，如“2015-09-17-test.markdown”。可以用markdown工具（本文用的markdown工具为“Mou”）进行编辑与修改。</p>
-
-<p>接下来在终端输入rake generate命令生成静态文件</p>
-
-<pre><code>rake generate
-</code></pre>
-
-<p>在部署到GitHub上之前，你可以在本地预览一下博客的效果。
-先在终端输入rake preview命令，生成预览blog。然后在浏览器中输入<code>http://localhost:4000</code>查看博客的预览效果。</p>
-
-<pre><code>rake preview
-</code></pre>
-
-<p>在终端退出预览效果：ctrl+c</p>
-
-<p>确认效果之后，开始部署至GitHub。rake deploy命令会将octopress/public目录下的文件上传至仓库的master分支。</p>
-
-<pre><code>rake deploy
-</code></pre>
-
-<p>最后一步，将Octopress的源码提交至GitHub</p>
-
-<pre><code>git add .
-git commit -m 'commit source file'
-git push origin source
-</code></pre>
-
-<p>完工，屌逼的第一篇博客就已经发布到GitHub Pages上了。你现在可以输入:username.github.io在线查看自己的博客了（如：yangshebing.github.io）。</p>
-
-<p>至于其中的相关原理分析我就不一一赘述了。请参看文章末尾的参考文章链接或者自行网上搜索。</p>
-
-<h4>二、简单的配置Octopress</h4>
-
-<h6>1、修改Octopress的配置文件（路径：octopress/_config.yml）</h6>
-
-<ul>
-<li>设置博客的标题，子标题以及作者相关信息。</li>
-</ul>
-
-
-<pre><code>title: 杨社兵的技术博客
-subtitle: 业精于勤荒于嬉，行成于思毁于随.
-author: 杨社兵
-</code></pre>
-
-<ul>
-<li>删除twitter相关信息（GFW造成页面加载慢）</li>
-</ul>
-
-
-<pre><code>Twitter
-twitter_user:
-twitter_tweet_button: true
-</code></pre>
-
-<ul>
-<li>修改source/_includes目录下的head.html文件：将<code>//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.jst</code>替换成<code>http://cdn.staticfile.org/jquery/1.9.1/jquery.min.jst</code>（解决页面加载过慢问题）</li>
-<li>修改source/_includes/custom目录下的自定义head.html文件，去掉google自定义字体（解决页面加载过慢问题）</li>
-</ul>
-
-
-<h6>2、添加统计工具（百度统计）</h6>
-
-<p>去<a href="http://tongji.baidu.com">百度统计</a>官网申请一个账号，在管理界面选择“代码获取”，复制代码至<code>source/_includes/custom/footer.html</code>文件中。</p>
-
-<h6>3、自定义博客导航栏</h6>
-
-<p>部署好博客之后，你会发现导航栏上默认的只有两项：Blog、Archives，无法满足我们的需求。比如我们想在导航栏上添加一个选项为“关于我”。</p>
-
-<p>打开“/source/_includes/custom”目录的navigation.html文件进行编辑：</p>
-
-<pre><code>*&lt;ul class="main-navigation"&gt;
-  &lt;li&gt;&lt;a href="/"&gt;我的博客&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="/blog/archives"&gt;所有文章&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="http://weibo.com/yangshebing" target="_blank"&gt;新浪微博&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="/about"&gt;关于我&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</code></pre>
-
-<p>接下来在终端输入rake new_page命令，生成一个index.markdown文件，</p>
-
-<pre><code>rake new_page['about']
-</code></pre>
-
-<p>它的默认保存路径是：“source/about/index.markdown”，编辑index.markdown文件，即可定制“关于我”页面内容。</p>
-
-<h6>4、关于博客的评论和分享到微博功能，请参考末尾文章链接《象写程序一样写博客：搭建基于github的博客》一文。</h6>
-
-<p>参考文章链接：</p>
-
-<p>（1）<a href="http://blog.devtang.com/blog/2012/02/10/setup-blog-based-on-github/" target="_blank">象写程序一样写博客：搭建基于github的博客</a></p>
-
-<p>（2）<a href="http://matrixzk.github.io/blog/20141020/octopress-setup-and-analysis/#section" target="_blank">使用 Octopress 2.0 搭建基于 Github Pages 个人博客的详细过程及原理分析</a></p>
-
-<p>（3）<a href="http://www.jianshu.com/p/0ac2ac1a8e45" target="_blank">octopress博客搭建和个性化配置</a></p>
-
-<p>（4）<a href="https://liuchungui.github.io/blog/2015/09/11/macdian-nao-shang-da-jian-octopressbo-ke/" target="_blank">Mac电脑上搭建octopress博客</a></p>
-
-<p>（5）<a href="http://www.cnblogs.com/sawyerzhu/p/3710374.html" target="_blank">Mac环境下octopress个人博客搭建</a></p>
-
-<p>（6）<a href="http://foggry.com/blog/2014/04/28/custom-your-octopress-blog/" target="_blank">自定义你的Octopress博客</a></p>
-
-<p>（7）<a href="http://blog.devtang.com/blog/2014/06/02/use-gitcafe-to-host-blog/" target="_blank">将博客从GitHub迁移到GitCafe</a></p>
 ]]></content>
   </entry>
   

@@ -96,7 +96,47 @@
 
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>int main(int argc, char *argv[]) {   int array[10] = {24, 17, 85, 13, 9, 54, 76, 45, 5, 63}; int num = sizeof(array)/sizeof(int);    for(int i = 0; i &lt; num-1; i++) {     for(int j = 0; j &lt; num - 1 - i; j++) {           if(array[j] &lt; array[j+1]) {              int tmp = array[j];             array[j] = array[j+1];              array[j+1] = tmp;           }       }   }   for(int i = 0; i &lt; num; i++) {       printf("%d", array[i]);     if(i == num-1) {            printf("\n");       }       else {          printf(" ");        }   }}
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>int main(int argc, char *argv[]) {
+</span><span class='line'>  int array[10] = {24, 17, 85, 13, 9, 54, 76, 45, 5, 63};
+</span><span class='line'>      int num = sizeof(array)/sizeof(int);
+</span><span class='line'>      for(int i = 0; i &lt; num-1; i++) {
+</span><span class='line'>          for(int j = 0; j &lt; num - 1 - i; j++) {
+</span><span class='line'>                  if(array[j] &lt; array[j+1]) {
+</span><span class='line'>                          int tmp = array[j];
+</span><span class='line'>                              array[j] = array[j+1];
+</span><span class='line'>                              array[j+1] = tmp;
+</span><span class='line'>                          }
+</span><span class='line'>                  }
+</span><span class='line'>          }   for(int i = 0; i &lt; num; i++) {
+</span><span class='line'>          printf("%d", array[i]);
+</span><span class='line'>              if(i == num-1) {
+</span><span class='line'>                  printf("\n");
+</span><span class='line'>                  }
+</span><span class='line'>              else {
+</span><span class='line'>                  printf(" ");
+</span><span class='line'>                  }
+</span><span class='line'>          }
+</span><span class='line'>  }
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -134,9 +174,11 @@
 <span class='line-number'>30</span>
 <span class='line-number'>31</span>
 <span class='line-number'>32</span>
+<span class='line-number'>33</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>
 </span><span class='line'>void sort(int a[],int n)
 </span><span class='line'>{
+</span><span class='line'>
 </span><span class='line'>    int i, j, index;
 </span><span class='line'>    for(i = 0; i &lt; n - 1; i++) {
 </span><span class='line'>        

@@ -4,7 +4,7 @@
   <title><![CDATA[杨社兵的技术博客]]></title>
   <link href="http://yangshebing.github.io/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2016-04-25T01:40:47+08:00</updated>
+  <updated>2016-04-25T01:43:11+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
     <name><![CDATA[杨社兵]]></name>
@@ -27,114 +27,14 @@
 
 
 
-<figure class='code'><figcaption><span>int main(int argc, char *argv[]) { int array[10] = {24, 17, 85, 13, 9, 54, 76, 45, 5, 63}; int num = sizeof(array)/sizeof(int);    for(int i = 0; i < num-1; i++) {        for(int j = 0; j < num - 1 - i; j++) {          if(array[j] < array[j+1]) {             int tmp = array[j];             array[j] = array[j+1];              array[j+1] = tmp;           }       }   }   for(int i = 0; i < num; i++) {      printf("%d", array[i]);     if(i == num-1) {            printf("\n");       }       else {          printf(" ");        }   }}</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="err">```</span>
-</span><span class='line'>
-</span><span class='line'><span class="mi">2</span><span class="err">、</span> <span class="err">对以下一组数据进行升序排序（选择排序）。“</span><span class="mi">86</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">29</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">73</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">8</span><span class="err">”</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>int main(int argc, char *argv[]) {   int array[10] = {24, 17, 85, 13, 9, 54, 76, 45, 5, 63}; int num = sizeof(array)/sizeof(int);    for(int i = 0; i &lt; num-1; i++) {     for(int j = 0; j &lt; num - 1 - i; j++) {           if(array[j] &lt; array[j+1]) {              int tmp = array[j];             array[j] = array[j+1];              array[j+1] = tmp;           }       }   }   for(int i = 0; i &lt; num; i++) {       printf("%d", array[i]);     if(i == num-1) {            printf("\n");       }       else {          printf(" ");        }   }}
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>C
-void sort(int a[],int n)
-{
-    int i, j, index;
-    for(i = 0; i &lt; n - 1; i++) {</p>
+<p>2、    对以下一组数据进行升序排序（选择排序）。“86, 37, 56, 29, 92, 73, 15, 63, 30, 8”</p>
 
-<pre><code>    index = i;
-
-    for(j = i + 1; j &lt; n; j++) {
-        if(a[index] &gt; a[j])
-        {
-            index = j;
-        }
-    }
-
-    if(index != i) {
-        int temp = a[i];
-        a[i] = a[index];
-        a[index] = temp;
-    }
-}
-</code></pre>
-
-<p>}</p>
-
-<p>int main(int argc, const char * argv[]) {
-    int numArr[10] = {86, 37, 56, 29, 92, 73, 15, 63, 30, 8};
-    sort(numArr, 10);
-    for (int i = 0; i &lt; 10; i++) {
-        printf(&ldquo;%d, &rdquo;, numArr[i]);
-    }
-    printf(&ldquo;\n&rdquo;);
-    return 0;
-}</p>
-
-<figure class='code'><figcaption><span>int main(int argc, char *argv[]) { int array[10] = {24, 17, 85, 13, 9, 54, 76, 45, 5, 63}; int num = sizeof(array)/sizeof(int);    for(int i = 0; i < num-1; i++) {        for(int j = 0; j < num - 1 - i; j++) {          if(array[j] < array[j+1]) {             int tmp = array[j];             array[j] = array[j+1];              array[j+1] = tmp;           }       }   }   for(int i = 0; i < num; i++) {      printf("%d", array[i]);     if(i == num-1) {            printf("\n");       }       else {          printf(" ");        }   }}</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="mi">3</span><span class="err">、</span>   <span class="err">快速排序算法</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Cvoid sort(int *a, int left, int right) {if(left >= right) {return ;}int i = left;int j = right;int key = a[left];while (i &lt; j) {while (i &lt; j &amp;&amp; key >= a[j]) {j&ndash;;}a[i] = a[j];while (i &lt; j &amp;&amp; key &lt;= a[i]) {   i++;}a[j] = a[i];}a[i] = key;sort(a, left, i-1);sort(a, i+1, right);}</p>
-
-<figure class='code'><figcaption><span>int main(int argc, char *argv[]) { int array[10] = {24, 17, 85, 13, 9, 54, 76, 45, 5, 63}; int num = sizeof(array)/sizeof(int);    for(int i = 0; i < num-1; i++) {        for(int j = 0; j < num - 1 - i; j++) {          if(array[j] < array[j+1]) {             int tmp = array[j];             array[j] = array[j+1];              array[j+1] = tmp;           }       }   }   for(int i = 0; i < num; i++) {      printf("%d", array[i]);     if(i == num-1) {            printf("\n");       }       else {          printf(" ");        }   }}</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="mi">4</span><span class="err">、</span>   <span class="err">归并排序</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Cvoid merge(int sourceArr[], int tempArr[], int startIndex, int midIndex, int endIndex) {    int i = startIndex;    int j = midIndex + 1;    int k = startIndex;    while (i != midIndex + 1 &amp;&amp; j != endIndex + 1) {        if (sourceArr[i] >= sourceArr[j]) {            tempArr[k++] = sourceArr[j++];        } else {            tempArr[k++] = sourceArr[i++];        }    }        while (i != midIndex + 1) {        tempArr[k++] = sourceArr[i++];    }        while (j != endIndex + 1) {        tempArr[k++] = sourceArr[j++];    }        for (i = startIndex; i &lt;= endIndex; i++) {        sourceArr[i] = tempArr[i];    }}void sort(int souceArr[], int tempArr[], int startIndex, int endIndex) {    int midIndex;    if (startIndex &lt; endIndex) {        midIndex = (startIndex + endIndex) / 2;        sort(souceArr, tempArr, startIndex, midIndex);        sort(souceArr, tempArr, midIndex + 1, endIndex);        merge(souceArr, tempArr, startIndex, midIndex, endIndex);    }}int main(int argc, const char * argv[]) {    int numArr[10] = {86, 37, 56, 29, 92, 73, 15, 63, 30, 8};    int tempArr[10];    sort(numArr, tempArr, 0, 9);    for (int i = 0; i &lt; 10; i++) {        printf(&ldquo;%d, &rdquo;, numArr[i]);    }    printf(&ldquo;\n&rdquo;);    return 0;}</p>
-
-<figure class='code'><figcaption><span>int main(int argc, char *argv[]) { int array[10] = {24, 17, 85, 13, 9, 54, 76, 45, 5, 63}; int num = sizeof(array)/sizeof(int);    for(int i = 0; i < num-1; i++) {        for(int j = 0; j < num - 1 - i; j++) {          if(array[j] < array[j+1]) {             int tmp = array[j];             array[j] = array[j+1];              array[j+1] = tmp;           }       }   }   for(int i = 0; i < num; i++) {      printf("%d", array[i]);     if(i == num-1) {            printf("\n");       }       else {          printf(" ");        }   }}</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="mi">5</span><span class="err">、</span>   <span class="err">实现二分查找算法（编程语言不限）</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Cint bsearchWithoutRecursion(int array[],int low,int high,int target){while(low &lt;= high){int mid = (low + high) / 2;if(array[mid] > target)high = mid - 1;else if(array[mid] &lt; target)low = mid + 1;else//findthetargetreturn mid;}//the array does not contain the targetreturn -1;}&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-递归实现int binary_search(const int arr[],int low,int high,int key){int mid=low + (high - low) / 2;if(low > high)return -1;else{if(arr[mid] == key)return mid;else if(arr[mid] > key)return binary_search(arr, low, mid-1, key);elsereturn binary_search(arr, mid+1, high, key);}}</p>
-
-<figure class='code'><figcaption><span>int main(int argc, char *argv[]) { int array[10] = {24, 17, 85, 13, 9, 54, 76, 45, 5, 63}; int num = sizeof(array)/sizeof(int);    for(int i = 0; i < num-1; i++) {        for(int j = 0; j < num - 1 - i; j++) {          if(array[j] < array[j+1]) {             int tmp = array[j];             array[j] = array[j+1];              array[j+1] = tmp;           }       }   }   for(int i = 0; i < num; i++) {      printf("%d", array[i]);     if(i == num-1) {            printf("\n");       }       else {          printf(" ");        }   }}</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="mi">6</span><span class="err">、</span>   <span class="err">如何实现链表翻转（链表逆序）？</span>
-</span><span class='line'><span class="err">思路：每次把第二个元素提到最前面来。</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>C#include &lt;stdio.h>#include &lt;stdlib.h>typedef struct NODE {    struct NODE <em>next;    int num;}node;node </em>createLinkList(int length) {    if (length &lt;= 0) {        return NULL;    }    node <em>head,</em>p,<em>q;    int number = 1;    head = (node </em>)malloc(sizeof(node));    head->num = 1;    head->next = head;    p = q = head;    while (++number &lt;= length) {        p = (node <em>)malloc(sizeof(node));        p->num = number;        p->next = NULL;        q->next = p;        q = p;    }    return head;}void printLinkList(node </em>head) {    if (head == NULL) {        return;    }    node <em>p = head;    while (p) {        printf(&ldquo;%d &rdquo;, p->num);        p = p -> next;    }    printf(&ldquo;\n&rdquo;);}node </em>reverseFunc1(node <em>head) {    if (head == NULL) {        return head;    }    node </em>p,<em>q;    p = head;    q = NULL;    while (p) {        node </em>pNext = p -> next;        p -> next = q;        q = p;        p = pNext;    }    return q;}int main(int argc, const char * argv[]) {    node <em>head = createLinkList(7);    if (head) {        printLinkList(head);        node </em>reHead = reverseFunc1(head);        printLinkList(reHead);        free(reHead);    }    free(head);    return 0;}</p>
-
-<figure class='code'><figcaption><span>int main(int argc, char *argv[]) { int array[10] = {24, 17, 85, 13, 9, 54, 76, 45, 5, 63}; int num = sizeof(array)/sizeof(int);    for(int i = 0; i < num-1; i++) {        for(int j = 0; j < num - 1 - i; j++) {          if(array[j] < array[j+1]) {             int tmp = array[j];             array[j] = array[j+1];              array[j+1] = tmp;           }       }   }   for(int i = 0; i < num; i++) {      printf("%d", array[i]);     if(i == num-1) {            printf("\n");       }       else {          printf(" ");        }   }}</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="mi">7</span><span class="err">、</span>   <span class="err">实现一个字符串“</span><span class="n">how</span> <span class="n">are</span> <span class="n">you</span><span class="err">”的逆序输出（编程语言不限）。如给定字符串为“</span><span class="n">hello</span> <span class="n">world</span><span class="err">”</span><span class="p">,</span><span class="err">输出结果应当为“</span><span class="n">world</span> <span class="n">hello</span><span class="err">”。</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Cint spliterFunc(char <em>p) {    char c[100][100];    int i = 0;    int j = 0;    while (</em>p != &lsquo;\0&rsquo;) {        if (<em>p == &lsquo; &rsquo;) {            i++;            j = 0;        } else {            c[i][j] = </em>p;            j++;        }        p++;    }    for (int k = i; k >= 0; k&ndash;) {        printf(&ldquo;%s&rdquo;, c[k]);        if (k > 0) {            printf(&ldquo; &rdquo;);        } else {            printf(&ldquo;\n&rdquo;);          }    }    return 0;}</p>
-
-<figure class='code'><figcaption><span>int main(int argc, char *argv[]) { int array[10] = {24, 17, 85, 13, 9, 54, 76, 45, 5, 63}; int num = sizeof(array)/sizeof(int);    for(int i = 0; i < num-1; i++) {        for(int j = 0; j < num - 1 - i; j++) {          if(array[j] < array[j+1]) {             int tmp = array[j];             array[j] = array[j+1];              array[j+1] = tmp;           }       }   }   for(int i = 0; i < num; i++) {      printf("%d", array[i]);     if(i == num-1) {            printf("\n");       }       else {          printf(" ");        }   }}</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="mi">8</span><span class="err">、</span>   <span class="err">给定一个字符串，输出本字符串中只出现一次并且最靠前的那个字符的位置？如“</span><span class="n">abaccddeeef</span><span class="err">”</span><span class="p">,</span><span class="err">字符是</span><span class="n">b</span><span class="p">,</span><span class="err">输出应该是</span><span class="mi">2</span><span class="err">。</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>C
-char <em>strOutPut(char </em>);int compareDifferentChar(char, char <em>);int main(int argc, const char * argv[]) {        char </em>inputStr = &ldquo;abaccddeeef&rdquo;;    char <em>outputStr = strOutPut(inputStr);    printf(&ldquo;%c \n&rdquo;, </em>outputStr);    return 0;}char <em>strOutPut(char </em>s) {    char str[100];    char <em>p = s;    int index = 0;    while (</em>s != &lsquo;\0&rsquo;) {        if (compareDifferentChar(<em>s, p) == 1) {            str[index] = </em>s;            index++;        }        s++;    }    return &str;}int compareDifferentChar(char c, char <em>s) {    int i = 0;    while (</em>s != &lsquo;\0&rsquo; &amp;&amp; i&lt;= 1) {        if (*s == c) {            i++;        }        s++;    }    if (i == 1) {        return 1;    } else {        return 0;    }}```
-9、    二叉树的先序遍历为FBACDEGH,中序遍历为：ABDCEFGH,请写出这个二叉树的后序遍历结果。
-<strong>ADECBHGF</strong></p>
-
-<ul>
-<li>先序+中序遍历还原二叉树：先序遍历是：ABDEGCFH 中序遍历是：DBGEACHF</li>
-</ul>
-
-
-<p>首先从先序得到第一个为A，就是二叉树的根，回到中序，可以将其分为三部分：</p>
-
-<p>左子树的中序序列DBGE，根A，右子树的中序序列CHF
-接着将左子树的序列回到先序可以得到B为根，这样回到左子树的中序再次将左子树分割为三部分：
-左子树的左子树D，左子树的根B，左子树的右子树GE
-同样地，可以得到右子树的根为C
-类似地将右子树分割为根C，右子树的右子树HF，注意其左子树为空
-如果只有一个就是叶子不用再进行了，刚才的GE和HF再次这样运作，就可以将二叉树还原了。</p>
-
-<p>10、   打印2-100之间的素数。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -151,30 +51,144 @@ char <em>strOutPut(char </em>);int compareDifferentChar(char, char <em>);int mai
 <span class='line-number'>15</span>
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">isPrime</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">r</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%ld &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>void sort(int a[],int n)
+</span><span class='line'>{
+</span><span class='line'>    int i, j, index;
+</span><span class='line'>    for(i = 0; i &lt; n - 1; i++) {
+</span><span class='line'>        
+</span><span class='line'>        index = i;
+</span><span class='line'>        
+</span><span class='line'>        for(j = i + 1; j &lt; n; j++) {
+</span><span class='line'>            if(a[index] &gt; a[j])
+</span><span class='line'>            {
+</span><span class='line'>                index = j;
+</span><span class='line'>            }
+</span><span class='line'>        }
+</span><span class='line'>        
+</span><span class='line'>        if(index != i) {
+</span><span class='line'>            int temp = a[i];
+</span><span class='line'>            a[i] = a[index];
+</span><span class='line'>            a[index] = temp;
+</span><span class='line'>        }
+</span><span class='line'>    }
+</span><span class='line'>}
 </span><span class='line'>
-</span><span class='line'><span class="kt">int</span> <span class="nf">isPrime</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
-</span><span class='line'>        <span class="k">if</span><span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
+</span><span class='line'>int main(int argc, const char * argv[]) {
+</span><span class='line'>    int numArr[10] = {86, 37, 56, 29, 92, 73, 15, 63, 30, 8};
+</span><span class='line'>    sort(numArr, 10);
+</span><span class='line'>    for (int i = 0; i &lt; 10; i++) {
+</span><span class='line'>        printf("%d, ", numArr[i]);
+</span><span class='line'>    }
+</span><span class='line'>    printf("\n");
+</span><span class='line'>    return 0;
+</span><span class='line'>}
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>11、   求两个整数的最大公约数。</p>
+<p>3、    快速排序算法</p>
 
-<p><code>int gcd(int a, int b) {    int temp = 0;    if (a &lt; b) {        temp = a;        a = b;        b = temp;    }        while (b != 0) {        temp = a % b;        a = b;        b = temp;    }    return a;}
-</code></p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>void sort(int *a, int left, int right) {if(left &gt;= right) {return ;}int i = left;int j = right;int key = a[left];while (i &lt; j) {while (i &lt; j && key &gt;= a[j]) {j--;}a[i] = a[j];while (i &lt; j && key &lt;= a[i]) {  i++;}a[j] = a[i];}a[i] = key;sort(a, left, i-1);sort(a, i+1, right);}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>4、    归并排序</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>void merge(int sourceArr[], int tempArr[], int startIndex, int midIndex, int endIndex) {    int i = startIndex;    int j = midIndex + 1;    int k = startIndex;    while (i != midIndex + 1 && j != endIndex + 1) {        if (sourceArr[i] &gt;= sourceArr[j]) {            tempArr[k++] = sourceArr[j++];        } else {            tempArr[k++] = sourceArr[i++];        }    }        while (i != midIndex + 1) {        tempArr[k++] = sourceArr[i++];    }        while (j != endIndex + 1) {        tempArr[k++] = sourceArr[j++];    }        for (i = startIndex; i &lt;= endIndex; i++) {        sourceArr[i] = tempArr[i];    }}void sort(int souceArr[], int tempArr[], int startIndex, int endIndex) {    int midIndex;    if (startIndex &lt; endIndex) {        midIndex = (startIndex + endIndex) / 2;        sort(souceArr, tempArr, startIndex, midIndex);        sort(souceArr, tempArr, midIndex + 1, endIndex);        merge(souceArr, tempArr, startIndex, midIndex, endIndex);    }}int main(int argc, const char * argv[]) {    int numArr[10] = {86, 37, 56, 29, 92, 73, 15, 63, 30, 8};    int tempArr[10];    sort(numArr, tempArr, 0, 9);    for (int i = 0; i &lt; 10; i++) {        printf("%d, ", numArr[i]);    }    printf("\n");    return 0;}
+</span><span class='line'></span></code></pre></td></tr></table></div></figure>
+
+
+<p>5、    实现二分查找算法（编程语言不限）</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>int bsearchWithoutRecursion(int array[],int low,int high,int target){while(low &lt;= high){int mid = (low + high) / 2;if(array[mid] &gt; target)high = mid - 1;else if(array[mid] &lt; target)low = mid + 1;else//findthetargetreturn mid;}//the array does not contain the targetreturn -1;}----------------------------------------递归实现int binary_search(const int arr[],int low,int high,int key){int mid=low + (high - low) / 2;if(low &gt; high)return -1;else{if(arr[mid] == key)return mid;else if(arr[mid] &gt; key)return binary_search(arr, low, mid-1, key);elsereturn binary_search(arr, mid+1, high, key);}}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>6、    如何实现链表翻转（链表逆序）？思路：每次把第二个元素提到最前面来。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#include &lt;stdio.h&gt;#include &lt;stdlib.h&gt;typedef struct NODE {    struct NODE *next;    int num;}node;node *createLinkList(int length) {    if (length &lt;= 0) {        return NULL;    }    node *head,*p,*q;    int number = 1;    head = (node *)malloc(sizeof(node));    head-&gt;num = 1;    head-&gt;next = head;    p = q = head;    while (++number &lt;= length) {        p = (node *)malloc(sizeof(node));        p-&gt;num = number;        p-&gt;next = NULL;        q-&gt;next = p;        q = p;    }    return head;}void printLinkList(node *head) {    if (head == NULL) {        return;    }    node *p = head;    while (p) {        printf("%d ", p-&gt;num);        p = p -&gt; next;    }    printf("\n");}node *reverseFunc1(node *head) {    if (head == NULL) {        return head;    }    node *p,*q;    p = head;    q = NULL;    while (p) {        node *pNext = p -&gt; next;        p -&gt; next = q;        q = p;        p = pNext;    }    return q;}int main(int argc, const char * argv[]) {    node *head = createLinkList(7);    if (head) {        printLinkList(head);        node *reHead = reverseFunc1(head);        printLinkList(reHead);        free(reHead);    }    free(head);    return 0;}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>7、    实现一个字符串“how are you”的逆序输出（编程语言不限）。如给定字符串为“hello world”,输出结果应当为“world hello”。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>int spliterFunc(char *p) {    char c[100][100];    int i = 0;    int j = 0;    while (*p != '\0') {        if (*p == ' ') {            i++;            j = 0;        } else {            c[i][j] = *p;            j++;        }        p++;    }    for (int k = i; k &gt;= 0; k--) {        printf("%s", c[k]);        if (k &gt; 0) {            printf(" ");        } else {            printf("\n");         }    }    return 0;}
+</span><span class='line'></span></code></pre></td></tr></table></div></figure>
+
+
+<p>8、    给定一个字符串，输出本字符串中只出现一次并且最靠前的那个字符的位置？如“abaccddeeef”,字符是b,输出应该是2。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>char *strOutPut(char *);int compareDifferentChar(char, char *);int main(int argc, const char * argv[]) {        char *inputStr = "abaccddeeef";    char *outputStr = strOutPut(inputStr);    printf("%c \n", *outputStr);    return 0;}char *strOutPut(char *s) {    char str[100];    char *p = s;    int index = 0;    while (*s != '\0') {        if (compareDifferentChar(*s, p) == 1) {            str[index] = *s;            index++;        }        s++;    }    return &str;}int compareDifferentChar(char c, char *s) {    int i = 0;    while (*s != '\0' && i&lt;= 1) {        if (*s == c) {            i++;        }        s++;    }    if (i == 1) {        return 1;    } else {        return 0;    }}
+</span><span class='line'>```
+</span><span class='line'>9、  二叉树的先序遍历为FBACDEGH,中序遍历为：ABDCEFGH,请写出这个二叉树的后序遍历结果。
+</span><span class='line'>**ADECBHGF**
+</span><span class='line'>
+</span><span class='line'>* 先序+中序遍历还原二叉树：先序遍历是：ABDEGCFH 中序遍历是：DBGEACHF
+</span><span class='line'>
+</span><span class='line'>首先从先序得到第一个为A，就是二叉树的根，回到中序，可以将其分为三部分：
+</span><span class='line'>
+</span><span class='line'>左子树的中序序列DBGE，根A，右子树的中序序列CHF
+</span><span class='line'>接着将左子树的序列回到先序可以得到B为根，这样回到左子树的中序再次将左子树分割为三部分：
+</span><span class='line'>左子树的左子树D，左子树的根B，左子树的右子树GE
+</span><span class='line'>同样地，可以得到右子树的根为C
+</span><span class='line'>类似地将右子树分割为根C，右子树的右子树HF，注意其左子树为空 
+</span><span class='line'>如果只有一个就是叶子不用再进行了，刚才的GE和HF再次这样运作，就可以将二叉树还原了。
+</span><span class='line'>
+</span><span class='line'>10、 打印2-100之间的素数。
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>int main(int argc, const char * argv[]) {    for (int i = 2; i &lt; 100; i++) {        int r = isPrime(i);        if (r == 1) {            printf(&ldquo;%ld &rdquo;, i);        }    }    return 0;}
+int isPrime(int n){    int i, s;    for(i = 2; i &lt;= sqrt(n); i++)        if(n % i == 0)  return 0;    return 1;}</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>11、    求两个整数的最大公约数。
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>int gcd(int a, int b) {    int temp = 0;    if (a &lt; b) {        temp = a;        a = b;        b = temp;    }        while (b != 0) {        temp = a % b;        a = b;        b = temp;    }    return a;}
+```</p>
 
 <p><strong>本文内容中部分来自网络，后续会持续更新完善。欢迎一起学习交流！</strong></p>
 

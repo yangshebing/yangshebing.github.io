@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Others | 杨社兵的技术博客]]></title>
   <link href="http://yangshebing.github.io/blog/categories/others/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2016-04-25T02:05:36+08:00</updated>
+  <updated>2016-04-25T02:10:03+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
     <name><![CDATA[杨社兵]]></name>
@@ -169,7 +169,8 @@ int main(int argc, const char * argv[]) {
             printf("%d, ", numArr[i]);
             }
         printf("\n");
-        return 0;}
+        return 0;
+    }
 </code></pre>
 
 <p>5、    实现二分查找算法（编程语言不限）</p>
@@ -247,7 +248,9 @@ void printLinkList(node *head) {
 node *reverseFunc1(node *head) {
     if (head == NULL) {
             return head;
+
             }
+
         node *p,*q;
         p = head;
         q = NULL;
@@ -257,7 +260,8 @@ node *reverseFunc1(node *head) {
                 q = p;
                 p = pNext;
             }
-        return q;}
+        return q;
+    }
 
 int main(int argc, const char * argv[]) {
     node *head = createLinkList(7);
@@ -265,7 +269,8 @@ int main(int argc, const char * argv[]) {
             printLinkList(head);
                 node *reHead = reverseFunc1(head);
                 printLinkList(reHead);
-                free(reHead);    }
+                free(reHead);    
+    }
         free(head);
         return 0;
     }
@@ -286,7 +291,10 @@ int main(int argc, const char * argv[]) {
                     c[i][j] = *p;
                         j++;
                     }
-                p++;    }
+                p++;    
+
+    }
+
         for (int k = i; k &gt;= 0; k--) {
             printf("%s", c[k]);
                 if (k &gt; 0) {
@@ -294,7 +302,9 @@ int main(int argc, const char * argv[]) {
                     } else {
                     printf("\n");
                         }
-            }    return 0;}
+            }    return 0;
+
+    }
 </code></pre>
 
 <p>8、    给定一个字符串，输出本字符串中只出现一次并且最靠前的那个字符的位置？如“abaccddeeef”,字符是b,输出应该是2。</p>
@@ -304,7 +314,8 @@ char *strOutPut(char *);
 
 int compareDifferentChar(char, char *);
 
-int main(int argc, const char * argv[]) {        char *inputStr = "abaccddeeef";
+int main(int argc, const char * argv[]) {    
+        char *inputStr = "abaccddeeef";
         char *outputStr = strOutPut(inputStr);
         printf("%c \n", *outputStr);
         return 0;

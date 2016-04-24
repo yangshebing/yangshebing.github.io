@@ -4,7 +4,7 @@
   <title><![CDATA[杨社兵的技术博客]]></title>
   <link href="http://yangshebing.github.io/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2016-04-25T02:05:36+08:00</updated>
+  <updated>2016-04-25T02:10:03+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
     <name><![CDATA[杨社兵]]></name>
@@ -271,6 +271,7 @@
 <span class='line-number'>37</span>
 <span class='line-number'>38</span>
 <span class='line-number'>39</span>
+<span class='line-number'>40</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>void merge(int sourceArr[], int tempArr[], int startIndex, int midIndex, int endIndex) {
 </span><span class='line'>    int i = startIndex;
 </span><span class='line'>        int j = midIndex + 1;
@@ -308,7 +309,8 @@
 </span><span class='line'>            printf("%d, ", numArr[i]);
 </span><span class='line'>            }
 </span><span class='line'>        printf("\n");
-</span><span class='line'>        return 0;}
+</span><span class='line'>        return 0;
+</span><span class='line'>    }
 </span><span class='line'></span></code></pre></td></tr></table></div></figure>
 
 
@@ -438,6 +440,10 @@
 <span class='line-number'>61</span>
 <span class='line-number'>62</span>
 <span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>#include &lt;stdio.h&gt;
 </span><span class='line'>#include &lt;stdlib.h&gt;
 </span><span class='line'>typedef struct NODE {
@@ -479,7 +485,9 @@
 </span><span class='line'>node *reverseFunc1(node *head) {
 </span><span class='line'>    if (head == NULL) {
 </span><span class='line'>            return head;
+</span><span class='line'>        
 </span><span class='line'>            }
+</span><span class='line'>    
 </span><span class='line'>        node *p,*q;
 </span><span class='line'>        p = head;
 </span><span class='line'>        q = NULL;
@@ -489,7 +497,8 @@
 </span><span class='line'>                q = p;
 </span><span class='line'>                p = pNext;
 </span><span class='line'>            }
-</span><span class='line'>        return q;}
+</span><span class='line'>        return q;
+</span><span class='line'>    }
 </span><span class='line'>
 </span><span class='line'>int main(int argc, const char * argv[]) {
 </span><span class='line'>    node *head = createLinkList(7);
@@ -497,7 +506,8 @@
 </span><span class='line'>            printLinkList(head);
 </span><span class='line'>                node *reHead = reverseFunc1(head);
 </span><span class='line'>                printLinkList(reHead);
-</span><span class='line'>                free(reHead);    }
+</span><span class='line'>                free(reHead);    
+</span><span class='line'>    }
 </span><span class='line'>        free(head);
 </span><span class='line'>        return 0;
 </span><span class='line'>    }
@@ -529,6 +539,11 @@
 <span class='line-number'>21</span>
 <span class='line-number'>22</span>
 <span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>int spliterFunc(char *p) {
 </span><span class='line'>    char c[100][100];
 </span><span class='line'>        int i = 0;
@@ -542,7 +557,10 @@
 </span><span class='line'>                    c[i][j] = *p;
 </span><span class='line'>                        j++;
 </span><span class='line'>                    }
-</span><span class='line'>                p++;    }
+</span><span class='line'>                p++;    
+</span><span class='line'>    
+</span><span class='line'>    }
+</span><span class='line'>    
 </span><span class='line'>        for (int k = i; k &gt;= 0; k--) {
 </span><span class='line'>            printf("%s", c[k]);
 </span><span class='line'>                if (k &gt; 0) {
@@ -550,7 +568,9 @@
 </span><span class='line'>                    } else {
 </span><span class='line'>                    printf("\n");
 </span><span class='line'>                      }
-</span><span class='line'>            }    return 0;}
+</span><span class='line'>            }    return 0;
+</span><span class='line'>    
+</span><span class='line'>    }
 </span><span class='line'></span></code></pre></td></tr></table></div></figure>
 
 
@@ -593,12 +613,14 @@
 <span class='line-number'>35</span>
 <span class='line-number'>36</span>
 <span class='line-number'>37</span>
+<span class='line-number'>38</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>
 </span><span class='line'>char *strOutPut(char *);
 </span><span class='line'>
 </span><span class='line'>int compareDifferentChar(char, char *);
 </span><span class='line'>
-</span><span class='line'>int main(int argc, const char * argv[]) {        char *inputStr = "abaccddeeef";
+</span><span class='line'>int main(int argc, const char * argv[]) {    
+</span><span class='line'>        char *inputStr = "abaccddeeef";
 </span><span class='line'>        char *outputStr = strOutPut(inputStr);
 </span><span class='line'>        printf("%c \n", *outputStr);
 </span><span class='line'>        return 0;

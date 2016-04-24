@@ -4,7 +4,7 @@
   <title><![CDATA[杨社兵的技术博客]]></title>
   <link href="http://yangshebing.github.io/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2016-04-25T01:26:50+08:00</updated>
+  <updated>2016-04-25T01:37:40+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
     <name><![CDATA[杨社兵]]></name>
@@ -134,16 +134,26 @@ char <em>strOutPut(char </em>);int compareDifferentChar(char, char <em>);int mai
 
 <p>10、   打印2-100之间的素数。</p>
 
-<figure class='code'><figcaption><span>int main(int argc, const char * argv[]) {    for (int i = 2; i < 100; i++) {        int r = isPrime(i);        if (r == 1) {            printf("%ld ", i);        }    }    return 0;}int isPrime(int n){    int i, s;    for(i = 2; i <= sqrt(n); i++)        if(n % i == 0)  return 0;    return 1;}</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>int main(int argc, const char * argv[]) {    for (int i = 2; i < 100; i++) {        int r = isPrime(i);        if (r == 1) {            printf("%ld ", i);        }    }    return 0;}</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="err">```</span>
-</span><span class='line'>
-</span><span class='line'><span class="mi">11</span><span class="err">、</span>    <span class="err">求两个整数的最大公约数。</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="kt">int</span> <span class="nf">isPrime</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">if</span><span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Cint gcd(int a, int b) {    int temp = 0;    if (a &lt; b) {        temp = a;        a = b;        b = temp;    }        while (b != 0) {        temp = a % b;        a = b;        b = temp;    }    return a;}```</p>
+<p>11、   求两个整数的最大公约数。</p>
+
+<p><code>int gcd(int a, int b) {    int temp = 0;    if (a &lt; b) {        temp = a;        a = b;        b = temp;    }        while (b != 0) {        temp = a % b;        a = b;        b = temp;    }    return a;}</code></p>
 
 <p><strong>本文内容中部分来自网络，后续会持续更新完善。欢迎一起学习交流！</strong></p>
 

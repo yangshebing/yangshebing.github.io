@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Others | 杨社兵的技术博客]]></title>
   <link href="http://yangshebing.github.io/blog/categories/others/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2016-04-25T01:26:50+08:00</updated>
+  <updated>2016-04-25T01:37:40+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
     <name><![CDATA[杨社兵]]></name>
@@ -106,12 +106,13 @@ int main(int argc, const char * argv[]) {
 
 10、   打印2-100之间的素数。
 
-```Cint main(int argc, const char * argv[]) {    for (int i = 2; i &lt; 100; i++) {        int r = isPrime(i);        if (r == 1) {            printf("%ld ", i);        }    }    return 0;}int isPrime(int n){    int i, s;    for(i = 2; i &lt;= sqrt(n); i++)        if(n % i == 0)  return 0;    return 1;}
+```  Cint main(int argc, const char * argv[]) {    for (int i = 2; i &lt; 100; i++) {        int r = isPrime(i);        if (r == 1) {            printf("%ld ", i);        }    }    return 0;}
+int isPrime(int n){    int i, s;    for(i = 2; i &lt;= sqrt(n); i++)        if(n % i == 0)  return 0;    return 1;}
 </code></pre>
 
 <p>11、   求两个整数的最大公约数。</p>
 
-<p><code>Cint gcd(int a, int b) {    int temp = 0;    if (a &lt; b) {        temp = a;        a = b;        b = temp;    }        while (b != 0) {        temp = a % b;        a = b;        b = temp;    }    return a;}</code></p>
+<p><code>int gcd(int a, int b) {    int temp = 0;    if (a &lt; b) {        temp = a;        a = b;        b = temp;    }        while (b != 0) {        temp = a % b;        a = b;        b = temp;    }    return a;}</code></p>
 
 <p><strong>本文内容中部分来自网络，后续会持续更新完善。欢迎一起学习交流！</strong></p>
 

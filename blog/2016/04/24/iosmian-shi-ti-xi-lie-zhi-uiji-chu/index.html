@@ -86,8 +86,9 @@
   </header>
 
 
-<div class="entry-content"><p>1、    简述app启动周期。
-打开应用程序，它先会执行main函数，再执行UIApplicationMain函数。初始化
+<div class="entry-content"><p><strong>1、  简述app启动周期。</strong></p>
+
+<p>打开应用程序，它先会执行main函数，再执行UIApplicationMain函数。初始化
 UIApplication，设置代理对象，开启事件循环，调用代理方法进行事件处理。首先会调
 用application:didFinishLaunchingWithOptions:代理方法。接下来会调用
 applicationDidBecomeActive:代理方法。监听系统事件，结束程序。当程序正常退

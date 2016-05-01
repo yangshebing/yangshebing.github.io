@@ -4,7 +4,7 @@
   <title><![CDATA[杨社兵的技术博客]]></title>
   <link href="http://yangshebing.github.io/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2016-05-01T23:07:22+08:00</updated>
+  <updated>2016-05-01T23:08:54+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
     <name><![CDATA[杨社兵]]></name>
@@ -904,6 +904,9 @@ delegate可以处理的事件包括：应用程序的生命周期事件（如程
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 </code></p>
 
+<!--more-->
+
+
 <p>2、安装<a href="https://github.com/creationix/nvm#installation">nvm</a>方法</p>
 
 <p>通过脚本安装方式，在终端执行：
@@ -935,9 +938,6 @@ brew install watchman
 <p>到此处React Native基础环境搭建基本完成，推荐经常运行<code>brew update &amp;&amp; brew upgrade</code>命令保持你的程序是最新的。</p>
 
 <h4>二、iOS开发环境</h4>
-
-<!--more-->
-
 
 <p>1、iOS开发环境：（默认读者已经安装<strong>Xcode7.0或以上版本</strong>，没有可自行前往AppStore下载）</p>
 

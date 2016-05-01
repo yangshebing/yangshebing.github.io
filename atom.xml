@@ -4,7 +4,7 @@
   <title><![CDATA[杨社兵的技术博客]]></title>
   <link href="http://yangshebing.github.io/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2016-05-01T22:50:03+08:00</updated>
+  <updated>2016-05-01T22:52:29+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
     <name><![CDATA[杨社兵]]></name>
@@ -740,7 +740,55 @@
     <content type="html"><![CDATA[<p>1、    简述app启动周期。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>打开应用程序，它先会执行main函数，再执行UIApplicationMain函数。初始化UIApplication，设置代理对象，开启事件循环，调用代理方法进行事件处理。首先会调用application:didFinishLaunchingWithOptions:代理方法。接下来会调用applicationDidBecomeActive:代理方法。监听系统事件，结束程序。当程序正常退出UIApplicationMain函数才会返回。监听系统事件：锁屏后app会调用：applicationWillResignActive:代理方法。然后接着调用applicationDidEnterBackground:方法。解锁后app会调用：applicationWillEnterForeground:代理方法。接着调用applicationDidBecomeActive代理方法。杀死进程会调用：applicationWillTerminate:代理方法。接听电话：先调用applicationWillResignActive:代理方法。挂断电话后会直接进入应用调：applicationDidBecomeActive:代理方法。出现内存警告会调用：applicationDidReceiveMemoryWarning:代理方法
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>打开应用程序，它先会执行main函数，再执行UIApplicationMain函数。初始化
+</span><span class='line'>
+</span><span class='line'>UIApplication，设置代理对象，开启事件循环，调用代理方法进行事件处理。首先会调
+</span><span class='line'>
+</span><span class='line'>用application:didFinishLaunchingWithOptions:代理方法。接下来会调用
+</span><span class='line'>
+</span><span class='line'>applicationDidBecomeActive:代理方法。监听系统事件，结束程序。当程序正常退
+</span><span class='line'>
+</span><span class='line'>出UIApplicationMain函数才会返回。
+</span><span class='line'>监听系统事件：
+</span><span class='line'>锁屏后app会调用：applicationWillResignActive:代理方法。然后接着调用
+</span><span class='line'>
+</span><span class='line'>applicationDidEnterBackground:方法。
+</span><span class='line'>
+</span><span class='line'>解锁后app会调用：applicationWillEnterForeground:代理方法。接着调用
+</span><span class='line'>
+</span><span class='line'>applicationDidBecomeActive代理方法。
+</span><span class='line'>
+</span><span class='line'>杀死进程会调用：applicationWillTerminate:代理方法。
+</span><span class='line'>接听电话：先调用applicationWillResignActive:代理方法。挂断电话后会直接进入
+</span><span class='line'>
+</span><span class='line'>应用调：applicationDidBecomeActive:代理方法。
+</span><span class='line'>
+</span><span class='line'>出现内存警告会调用：applicationDidReceiveMemoryWarning:代理方法
+</span><span class='line'>
 </span></code></pre></td></tr></table></div></figure>
 
 

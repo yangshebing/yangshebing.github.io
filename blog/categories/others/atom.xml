@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Others | 杨社兵的技术博客]]></title>
   <link href="http://yangshebing.github.io/blog/categories/others/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2016-05-01T22:50:03+08:00</updated>
+  <updated>2016-05-01T22:52:29+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
     <name><![CDATA[杨社兵]]></name>
@@ -416,7 +416,30 @@ int isPrime(int n){
     <id>http://yangshebing.github.io/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-uiji-chu</id>
     <content type="html"><![CDATA[<p>1、    简述app启动周期。</p>
 
-<pre><code>打开应用程序，它先会执行main函数，再执行UIApplicationMain函数。初始化UIApplication，设置代理对象，开启事件循环，调用代理方法进行事件处理。首先会调用application:didFinishLaunchingWithOptions:代理方法。接下来会调用applicationDidBecomeActive:代理方法。监听系统事件，结束程序。当程序正常退出UIApplicationMain函数才会返回。监听系统事件：锁屏后app会调用：applicationWillResignActive:代理方法。然后接着调用applicationDidEnterBackground:方法。解锁后app会调用：applicationWillEnterForeground:代理方法。接着调用applicationDidBecomeActive代理方法。杀死进程会调用：applicationWillTerminate:代理方法。接听电话：先调用applicationWillResignActive:代理方法。挂断电话后会直接进入应用调：applicationDidBecomeActive:代理方法。出现内存警告会调用：applicationDidReceiveMemoryWarning:代理方法
+<pre><code>打开应用程序，它先会执行main函数，再执行UIApplicationMain函数。初始化
+
+UIApplication，设置代理对象，开启事件循环，调用代理方法进行事件处理。首先会调
+
+用application:didFinishLaunchingWithOptions:代理方法。接下来会调用
+
+applicationDidBecomeActive:代理方法。监听系统事件，结束程序。当程序正常退
+
+出UIApplicationMain函数才会返回。
+监听系统事件：
+锁屏后app会调用：applicationWillResignActive:代理方法。然后接着调用
+
+applicationDidEnterBackground:方法。
+
+解锁后app会调用：applicationWillEnterForeground:代理方法。接着调用
+
+applicationDidBecomeActive代理方法。
+
+杀死进程会调用：applicationWillTerminate:代理方法。
+接听电话：先调用applicationWillResignActive:代理方法。挂断电话后会直接进入
+
+应用调：applicationDidBecomeActive:代理方法。
+
+出现内存警告会调用：applicationDidReceiveMemoryWarning:代理方法
 </code></pre>
 
 <p>2、    简单的说说UIApplication的作用及继承关系。</p>

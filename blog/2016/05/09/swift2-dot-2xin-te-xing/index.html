@@ -1,0 +1,647 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>swift2.2新特性 - 杨社兵的技术博客</title>
+  <meta name="author" content="杨社兵">
+
+  
+  <meta name="description" content="Swift2.2新特性">
+  <meta name="keywords" content="Swift, Swift2.2, Swift2.2新特性">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://yangshebing.github.io/blog/2016/05/09/swift2-dot-2xin-te-xing/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="杨社兵的技术博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="http://cdn.staticfile.org/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">杨社兵的技术博客</a></h1>
+  
+    <h2>业精于勤荒于嬉，行成于思毁于随.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="yangshebing.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">我的博客</a></li>
+  <li><a href="/blog/archives">所有文章</a></li>
+  <li><a href="http://weibo.com/yangshebing" target="_blank">新浪微博</a></li>
+  <li><a href="/about">关于我</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">swift2.2新特性</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-05-09T23:09:48+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>11:09 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h4>1、编译期Swift版本检测</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>#if swift(&gt;=3.0)
+</span><span class='line'>    print("Running Swift 3.0 or later")
+</span><span class='line'>#else
+</span><span class='line'>    print("Running Swift 2.2 or earlier")
+</span><span class='line'>#endif
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>它和Swift2中介绍过的<code>#available</code>表达式不同,#available表达式是运行时检查,<code>#if swift(&gt;=3.0)... #else... #endif</code>是编译期检查。</p>
+
+<p><strong>一个警告:这个特性这次不可用,因为Swift2.1编译器并不知道<code>#if swift(&gt;=2.2)</code>意味着什么。然而,一旦Swift3.0以及未来所有版本可用,Swift编译期版本检查将会是一个非常有用的工具。</strong></p>
+
+<!--more-->
+
+
+<h4>2、编译期选择器检查</h4>
+
+<p>在Swift2.1,下面这段代码完全没有问题:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>override func viewDidLoad() {
+</span><span class='line'>  super.viewDidLoad()
+</span><span class='line'>  navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "addNewFireflyRefernce")
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>func addNewFireflyReference() {
+</span><span class='line'>   gratuitousReferences.append("We should start dealing in black-market beagles.")
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面这段代码在应用程序中会崩溃,因为导航栏按钮调用了一个方法<code>addNewFireflyRefernce</code>,方法名中的<code>Refrence</code>少了一个字母”e”.这类简单的单词拼写错误很容易造成bug,所以在Swift2.2中弃用了使用字符串作为选择器。使用新语法:<code>#selector</code>来取代它。</p>
+
+<p>使用<code>#selector</code>将会在编译期检查你的代码,确定你想调用的方法真实存在。甚至更好的是,如果方法不存在,你会得到一个编译错误。</p>
+
+<p>下面是通过<code>#selector</code>来重写之前的代码:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>override func viewDidLoad() {
+</span><span class='line'>        super.viewDidLoad()
+</span><span class='line'>        navigationItem.rightBarButtonItem =
+</span><span class='line'>        UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(addNewFireflyReference))
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>func addNewFireflyReference() {
+</span><span class='line'>  gratuitousReferences.append("Curse your sudden but inevitable betrayal!")
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这里需要注意的:</p>
+
+<p>Objective-C Selectors(OC选择器)</p>
+
+<p>一个OC选择器是一种特指OC方法名的类型。在Swift里,OC选择器是通过Selector结构来表示的.你可以使用#selector表达式来构造一个选择器。例如<code>let mySelector = #selector(MyViewController.tappedButton)</code>,用一个直接引用一个OC方法作为子表达式。一个OC方法引用能被括号括起来,它能使用”as”操作符消除它与重载之间的歧义。例如<code>let anotherSelector = #selector(((UIView.insertSubview(_:at:)) as(UIView) -&gt;(UIView, Int) -&gt;Void))</code>。</p>
+
+<p>示例代码如下:为按钮添加事件</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>import UIKit
+</span><span class='line'>class MyViewController: UIViewController {
+</span><span class='line'>    let myButton = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
+</span><span class='line'>
+</span><span class='line'>    override init?(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+</span><span class='line'>        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+</span><span class='line'>        let action = #selector(MyViewController.tappedButton)
+</span><span class='line'>        myButton.addTarget(self, action: action, forControlEvents: .TouchUpInside)
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    func tappedButton(sender: UIButton!) {
+</span><span class='line'>        print("tapped button")
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    required init?(coder: NSCoder) {
+</span><span class='line'>        super.init(coder: coder)
+</span><span class='line'>    }
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithObjective-CAPIs.html">官方文档入口</a></p>
+
+<h4>3、更多的关键词作为参数标签</h4>
+
+<p>Swift中有很多关键词，像<code>class</code>、<code>fund</code>、<code>let</code>和<code>public</code>这些都有其特殊意义，所以不能作为标识符使用。Swift中是允许你使用关键词作为参数标签的。如果你像下面代码一样把它们放在引号里面：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>func visitCity(name: String, `in` state: String) {
+</span><span class='line'>   print("I'm going to visit \(name) in \(state)")
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>visitCity("Nashville", `in`: "Tennessee")
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Swift2.2中除了<code>inout</code>、<code>var</code>、<code>let</code>之外，任何关键字都能被用作一个参数标签。如果你在代码中把关键字放在引号里，你将会得到一个Xcode的Fix-it警告，点击该警告便可自动移除引号。去掉引号的代码很可能是这样的：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>func visitCity(name: String, in state: String) {
+</span><span class='line'>  print("I'm going to visit \(name) in \(state)")
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>visitCity("Nashville", in: "Tennessee")
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>4、内置元组比较</h4>
+
+<p>Swift2.2介绍了比较两个元组相等的能力。这意味着它将会检查元组中的每一个元素与另一个元组中的元素是否匹配，如果所有元素匹配，返回true。</p>
+
+<p>举个例子，下面的代码将会打印“不匹配”：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>let singer = (first: "Taylor", last: "Swift")
+</span><span class='line'>let alien = (first: "Justin", last: "Bieber")
+</span><span class='line'>
+</span><span class='line'>if singer == alien {
+</span><span class='line'>   print("They match! That explains why you never see them together…")
+</span><span class='line'>} else {
+</span><span class='line'>   print("No match.")
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Swift2.2元组的比较元素个数不能超过6个。</strong></p>
+
+<p><strong>警告：Swift2.2在检查平等性时将会忽略你的元素名，因此下面代码中的“singer”与”bird”会被认为是相等的：</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>let singer = (first: "Taylor", last: "Swift")
+</span><span class='line'>let bird = (name: "Taylor", breed: "Swift")
+</span><span class='line'>
+</span><span class='line'>if singer == bird {
+</span><span class='line'>   print("This explains why she sings so well.")
+</span><span class='line'>} else {
+</span><span class='line'>   print("No match.")
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>5、元组的splat语法被弃用</h4>
+
+<p>在Swift2.1之前，有可能会使用一个元组来填充一个函数的参数。因此，如果你有一个函数带了两个参数，你能用一个含有两个元素的元组来调用它，只要元组有正确的类型和元素名称，例如：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>func describePerson(name: String, age: Int) {
+</span><span class='line'>    print("\(name) is \(age) years old")
+</span><span class='line'>}
+</span><span class='line'>let person = ("Malcolm Reynolds", age: 49)
+</span><span class='line'>describePerson(person)
+</span><span class='line'>        </span></code></pre></td></tr></table></div></figure>
+
+
+<p>这种语法，被称为“元组splat语法”。这是不符合Swift的自身描述的语言习惯及可读性的风格。因此在Swift2.2中被弃用。</p>
+
+<h4>6、C语言风格的for循环被弃用</h4>
+
+<p>即使Swift有很多种循环语法可选择，但是C语言风格的for循环仍然是语言中的一部分，偶尔会被使用。例如：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>for var i = 0; i &lt; 10; i++ {
+</span><span class='line'>    print(i)
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这种语法在Swift2.2中已经被弃用了，可能在Swift3.0中全部移除。</p>
+
+<p>如果你使用的是Xcode，你可能会得到一个Fix-it的警告，它将会把你C语言风格的for循环转换成现代的Swift。现在我们应该这样写：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'> for i in 0 ..&lt; 10 {
+</span><span class='line'>    print(i)
+</span><span class='line'> }
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然而，修复功能是被限制的，因此，有些事情需要你自己去做。例如，下面两个循环它将不会帮你修复它：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>for var i = 10; i &gt; 0; i-- {
+</span><span class='line'>   print(i)
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>for var i = 0; i &lt; 10; i += 2 {
+</span><span class='line'>   print(i)
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>第一种情况，你应该使用"(1&hellip;10).reverse()&ldquo;创建一个反向范围。这个不能像之前一样写成"i in 10…1”,这样写编译没有问题，但是在运行时会崩溃。第二种情况，你应该使用“stride(to:by:)”去累加2。因此，正确重写上面两个循环的方式如下所示：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>for i in (1...10).reverse() {
+</span><span class='line'>    print(i)
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>for i in 0.stride(to: 10, by: 2) {
+</span><span class='line'>    print(i)
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>7、++和—-运算符被弃用</h4>
+
+<p>如果你使用过C语言风格的for循环，肯定对++和——运算符并不陌生。在Swift3.0中，++和&ndash;运算符也被弃用了。例如像：<code>i++</code>,<code>i--</code>,<code>++i</code>,<code>--i</code>,<code>i = i++</code>这些都不能用了。取而代之的是:<code>i += 1</code>或<code>i -= 1</code>，像上面例子中的代码，Xcode也会提供Fix-it修复警告帮你修复代码。</p>
+
+<h4>8、var参数被弃用</h4>
+
+<p>Swift2.2之前，如果你想在函数里面修改函数参数，可以把函数参数声明为var,例如：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>func greet(var name: String) {
+</span><span class='line'>    name = name.uppercaseString
+</span><span class='line'>    print("Hello, \(name)!")
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>var name = "Taylor"
+</span><span class='line'>greet(name)
+</span><span class='line'>print("After function, name is \(name)")
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样容易困惑，最后print()语句输出到底是“Taylor”还是”TAYLOR”呢？在inout关键字中存在更多的困惑：下面的例子中使用inout而不是使用var，然后添加一个”&amp;”符号。便产生了这段代码：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>func greet(inout name: String) {
+</span><span class='line'>    name = name.uppercaseString
+</span><span class='line'>    print("Hello, \(name)!")
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>var name = "Taylor"
+</span><span class='line'>greet(&name)
+</span><span class='line'>print("After function, name is \(name)")
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当程序运行时，var的例子与inout例子会产生不同的输出结果，因为改变var参数仅仅应用于函数内部，而改变inout参数则会直接影响到初始值。</p>
+
+<p>所以，在Swift2.2中，通过在函数参数中弃用var关键字来清楚这个困惑。在Swift3.0中将会被移除。如何你还想按照以前的习惯写，可以像下面这样：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'> func greet(name: String) {
+</span><span class='line'>    let uppercaseName = name.uppercaseString
+</span><span class='line'>    print("Hello, \(uppercaseName)!")
+</span><span class='line'> }
+</span><span class='line'>    </span></code></pre></td></tr></table></div></figure>
+
+
+<h4>9、重命名debug标识符</h4>
+
+<p>Swift编译器在调试的时候自动提供了一些有用的符号，<code>__FILE__</code>会被替换成当前Swift文件名，<code>__LINE__</code>代表行数等等。在Swift2.2中，这些老的标识符被弃用，用<code>#file</code>,<code>#line</code>,<code>#column</code>,和<code>#function</code>取代。</p>
+
+<p>下面的例子中列出了新旧语法的区别：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'> func visitCity(name: String, in state: String) {
+</span><span class='line'>        // old - deprecated!
+</span><span class='line'>        print("This is on line \(__LINE__) of \(__FUNCTION__)")
+</span><span class='line'>
+</span><span class='line'>        print("I'm going to visit \(name) in \(state)")
+</span><span class='line'>
+</span><span class='line'>        // new - shiny!
+</span><span class='line'>        print("This is on line \(#line) of \(#function)")
+</span><span class='line'>  }
+</span><span class='line'>  </span></code></pre></td></tr></table></div></figure>
+
+
+<p>和其他的变化一样，Xcode会有Fix-it警告，来帮助你更新正确的代码。</p>
+
+<p><strong>本文内容来自网络，后续会持续更新完善。以上部分是我自己的学习与理解，欢迎一起学习交流！多多批评与指正！</strong></p>
+
+<p><strong>参考资料如下：</strong></p>
+
+<p>（1）<a href="https://swift.org/blog/swift-2-2-new-features/">New Features in Swift 2.2</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">杨社兵</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-05-09T23:09:48+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>11:09 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/swift/'>swift</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+  <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <span class="jiathis_txt">分享到：</span>
+  <a class="jiathis_button_tools_1"></a>
+  <a class="jiathis_button_tools_2"></a>
+  <a class="jiathis_button_tools_3"></a>
+  <a class="jiathis_button_tools_4"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2059530"></script>
+<!-- UY END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-chang-jian-suan-fa/" title="Previous Post: iOS面试题系列之常见算法">&laquo; iOS面试题系列之常见算法</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/09/swift2-dot-2xin-te-xing/">swift2.2新特性</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-chang-jian-suan-fa/">iOS面试题系列之常见算法</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-uiji-chu/">iOS面试题系列之UI相关</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/04/24/iosmian-shi-ti-zhi-objective-cji-chu/">iOS面试题系列之Objective-C相关</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/21/react-native-ios-kai-fa-huan-jing-da-jian/">React Native iOS 开发环境搭建</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+ <h1>iOS开发</h1>
+ <ul id="categories">
+  <li class='category'><a href='/blog/categories/objective-c/'>objective-c (4)</a></li>
+<li class='category'><a href='/blog/categories/others/'>others (7)</a></li>
+<li class='category'><a href='/blog/categories/swift/'>swift (5)</a></li>
+
+ </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - 杨社兵 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  <span class="credit">, 感谢 <a href="http://gitcafe.com/signup?invited_by=yangshebing" target="_blank">GitCafe</a> 为本站提供存储空间</span>
+
+  	<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?be50b7d5e40e390ecfdd9cc1a14fe0e6";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

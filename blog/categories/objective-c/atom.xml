@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Objective-c | 杨社兵的技术博客]]></title>
   <link href="http://yangshebing.github.io/blog/categories/objective-c/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2016-05-14T23:17:35+08:00</updated>
+  <updated>2016-05-14T23:20:37+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
     <name><![CDATA[杨社兵]]></name>
@@ -39,6 +39,9 @@
     //绘制线条路径
     CGContextStrokePath(contextRef);
 </code></pre>
+
+<!--more-->
+
 
 <p><strong>这里插播一个从指定UIColor对象中获取RGB值得方式，上面设置线条颜色方法：CGContextSetStrokeColor第二个参数有用到。</strong></p>
 
@@ -196,6 +199,9 @@ line.lineWidth = 3;
 line.lineCapStyle = kCGLineCapRound;
 [line stroke];
 </code></pre>
+
+<!--more-->
+
 
 <h4>2、绘制矩形</h4>
 

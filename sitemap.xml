@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://yangshebing.github.io/blog/2016/05/14/iostu-xing-hui-zhi-coregraphicspian/</loc>
+    <lastmod>2016-05-14T21:57:43+08:00</lastmod>
+  </url>
+  <url>
+    <loc>http://yangshebing.github.io/blog/2016/05/14/iostu-xing-hui-zhi-uibezierpathpian/</loc>
+    <lastmod>2016-05-14T21:55:19+08:00</lastmod>
+  </url>
+  <url>
     <loc>http://yangshebing.github.io/blog/2016/05/09/swift2-dot-2xin-te-xing/</loc>
     <lastmod>2016-05-09T23:09:48+08:00</lastmod>
   </url>

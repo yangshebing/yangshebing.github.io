@@ -9,14 +9,25 @@
   <meta name="author" content="杨社兵">
 
   
-  <meta name="description" content="1、编译期Swift版本检测 1
+  <meta name="description" content="1、绘制直线 1
 2
 3
 4
 5
-6 #if swift(&gt;=3.0) print("Running Swift 3.0 or later")
-#else print("Running Swift 2.2 or earlier")
-#endif 它和Swift2中介绍过的# &hellip;">
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19 //获取当前上下文 CGContextRef contextRef = UIGraphicsGetCurrentContext(); UIColor *color = [UIColor &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +85,719 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/05/14/iostu-xing-hui-zhi-coregraphicspian/">iOS图形绘制CoreGraphics篇</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-05-14T21:57:43+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:57 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>1、绘制直线</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>//获取当前上下文
+</span><span class='line'>    CGContextRef contextRef = UIGraphicsGetCurrentContext();
+</span><span class='line'>    UIColor *color = [UIColor colorWithRed:0.5 green:0.35 blue:0.8 alpha:0.7];
+</span><span class='line'>    //设置线条颜色
+</span><span class='line'>//    CGContextSetStrokeColor(contextRef, CGColorGetComponents([UIColor redColor].CGColor));
+</span><span class='line'>    //官方推荐首选这个API
+</span><span class='line'>    CGContextSetStrokeColorWithColor(contextRef, [UIColor redColor].CGColor);
+</span><span class='line'>    //设置线条颜色
+</span><span class='line'>    CGContextSetLineWidth(contextRef, 5);
+</span><span class='line'>    //设置线条端点(不带端点)
+</span><span class='line'>    CGContextSetLineCap(contextRef, kCGLineCapButt);
+</span><span class='line'>    //设置线条绘制的起始坐标点
+</span><span class='line'>    CGContextMoveToPoint(contextRef, 50, 20);
+</span><span class='line'>    //结束点
+</span><span class='line'>    CGContextAddLineToPoint(contextRef, 100, 20);
+</span><span class='line'>    //绘制线条路径
+</span><span class='line'>    CGContextStrokePath(contextRef);
+</span><span class='line'>    </span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>这里插播一个从指定UIColor对象中获取RGB值得方式，上面设置线条颜色方法：CGContextSetStrokeColor第二个参数有用到。</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>    //它是返回一个存储RGB与Alpha值得数组
+</span><span class='line'>    const CGFloat *componets =  CGColorGetComponents(color.CGColor);
+</span><span class='line'>    CGFloat r,g,b,a;
+</span><span class='line'>    //R值
+</span><span class='line'>    r = componets[0];
+</span><span class='line'>    //G值
+</span><span class='line'>    g = componets[1];
+</span><span class='line'>    //B值
+</span><span class='line'>    b = componets[2];
+</span><span class='line'>    //Alpha值
+</span><span class='line'>    a = componets[3];
+</span><span class='line'>
+</span><span class='line'>    
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>不信，此处看客可以打印RGB、Alpha值试试！</strong></p>
+
+<h4>2、绘制矩形</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  //设置线条颜色
+</span><span class='line'>    CGContextSetStrokeColorWithColor(contextRef, [UIColor blueColor].CGColor);
+</span><span class='line'>    CGContextSetLineWidth(contextRef, 2);
+</span><span class='line'>    //绘制矩形边框
+</span><span class='line'>    CGContextStrokeRect(contextRef, CGRectMake(50, 30, 80, 80));
+</span><span class='line'>//    CGContextSetFillColor(contextRef, CGColorGetComponents([UIColor cyanColor].CGColor));
+</span><span class='line'>    //绘制实心矩形
+</span><span class='line'>    CGContextSetFillColorWithColor(contextRef, [UIColor cyanColor].CGColor);
+</span><span class='line'>    CGContextFillRect(contextRef, CGRectMake(50, 120, 80, 80));
+</span><span class='line'>
+</span><span class='line'>    //绘制带边框的矩形
+</span><span class='line'>    CGContextSetStrokeColorWithColor(contextRef, [UIColor brownColor].CGColor);
+</span><span class='line'>    CGContextSetFillColorWithColor(contextRef, [UIColor magentaColor].CGColor);
+</span><span class='line'>    CGContextSetLineWidth(contextRef, 2);
+</span><span class='line'>    CGContextAddRect(contextRef, CGRectMake(50, 210, 80, 80));
+</span><span class='line'>    
+</span><span class='line'>    //绘制路径方式：
+</span><span class='line'>    /*CGPathDrawingMode:
+</span><span class='line'>     *kCGPathFill,  //用非零绕数规则填充（什么鬼？）
+</span><span class='line'>     *kCGPathEOFill,    //用奇偶规则填充不带边框
+</span><span class='line'>     *kCGPathStroke,    //描线
+</span><span class='line'>     *kCGPathFillStroke,    //描线填充
+</span><span class='line'>     *kCGPathEOFillStroke   //奇偶填充带边框
+</span><span class='line'>     */
+</span><span class='line'>    CGContextDrawPath(contextRef, kCGPathFillStroke);
+</span><span class='line'>    
+</span><span class='line'>    </span></code></pre></td></tr></table></div></figure>
+
+
+<p> <strong>这里介绍一下设置线型为虚线的方式（虚线绘制方式）</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>/*
+</span><span class='line'>*phase:    虚线开始部分绘制大小
+</span><span class='line'>*const CGFloat *lengths:   虚线排列的大小规则数组，数组的值用来指定绘制与未绘制部分的长度（间隔）
+</span><span class='line'>*例如{2，3}指交替绘制2个单元长度的线段与3个单元长度未绘制长度线段（间隙）
+</span><span class='line'>*例子示意图：      --   --   --   --   --   --
+</span><span class='line'>*{1，3，4，2}绘制一个单元长度线段，间隔3个单元长度空隙，接着绘制4个长度的线段，间隔2个单元长度的空隙
+</span><span class='line'>*例子示意图：      -   ----  -   ----  -   ----  -   ----  -
+</span><span class='line'>*size_t count: 虚线排列数组中参数值有用个数
+</span><span class='line'>*/
+</span><span class='line'> 
+</span><span class='line'>const CGFloat spaceArr[] = {6, 4, 5, 7};
+</span><span class='line'>CGContextSetLineDash(contextRef, 0, spaceArr, 4);
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> ####3、绘制贝塞尔曲线</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> 
+</span><span class='line'>CGContextSetStrokeColorWithColor(contextRef, [UIColor redColor].CGColor);
+</span><span class='line'>CGContextSetFillColorWithColor(contextRef, [UIColor grayColor].CGColor);
+</span><span class='line'>CGContextSetLineWidth(contextRef, 1);
+</span><span class='line'>CGContextMoveToPoint(contextRef, 50, 300);
+</span><span class='line'>//添加三个point坐标。绘制一条曲线。
+</span><span class='line'>//CGContextAddCurveToPoint(contextRef, 100, 320, 150, 300, 200, 360);
+</span><span class='line'>//添加二次曲线
+</span><span class='line'>CGContextAddQuadCurveToPoint(contextRef, 250, 380, 290, 280);
+</span><span class='line'>CGContextDrawPath(contextRef, kCGPathStroke);
+</span><span class='line'> 
+</span><span class='line'> </span></code></pre></td></tr></table></div></figure>
+
+
+<h4>4、绘制圆弧</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>CGContextAddArc(contextRef, 50, 390, 20.0, -10 * M_PI / 180, 60 * M_PI / 180, YES);
+</span><span class='line'>CGContextDrawPath(contextRef, kCGPathStroke);
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>5、绘制圆形</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>//绘制圆形:方式一
+</span><span class='line'>CGContextSetStrokeColorWithColor(contextRef, [UIColor blueColor].CGColor);
+</span><span class='line'>CGContextSetFillColorWithColor(contextRef, [UIColor redColor].CGColor);
+</span><span class='line'>CGContextAddArc(contextRef, 50, 480, 20.0, -180 * M_PI / 180, 180 * M_PI / 180, NO);
+</span><span class='line'>CGContextDrawPath(contextRef, kCGPathFillStroke);
+</span><span class='line'>//绘制圆形：方式二
+</span><span class='line'>CGContextAddEllipseInRect(contextRef, CGRectMake(0, 500, 80, 80));
+</span><span class='line'>CGContextDrawPath(contextRef, kCGPathFillStroke);
+</span><span class='line'>    
+</span><span class='line'>    </span></code></pre></td></tr></table></div></figure>
+
+
+<h4>6、绘制多边型（六边形）</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>//绘制多边形
+</span><span class='line'>CGContextMoveToPoint(contextRef, 180, 500);
+</span><span class='line'>CGContextAddLineToPoint(contextRef, 100, 550);
+</span><span class='line'>CGContextAddLineToPoint(contextRef, 180, 600);
+</span><span class='line'>CGContextAddLineToPoint(contextRef, 260, 600);
+</span><span class='line'>CGContextAddLineToPoint(contextRef, 340, 550);
+</span><span class='line'>CGContextAddLineToPoint(contextRef, 260, 500);
+</span><span class='line'>CGContextAddLineToPoint(contextRef, 180, 500);
+</span><span class='line'>CGContextDrawPath(contextRef, kCGPathFillStroke);
+</span><span class='line'>//最后关闭它！
+</span><span class='line'>CGContextClosePath(contextRef);
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>这里就不演示绘制图表了，其实过程都差不多，只是换一种绘制方法而已！
+关于简单的图表绘制请参考上一篇，详细请点击：<a href="">iOS图形绘制UIBezierPath篇</a></strong></p>
+
+<p><strong>文中代码效果图：</strong></p>
+
+<p><img src="http://ww1.sinaimg.cn/mw690/7f266405jw1f3va3hd4i9j20ku12aq57.jpg" alt="" />
+<strong>不要问我为什么画的这么丑，因为我是粗糙的程序员！随性</strong></p>
+
+<h4>参考博客地址：</h4>
+
+<ul>
+<li><a href = "http://ghui.me/post/2016/04/ios-core-graphics/">iOS绘图之用Core Graphics框架绘制常见图形（这篇是用Swift语言写的）</a></li>
+</ul>
+
+
+<p>转载请注明出处</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/05/14/iostu-xing-hui-zhi-uibezierpathpian/">iOS图形绘制UIBezierPath篇</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-05-14T21:55:19+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:55 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>1、绘制直线</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>UIBezierPath *line = [[UIBezierPath alloc] init];
+</span><span class='line'>//设置线宽
+</span><span class='line'>line.lineWidth = 3;
+</span><span class='line'>[line moveToPoint:CGPointMake(50, 20)];
+</span><span class='line'>[line addLineToPoint:CGPointMake(150, 20)];
+</span><span class='line'>//设置绘制线条颜色，这个地方需要注意！UIBezierPath本身类中不包含设置颜色的属性，它是通过UIColor来直接设置。
+</span><span class='line'>[[UIColor orangeColor] setStroke];
+</span><span class='line'>/*
+</span><span class='line'>*线条形状
+</span><span class='line'>*kCGLineCapButt,   //不带端点
+</span><span class='line'>*kCGLineCapRound,  //端点带圆角
+</span><span class='line'>*kCGLineCapSquare  //端点是正方形
+</span><span class='line'>*/
+</span><span class='line'>line.lineCapStyle = kCGLineCapRound;
+</span><span class='line'>[line stroke];
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>2、绘制矩形</h4>
+
+<ul>
+<li>直接通过UIRectFill绘制（不带边框）</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>[[UIColor blueColor] setFill];
+</span><span class='line'>UIRectFill(CGRectMake(50, 30, 100, 40));
+</span><span class='line'>    </span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>使用UIBezierPath绘制（带边框）</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>UIBezierPath *rectangle = [UIBezierPath bezierPathWithRect:CGRectMake(50, 80, 80, 80)];
+</span><span class='line'>//边框线宽
+</span><span class='line'>rectangle.lineWidth = 3;
+</span><span class='line'>//边框线颜色
+</span><span class='line'>[[UIColor purpleColor] setStroke];
+</span><span class='line'>/*
+</span><span class='line'>*线条之间连接点形状
+</span><span class='line'>*kCGLineJoinMiter,      //内斜接
+</span><span class='line'>*kCGLineJoinRound,     //圆角
+</span><span class='line'>*kCGLineJoinBevel      //外斜接
+</span><span class='line'>*/
+</span><span class='line'>rectangle.lineJoinStyle = kCGLineJoinRound;
+</span><span class='line'>//绘制边框
+</span><span class='line'>[rectangle stroke];
+</span><span class='line'>//设置填充颜色
+</span><span class='line'>[[UIColor yellowColor] setFill];
+</span><span class='line'>//绘制矩形内部填充部分
+</span><span class='line'>[rectangle fill];
+</span><span class='line'>    </span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>直接绘制带圆角的矩形（实心）：这里也是可以添加边框，具体设置同上</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>UIBezierPath *rectangleCorner = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(50, 170, 80, 80) cornerRadius:4];
+</span><span class='line'>[[UIColor brownColor] setFill];
+</span><span class='line'>[rectangleCorner fill];
+</span><span class='line'>    </span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>绘制部分带圆角的矩形边框（空心）</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>/*
+</span><span class='line'>*UIRectCorner:圆角位置
+</span><span class='line'>*UIRectCornerTopLeft     = 1 &lt;&lt; 0,     //左上角
+</span><span class='line'>*UIRectCornerTopRight    = 1 &lt;&lt; 1,     //右上角
+</span><span class='line'>*UIRectCornerBottomLeft  = 1 &lt;&lt; 2,     //左下角
+</span><span class='line'>*UIRectCornerBottomRight = 1 &lt;&lt; 3,     //右下角
+</span><span class='line'>*UIRectCornerAllCorners        //所有角
+</span><span class='line'>*
+</span><span class='line'>*/
+</span><span class='line'>rectangleCorner = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(50, 260, 40, 40) byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight cornerRadii:CGSizeMake(4, 4)];
+</span><span class='line'>[rectangleCorner stroke];
+</span><span class='line'>    </span></code></pre></td></tr></table></div></figure>
+
+
+<h4>3、绘制圆形（绘制椭圆只需更改高宽即可）</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>UIBezierPath *circle = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(50, 310, 80, 80)];
+</span><span class='line'>[[UIColor blueColor] setStroke];
+</span><span class='line'>circle.lineWidth = 3;
+</span><span class='line'>[circle stroke];
+</span><span class='line'>[[UIColor redColor] setFill];
+</span><span class='line'>[circle fill];
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>4、绘制多边形:(这是正宗的三角形)</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>UIBezierPath *polygon = [UIBezierPath bezierPath];
+</span><span class='line'>[polygon moveToPoint:CGPointMake(50, 390)];
+</span><span class='line'>[polygon addLineToPoint:CGPointMake(30, 450)];
+</span><span class='line'>[polygon addLineToPoint:CGPointMake(100, 450)];
+</span><span class='line'>[[UIColor magentaColor] setFill];
+</span><span class='line'>[polygon fill];
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>啊，三角形不是多边形吗？不调戏各位看客了，还是来个正宗多边形，哈哈哈（六角形）</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>[polygon moveToPoint:CGPointMake(50, 460)];
+</span><span class='line'>[polygon addLineToPoint:CGPointMake(20, 500)];
+</span><span class='line'>[polygon addLineToPoint:CGPointMake(50, 540)];
+</span><span class='line'>[polygon addLineToPoint:CGPointMake(100, 540)];
+</span><span class='line'>[polygon addLineToPoint:CGPointMake(130, 500)];
+</span><span class='line'>[polygon addLineToPoint:CGPointMake(100, 460)];
+</span><span class='line'>[[UIColor magentaColor] setFill];
+</span><span class='line'>[polygon fill];
+</span><span class='line'>    </span></code></pre></td></tr></table></div></figure>
+
+
+<h4>5、绘制弧线</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>//clockwise参数表示是否顺时针绘制
+</span><span class='line'>//弧长计算公式：
+</span><span class='line'>UIBezierPath *arcLine = [UIBezierPath bezierPathWithArcCenter:CGPointMake(160, 20) radius:50 startAngle:0 endAngle:90 *  M_PI / 180 clockwise:YES];
+</span><span class='line'>//下面这种创建方式也是一样的
+</span><span class='line'>//[arcLine addArcWithCenter:CGPointMake(160, 20) radius:50 startAngle:0 endAngle:90 * M_PI / 180 clockwise:YES];
+</span><span class='line'>arcLine.lineWidth = 3;
+</span><span class='line'>[[UIColor grayColor] setStroke];
+</span><span class='line'>[arcLine stroke];
+</span><span class='line'>    </span></code></pre></td></tr></table></div></figure>
+
+
+<h4>6、绘制贝塞尔曲线</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>UIBezierPath *quadLine = [UIBezierPath bezierPath];
+</span><span class='line'>[quadLine moveToPoint:CGPointMake(160, 80)];
+</span><span class='line'>//带一个控制点
+</span><span class='line'>//[quadLine addQuadCurveToPoint:CGPointMake(210, 120) controlPoint:CGPointMake(240, 90)];
+</span><span class='line'>//带两个控制点
+</span><span class='line'>[quadLine addCurveToPoint:CGPointMake(310, 80) controlPoint1:CGPointMake(210, 150) controlPoint2:CGPointMake(270, 150)];
+</span><span class='line'>[[UIColor redColor] setStroke];
+</span><span class='line'>[quadLine stroke];
+</span><span class='line'>    </span></code></pre></td></tr></table></div></figure>
+
+
+<h4>7、绘制一个简单的曲线图(这个技术难度不高，项目中又常见，可以拿来练练手)</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>- (void)drawRect:(CGRect)rect {
+</span><span class='line'>//绘制线条
+</span><span class='line'>    UIBezierPath *grayLine = [UIBezierPath bezierPath];
+</span><span class='line'>    grayLine.lineWidth = 1;
+</span><span class='line'>    grayLine.lineCapStyle = kCGLineCapButt;
+</span><span class='line'>    [[UIColor lightGrayColor] setStroke];
+</span><span class='line'>    CGFloat x1 = 140;
+</span><span class='line'>    CGFloat x2 = 360;
+</span><span class='line'>    CGFloat y = 160;
+</span><span class='line'>    //循环绘制7条横向线条
+</span><span class='line'>    for (int i = 0; i &lt; 7; i++) {
+</span><span class='line'>        [self drawPathWithLine:grayLine movePoint:CGPointMake(x1, y + i * 20) toPoint:CGPointMake(x2, y + i * 20)];
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    //绘制竖线
+</span><span class='line'>    [self drawPathWithLine:grayLine movePoint:CGPointMake(x1 + 5, y) toPoint:CGPointMake(x1 + 5, y + 6 * 20 + 5)];
+</span><span class='line'>    [self drawPathWithLine:grayLine movePoint:CGPointMake(x2, y) toPoint:CGPointMake(x2, y + 6 * 20 + 5)];
+</span><span class='line'>    //绘制圆点
+</span><span class='line'>    UIBezierPath *circleDot = [self drawCircleWithOvalInRect:CGRectMake(x1, y + 5 * 20 - 5, 10, 10)];
+</span><span class='line'>    [[UIColor blueColor] setStroke];
+</span><span class='line'>    UIBezierPath *blueLine = [UIBezierPath bezierPath];
+</span><span class='line'>    blueLine.lineWidth = 2;
+</span><span class='line'>    [self drawPathWithLine:blueLine movePoint:CGPointMake(circleDot.currentPoint.x - 2.5, circleDot.currentPoint.y - 5) toPoint:CGPointMake(x1 + 40 + 2.5 , y + 1 * 20 + 5)];
+</span><span class='line'>    circleDot = [self drawCircleWithOvalInRect:CGRectMake(x1 + 40, y + 1 * 20 - 5, 10, 10)];
+</span><span class='line'>    [self drawPathWithLine:blueLine movePoint:CGPointMake(circleDot.currentPoint.x , circleDot.currentPoint.y + 2.5) toPoint:CGPointMake(x1 + 80 , y + 3 * 20 - 12.5)];
+</span><span class='line'>    circleDot = [self drawCircleWithOvalInRect:CGRectMake(x1 + 80, y + 3 * 20 - 15, 10, 10)];
+</span><span class='line'>    [self drawPathWithLine:blueLine movePoint:CGPointMake(circleDot.currentPoint.x , circleDot.currentPoint.y + 5) toPoint:CGPointMake(x1 + 120 , y + 4 * 20)];
+</span><span class='line'>    circleDot = [self drawCircleWithOvalInRect:CGRectMake(x1 + 120, y + 4 * 20, 10, 10)];
+</span><span class='line'>    [self drawPathWithLine:blueLine movePoint:CGPointMake(circleDot.currentPoint.x, circleDot.currentPoint.y - 5) toPoint:CGPointMake(x1 + 160 , y + 1 * 20 - 5)];
+</span><span class='line'>    circleDot = [self drawCircleWithOvalInRect:CGRectMake(x1 + 160, y + 1 * 20 - 15, 10, 10)];
+</span><span class='line'>    [self drawPathWithLine:blueLine movePoint:CGPointMake(circleDot.currentPoint.x , circleDot.currentPoint.y + 5) toPoint:CGPointMake(x1 + 200 , y + 6 * 20 - 15)];
+</span><span class='line'>    circleDot = [self drawCircleWithOvalInRect:CGRectMake(x1 + 200 - 2.5, y + 6 * 20 - 15, 10, 10)];
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>- (void)drawPathWithLine:(UIBezierPath *)line movePoint:(CGPoint)movePoint toPoint:(CGPoint)toPoint {
+</span><span class='line'>    [line moveToPoint:movePoint];
+</span><span class='line'>    [line addLineToPoint:toPoint];
+</span><span class='line'>    [line stroke];
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>- (UIBezierPath *)drawCircleWithOvalInRect:(CGRect)frame {
+</span><span class='line'>    UIBezierPath *circleDot = [UIBezierPath bezierPathWithOvalInRect:frame];
+</span><span class='line'>    [[UIColor blueColor] setFill];
+</span><span class='line'>    [circleDot fill];
+</span><span class='line'>    return circleDot;
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>看客：博主，你代码写的太差了！我看不下去了！死菜鸡！</strong></p>
+
+<p><strong>博主：大哥，我已经尽力了！</strong></p>
+
+<p><strong>看客：这么菜，你还有脸写博客！你咋不上天呢？</strong></p>
+
+<p><strong>博主：那你咋不遁地！</strong></p>
+
+<h4>文中代码效果图：</h4>
+
+<p><img src="http://ww1.sinaimg.cn/mw690/7f266405jw1f3vbdc3656j20ku12adi4.jpg" alt="" />
+<strong>不要问我为什么画的这么丑，哥已经尽力了！</strong></p>
+
+<h4>参考博客地址：</h4>
+
+<ul>
+<li><a href = "http://ghui.me/post/2016/04/ios-bezierpath/">iOS绘图之用UIKit框架绘制常见图形（这篇是用Swift语言写的）</a></li>
+</ul>
+
+
+<p>转载请注明出处</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -458,93 +1182,6 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/01/01/2015nian-zhong-zong-jie/">2015年终总结</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-01-01T13:26:26+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>1:26 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h4>总结：</h4>
-
-<p>回首过去一年，好像没有什么能说出口的成绩，专业没啥进步。在公司做了两款App，上半年主要开发的是一款叫“在线等”的手机应用，这是一款解决人们选择困难症的应用，经过重重困难，最终上线。没啥成绩可言。下半年主要研发的是一款叫“斗图神器”的应用，由于Android版早就开发好了，所以iOS版开发起来就快很多了。总的来说成绩还不错，其中也有点小波折。</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2016/01/01/2015nian-zhong-zong-jie/">阅读全篇...</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/11/16/ios-ffmpegbian-yi-ji-kxmovie,-iframeextractordiao-shi-xiang-jie-(wu-zhang-ai-yue-du-,jue-dui-shi-ni-xiang-yao-de-)/">iOS FFmpeg编译及kxmovie、iFrameExtractor调试详解（无障碍阅读，绝对是你想要的）</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-11-16T01:44:27+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>1:44 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong>特此声明：本文是通过网上收集整理加上自己亲自实验得来的。感谢所有网上分享的辛勤劳动者，本文仅供iOS学习使用。在学习的过程中，如果有问题或者不清楚的地方，欢迎留言，我们共同探讨互相学习。欢迎批评指正。</strong></p>
-
-<p><strong>如需转载，请注明出处：<a href = "http://blog.csdn.net/yangshebing21/article/details/43986913"><a href="http://blog.csdn.net/yangshebing21/article/details/43986913">http://blog.csdn.net/yangshebing21/article/details/43986913</a></a></strong></p>
-
-<h4>开发环境：最新 ffmpeg-2.5.4/iOS SDK8.1/Xcode6.1/OS X Yosemite版本10.10.2</h4>
-
-<h3>一、编译ffmpeg库</h3>
-
-<h4>编译调试ffmpeg库的步骤：</h4>
-
-<p><strong>开发环境：ffmpeg-2.5.4/Xcode6.1</strong></p>
-
-<h4>（一）、下载ffmpeg源码：</h4>
-
-<p>请点击此链接<a href = "http://ffmpeg.org/download.html"><a href="http://ffmpeg.org/download.html">http://ffmpeg.org/download.html</a></a></p>
-
-<p> <font color = "red"><b>注：我的ffmpeg-2.5.4是解压放至Desktop的</b></font></p>
-
-<h4>（二）、调试编译ffmpeg源码</h4>
-
-<p> 1、安装yasm:
- </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/11/16/ios-ffmpegbian-yi-ji-kxmovie,-iframeextractordiao-shi-xiang-jie-(wu-zhang-ai-yue-du-,jue-dui-shi-ni-xiang-yao-de-)/">阅读全篇...</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -560,6 +1197,14 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/05/14/iostu-xing-hui-zhi-coregraphicspian/">iOS图形绘制CoreGraphics篇</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/05/14/iostu-xing-hui-zhi-uibezierpathpian/">iOS图形绘制UIBezierPath篇</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/05/09/swift2-dot-2xin-te-xing/">Swift2.2新特性</a>
       </li>
     
@@ -571,20 +1216,12 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
         <a href="/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-uiji-chu/">iOS面试题系列之UI相关</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2016/04/24/iosmian-shi-ti-zhi-objective-cji-chu/">iOS面试题系列之Objective-C相关</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/01/21/react-native-ios-kai-fa-huan-jing-da-jian/">React Native iOS 开发环境搭建</a>
-      </li>
-    
   </ul>
 </section>
 <section>
  <h1>iOS开发</h1>
  <ul id="categories">
-  <li class='category'><a href='/blog/categories/objective-c/'>objective-c (4)</a></li>
+  <li class='category'><a href='/blog/categories/objective-c/'>objective-c (6)</a></li>
 <li class='category'><a href='/blog/categories/others/'>others (7)</a></li>
 <li class='category'><a href='/blog/categories/swift/'>swift (5)</a></li>
 

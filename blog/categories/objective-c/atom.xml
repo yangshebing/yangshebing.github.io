@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Objective-c | 杨社兵的技术博客]]></title>
   <link href="http://yangshebing.github.io/blog/categories/objective-c/atom.xml" rel="self"/>
   <link href="http://yangshebing.github.io/"/>
-  <updated>2016-05-09T23:39:12+08:00</updated>
+  <updated>2016-05-14T23:17:35+08:00</updated>
   <id>http://yangshebing.github.io/</id>
   <author>
     <name><![CDATA[杨社兵]]></name>
@@ -12,6 +12,394 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[iOS图形绘制CoreGraphics篇]]></title>
+    <link href="http://yangshebing.github.io/blog/2016/05/14/iostu-xing-hui-zhi-coregraphicspian/"/>
+    <updated>2016-05-14T21:57:43+08:00</updated>
+    <id>http://yangshebing.github.io/blog/2016/05/14/iostu-xing-hui-zhi-coregraphicspian</id>
+    <content type="html"><![CDATA[<h4>1、绘制直线</h4>
+
+<pre><code>
+//获取当前上下文
+    CGContextRef contextRef = UIGraphicsGetCurrentContext();
+    UIColor *color = [UIColor colorWithRed:0.5 green:0.35 blue:0.8 alpha:0.7];
+    //设置线条颜色
+//    CGContextSetStrokeColor(contextRef, CGColorGetComponents([UIColor redColor].CGColor));
+    //官方推荐首选这个API
+    CGContextSetStrokeColorWithColor(contextRef, [UIColor redColor].CGColor);
+    //设置线条颜色
+    CGContextSetLineWidth(contextRef, 5);
+    //设置线条端点(不带端点)
+    CGContextSetLineCap(contextRef, kCGLineCapButt);
+    //设置线条绘制的起始坐标点
+    CGContextMoveToPoint(contextRef, 50, 20);
+    //结束点
+    CGContextAddLineToPoint(contextRef, 100, 20);
+    //绘制线条路径
+    CGContextStrokePath(contextRef);
+</code></pre>
+
+<p><strong>这里插播一个从指定UIColor对象中获取RGB值得方式，上面设置线条颜色方法：CGContextSetStrokeColor第二个参数有用到。</strong></p>
+
+<pre><code>
+    //它是返回一个存储RGB与Alpha值得数组
+    const CGFloat *componets =  CGColorGetComponents(color.CGColor);
+    CGFloat r,g,b,a;
+    //R值
+    r = componets[0];
+    //G值
+    g = componets[1];
+    //B值
+    b = componets[2];
+    //Alpha值
+    a = componets[3];
+</code></pre>
+
+<p><strong>不信，此处看客可以打印RGB、Alpha值试试！</strong></p>
+
+<h4>2、绘制矩形</h4>
+
+<pre><code>  //设置线条颜色
+    CGContextSetStrokeColorWithColor(contextRef, [UIColor blueColor].CGColor);
+    CGContextSetLineWidth(contextRef, 2);
+    //绘制矩形边框
+    CGContextStrokeRect(contextRef, CGRectMake(50, 30, 80, 80));
+//    CGContextSetFillColor(contextRef, CGColorGetComponents([UIColor cyanColor].CGColor));
+    //绘制实心矩形
+    CGContextSetFillColorWithColor(contextRef, [UIColor cyanColor].CGColor);
+    CGContextFillRect(contextRef, CGRectMake(50, 120, 80, 80));
+
+    //绘制带边框的矩形
+    CGContextSetStrokeColorWithColor(contextRef, [UIColor brownColor].CGColor);
+    CGContextSetFillColorWithColor(contextRef, [UIColor magentaColor].CGColor);
+    CGContextSetLineWidth(contextRef, 2);
+    CGContextAddRect(contextRef, CGRectMake(50, 210, 80, 80));
+
+    //绘制路径方式：
+    /*CGPathDrawingMode:
+     *kCGPathFill,  //用非零绕数规则填充（什么鬼？）
+     *kCGPathEOFill,    //用奇偶规则填充不带边框
+     *kCGPathStroke,    //描线
+     *kCGPathFillStroke,    //描线填充
+     *kCGPathEOFillStroke   //奇偶填充带边框
+     */
+    CGContextDrawPath(contextRef, kCGPathFillStroke);
+</code></pre>
+
+<p> <strong>这里介绍一下设置线型为虚线的方式（虚线绘制方式）</strong></p>
+
+<pre><code>
+/*
+*phase:    虚线开始部分绘制大小
+*const CGFloat *lengths:   虚线排列的大小规则数组，数组的值用来指定绘制与未绘制部分的长度（间隔）
+*例如{2，3}指交替绘制2个单元长度的线段与3个单元长度未绘制长度线段（间隙）
+*例子示意图：      --   --   --   --   --   --
+*{1，3，4，2}绘制一个单元长度线段，间隔3个单元长度空隙，接着绘制4个长度的线段，间隔2个单元长度的空隙
+*例子示意图：      -   ----  -   ----  -   ----  -   ----  -
+*size_t count: 虚线排列数组中参数值有用个数
+*/
+
+const CGFloat spaceArr[] = {6, 4, 5, 7};
+CGContextSetLineDash(contextRef, 0, spaceArr, 4);
+</code></pre>
+
+<p> ####3、绘制贝塞尔曲线</p>
+
+<pre><code>
+CGContextSetStrokeColorWithColor(contextRef, [UIColor redColor].CGColor);
+CGContextSetFillColorWithColor(contextRef, [UIColor grayColor].CGColor);
+CGContextSetLineWidth(contextRef, 1);
+CGContextMoveToPoint(contextRef, 50, 300);
+//添加三个point坐标。绘制一条曲线。
+//CGContextAddCurveToPoint(contextRef, 100, 320, 150, 300, 200, 360);
+//添加二次曲线
+CGContextAddQuadCurveToPoint(contextRef, 250, 380, 290, 280);
+CGContextDrawPath(contextRef, kCGPathStroke);
+</code></pre>
+
+<h4>4、绘制圆弧</h4>
+
+<pre><code>
+CGContextAddArc(contextRef, 50, 390, 20.0, -10 * M_PI / 180, 60 * M_PI / 180, YES);
+CGContextDrawPath(contextRef, kCGPathStroke);
+</code></pre>
+
+<h4>5、绘制圆形</h4>
+
+<pre><code>
+//绘制圆形:方式一
+CGContextSetStrokeColorWithColor(contextRef, [UIColor blueColor].CGColor);
+CGContextSetFillColorWithColor(contextRef, [UIColor redColor].CGColor);
+CGContextAddArc(contextRef, 50, 480, 20.0, -180 * M_PI / 180, 180 * M_PI / 180, NO);
+CGContextDrawPath(contextRef, kCGPathFillStroke);
+//绘制圆形：方式二
+CGContextAddEllipseInRect(contextRef, CGRectMake(0, 500, 80, 80));
+CGContextDrawPath(contextRef, kCGPathFillStroke);
+</code></pre>
+
+<h4>6、绘制多边型（六边形）</h4>
+
+<pre><code>
+//绘制多边形
+CGContextMoveToPoint(contextRef, 180, 500);
+CGContextAddLineToPoint(contextRef, 100, 550);
+CGContextAddLineToPoint(contextRef, 180, 600);
+CGContextAddLineToPoint(contextRef, 260, 600);
+CGContextAddLineToPoint(contextRef, 340, 550);
+CGContextAddLineToPoint(contextRef, 260, 500);
+CGContextAddLineToPoint(contextRef, 180, 500);
+CGContextDrawPath(contextRef, kCGPathFillStroke);
+//最后关闭它！
+CGContextClosePath(contextRef);
+</code></pre>
+
+<p><strong>这里就不演示绘制图表了，其实过程都差不多，只是换一种绘制方法而已！
+关于简单的图表绘制请参考上一篇，详细请点击：<a href="">iOS图形绘制UIBezierPath篇</a></strong></p>
+
+<p><strong>文中代码效果图：</strong></p>
+
+<p><img src="http://ww1.sinaimg.cn/mw690/7f266405jw1f3va3hd4i9j20ku12aq57.jpg" alt="" />
+<strong>不要问我为什么画的这么丑，因为我是粗糙的程序员！随性</strong></p>
+
+<h4>参考博客地址：</h4>
+
+<ul>
+<li><a href = "http://ghui.me/post/2016/04/ios-core-graphics/">iOS绘图之用Core Graphics框架绘制常见图形（这篇是用Swift语言写的）</a></li>
+</ul>
+
+
+<p>转载请注明出处</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iOS图形绘制UIBezierPath篇]]></title>
+    <link href="http://yangshebing.github.io/blog/2016/05/14/iostu-xing-hui-zhi-uibezierpathpian/"/>
+    <updated>2016-05-14T21:55:19+08:00</updated>
+    <id>http://yangshebing.github.io/blog/2016/05/14/iostu-xing-hui-zhi-uibezierpathpian</id>
+    <content type="html"><![CDATA[<h4>1、绘制直线</h4>
+
+<pre><code>UIBezierPath *line = [[UIBezierPath alloc] init];
+//设置线宽
+line.lineWidth = 3;
+[line moveToPoint:CGPointMake(50, 20)];
+[line addLineToPoint:CGPointMake(150, 20)];
+//设置绘制线条颜色，这个地方需要注意！UIBezierPath本身类中不包含设置颜色的属性，它是通过UIColor来直接设置。
+[[UIColor orangeColor] setStroke];
+/*
+*线条形状
+*kCGLineCapButt,   //不带端点
+*kCGLineCapRound,  //端点带圆角
+*kCGLineCapSquare  //端点是正方形
+*/
+line.lineCapStyle = kCGLineCapRound;
+[line stroke];
+</code></pre>
+
+<h4>2、绘制矩形</h4>
+
+<ul>
+<li>直接通过UIRectFill绘制（不带边框）</li>
+</ul>
+
+
+<pre><code>
+[[UIColor blueColor] setFill];
+UIRectFill(CGRectMake(50, 30, 100, 40));
+</code></pre>
+
+<ul>
+<li>使用UIBezierPath绘制（带边框）</li>
+</ul>
+
+
+<pre><code>
+UIBezierPath *rectangle = [UIBezierPath bezierPathWithRect:CGRectMake(50, 80, 80, 80)];
+//边框线宽
+rectangle.lineWidth = 3;
+//边框线颜色
+[[UIColor purpleColor] setStroke];
+/*
+*线条之间连接点形状
+*kCGLineJoinMiter,      //内斜接
+*kCGLineJoinRound,     //圆角
+*kCGLineJoinBevel      //外斜接
+*/
+rectangle.lineJoinStyle = kCGLineJoinRound;
+//绘制边框
+[rectangle stroke];
+//设置填充颜色
+[[UIColor yellowColor] setFill];
+//绘制矩形内部填充部分
+[rectangle fill];
+</code></pre>
+
+<ul>
+<li>直接绘制带圆角的矩形（实心）：这里也是可以添加边框，具体设置同上</li>
+</ul>
+
+
+<pre><code>
+UIBezierPath *rectangleCorner = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(50, 170, 80, 80) cornerRadius:4];
+[[UIColor brownColor] setFill];
+[rectangleCorner fill];
+</code></pre>
+
+<ul>
+<li>绘制部分带圆角的矩形边框（空心）</li>
+</ul>
+
+
+<pre><code>
+/*
+*UIRectCorner:圆角位置
+*UIRectCornerTopLeft     = 1 &lt;&lt; 0,     //左上角
+*UIRectCornerTopRight    = 1 &lt;&lt; 1,     //右上角
+*UIRectCornerBottomLeft  = 1 &lt;&lt; 2,     //左下角
+*UIRectCornerBottomRight = 1 &lt;&lt; 3,     //右下角
+*UIRectCornerAllCorners        //所有角
+*
+*/
+rectangleCorner = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(50, 260, 40, 40) byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight cornerRadii:CGSizeMake(4, 4)];
+[rectangleCorner stroke];
+</code></pre>
+
+<h4>3、绘制圆形（绘制椭圆只需更改高宽即可）</h4>
+
+<pre><code>
+UIBezierPath *circle = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(50, 310, 80, 80)];
+[[UIColor blueColor] setStroke];
+circle.lineWidth = 3;
+[circle stroke];
+[[UIColor redColor] setFill];
+[circle fill];
+</code></pre>
+
+<h4>4、绘制多边形:(这是正宗的三角形)</h4>
+
+<pre><code>
+UIBezierPath *polygon = [UIBezierPath bezierPath];
+[polygon moveToPoint:CGPointMake(50, 390)];
+[polygon addLineToPoint:CGPointMake(30, 450)];
+[polygon addLineToPoint:CGPointMake(100, 450)];
+[[UIColor magentaColor] setFill];
+[polygon fill];
+</code></pre>
+
+<p><strong>啊，三角形不是多边形吗？不调戏各位看客了，还是来个正宗多边形，哈哈哈（六角形）</strong></p>
+
+<pre><code>
+[polygon moveToPoint:CGPointMake(50, 460)];
+[polygon addLineToPoint:CGPointMake(20, 500)];
+[polygon addLineToPoint:CGPointMake(50, 540)];
+[polygon addLineToPoint:CGPointMake(100, 540)];
+[polygon addLineToPoint:CGPointMake(130, 500)];
+[polygon addLineToPoint:CGPointMake(100, 460)];
+[[UIColor magentaColor] setFill];
+[polygon fill];
+</code></pre>
+
+<h4>5、绘制弧线</h4>
+
+<pre><code>
+//clockwise参数表示是否顺时针绘制
+//弧长计算公式：
+UIBezierPath *arcLine = [UIBezierPath bezierPathWithArcCenter:CGPointMake(160, 20) radius:50 startAngle:0 endAngle:90 *  M_PI / 180 clockwise:YES];
+//下面这种创建方式也是一样的
+//[arcLine addArcWithCenter:CGPointMake(160, 20) radius:50 startAngle:0 endAngle:90 * M_PI / 180 clockwise:YES];
+arcLine.lineWidth = 3;
+[[UIColor grayColor] setStroke];
+[arcLine stroke];
+</code></pre>
+
+<h4>6、绘制贝塞尔曲线</h4>
+
+<pre><code>
+UIBezierPath *quadLine = [UIBezierPath bezierPath];
+[quadLine moveToPoint:CGPointMake(160, 80)];
+//带一个控制点
+//[quadLine addQuadCurveToPoint:CGPointMake(210, 120) controlPoint:CGPointMake(240, 90)];
+//带两个控制点
+[quadLine addCurveToPoint:CGPointMake(310, 80) controlPoint1:CGPointMake(210, 150) controlPoint2:CGPointMake(270, 150)];
+[[UIColor redColor] setStroke];
+[quadLine stroke];
+</code></pre>
+
+<h4>7、绘制一个简单的曲线图(这个技术难度不高，项目中又常见，可以拿来练练手)</h4>
+
+<pre><code>
+- (void)drawRect:(CGRect)rect {
+//绘制线条
+    UIBezierPath *grayLine = [UIBezierPath bezierPath];
+    grayLine.lineWidth = 1;
+    grayLine.lineCapStyle = kCGLineCapButt;
+    [[UIColor lightGrayColor] setStroke];
+    CGFloat x1 = 140;
+    CGFloat x2 = 360;
+    CGFloat y = 160;
+    //循环绘制7条横向线条
+    for (int i = 0; i &lt; 7; i++) {
+        [self drawPathWithLine:grayLine movePoint:CGPointMake(x1, y + i * 20) toPoint:CGPointMake(x2, y + i * 20)];
+    }
+
+    //绘制竖线
+    [self drawPathWithLine:grayLine movePoint:CGPointMake(x1 + 5, y) toPoint:CGPointMake(x1 + 5, y + 6 * 20 + 5)];
+    [self drawPathWithLine:grayLine movePoint:CGPointMake(x2, y) toPoint:CGPointMake(x2, y + 6 * 20 + 5)];
+    //绘制圆点
+    UIBezierPath *circleDot = [self drawCircleWithOvalInRect:CGRectMake(x1, y + 5 * 20 - 5, 10, 10)];
+    [[UIColor blueColor] setStroke];
+    UIBezierPath *blueLine = [UIBezierPath bezierPath];
+    blueLine.lineWidth = 2;
+    [self drawPathWithLine:blueLine movePoint:CGPointMake(circleDot.currentPoint.x - 2.5, circleDot.currentPoint.y - 5) toPoint:CGPointMake(x1 + 40 + 2.5 , y + 1 * 20 + 5)];
+    circleDot = [self drawCircleWithOvalInRect:CGRectMake(x1 + 40, y + 1 * 20 - 5, 10, 10)];
+    [self drawPathWithLine:blueLine movePoint:CGPointMake(circleDot.currentPoint.x , circleDot.currentPoint.y + 2.5) toPoint:CGPointMake(x1 + 80 , y + 3 * 20 - 12.5)];
+    circleDot = [self drawCircleWithOvalInRect:CGRectMake(x1 + 80, y + 3 * 20 - 15, 10, 10)];
+    [self drawPathWithLine:blueLine movePoint:CGPointMake(circleDot.currentPoint.x , circleDot.currentPoint.y + 5) toPoint:CGPointMake(x1 + 120 , y + 4 * 20)];
+    circleDot = [self drawCircleWithOvalInRect:CGRectMake(x1 + 120, y + 4 * 20, 10, 10)];
+    [self drawPathWithLine:blueLine movePoint:CGPointMake(circleDot.currentPoint.x, circleDot.currentPoint.y - 5) toPoint:CGPointMake(x1 + 160 , y + 1 * 20 - 5)];
+    circleDot = [self drawCircleWithOvalInRect:CGRectMake(x1 + 160, y + 1 * 20 - 15, 10, 10)];
+    [self drawPathWithLine:blueLine movePoint:CGPointMake(circleDot.currentPoint.x , circleDot.currentPoint.y + 5) toPoint:CGPointMake(x1 + 200 , y + 6 * 20 - 15)];
+    circleDot = [self drawCircleWithOvalInRect:CGRectMake(x1 + 200 - 2.5, y + 6 * 20 - 15, 10, 10)];
+}
+
+- (void)drawPathWithLine:(UIBezierPath *)line movePoint:(CGPoint)movePoint toPoint:(CGPoint)toPoint {
+    [line moveToPoint:movePoint];
+    [line addLineToPoint:toPoint];
+    [line stroke];
+}
+
+- (UIBezierPath *)drawCircleWithOvalInRect:(CGRect)frame {
+    UIBezierPath *circleDot = [UIBezierPath bezierPathWithOvalInRect:frame];
+    [[UIColor blueColor] setFill];
+    [circleDot fill];
+    return circleDot;
+}
+</code></pre>
+
+<p><strong>看客：博主，你代码写的太差了！我看不下去了！死菜鸡！</strong></p>
+
+<p><strong>博主：大哥，我已经尽力了！</strong></p>
+
+<p><strong>看客：这么菜，你还有脸写博客！你咋不上天呢？</strong></p>
+
+<p><strong>博主：那你咋不遁地！</strong></p>
+
+<h4>文中代码效果图：</h4>
+
+<p><img src="http://ww1.sinaimg.cn/mw690/7f266405jw1f3vbdc3656j20ku12adi4.jpg" alt="" />
+<strong>不要问我为什么画的这么丑，哥已经尽力了！</strong></p>
+
+<h4>参考博客地址：</h4>
+
+<ul>
+<li><a href = "http://ghui.me/post/2016/04/ios-bezierpath/">iOS绘图之用UIKit框架绘制常见图形（这篇是用Swift语言写的）</a></li>
+</ul>
+
+
+<p>转载请注明出处</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[UICollectionView（纯代码方式）实现带上下拉刷新的瀑布流式（WaterFlow）布局]]></title>
@@ -410,69 +798,6 @@ the scroll view beneath the touch which is closest to the status bar will be scr
 
 <ul>
 <li><a href="http://blog.sina.com.cn/s/blog_463dc5b90101k9ib.html">点击状态栏不返回顶部问题</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[动态限制UITextField或UITextView用户输入中英文混编字数统计]]></title>
-    <link href="http://yangshebing.github.io/blog/2015/09/12/test/"/>
-    <updated>2015-09-12T11:31:37+08:00</updated>
-    <id>http://yangshebing.github.io/blog/2015/09/12/test</id>
-    <content type="html"><![CDATA[<p><strong>动态限制用户输入字数，这个在很多app中都会涉及，由于NSString的Length属性获取的长度中英文都是一个字节，不满足一个汉字两个字节、一个字符一个字节的需求。网上的方法大致是以下两种：</strong></p>
-
-<h6>1、使用Unicode编码把OC中的NSString字符串转换成C的字符串。然后对字符串遍历进行统计长度。</h6>
-
-<!--more-->
-
-
-<pre><code>
--  (int)convertToInt:(NSString*)strtemp {  
-    int strlength = 0;
-    char* p = (char*)[strtemp cStringUsingEncoding:NSUnicodeStringEncoding];
-    for (int i=0 ; i&lt;[strtemp lengthOfBytesUsingEncoding:NSUnicodeStringEncoding];i++) {
-        if (*p) {
-            p++;
-            strlength++;
-        }
-        else {
-            p++;
-        }
-    }
-    return strlength;
-}
-</code></pre>
-
-<h6>2、直接计算OC中的NSString字符串中单词的个数</h6>
-
-<pre><code>- (NSInteger)countWordWithStr:(NSString *)s
-{
-    NSInteger i,n=[s length],l=0,a=0,b=0;
-    unichar c;
-    for(i=0;i&lt;n;i++){
-        c=[s characterAtIndex:i];
-        if(isblank(c)){
-            b++;
-        }else if(isascii(c)){
-            a++;
-        }else{
-            l++;
-        }
-    }
-    if(a==0 &amp;&amp; l==0) return 0;
-    return l+(NSInteger)ceilf((float)(a+b)/2.0);
-}
-</code></pre>
-
-<p><strong>以上资料均为网上整理得来，仅供学习交流使用。有关于此类问题，欢迎在最下方留言一起探讨优化学习。</strong></p>
-
-<h6>参考博客地址：</h6>
-
-<ul>
-<li>1、<a href="http://mobilesolutions.blog.163.com/blog/static/18922417620116133910181/">统计含中英文混编的NSString 字符串长度 </a></li>
-<li>2、<a href="http://blog.csdn.net/toss156/article/details/8993270">【IOS】IOS开发常用函数</a></li>
-<li>3、<a href="http://code.qtuba.com/article-60968.html">iOS - 推断输入字符串长度函数</a></li>
 </ul>
 
 ]]></content>

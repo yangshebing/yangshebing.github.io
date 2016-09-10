@@ -1,0 +1,660 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Swift内存管理（ARC）之循环引用 - 杨社兵的技术博客</title>
+  <meta name="author" content="杨社兵">
+
+  
+  <meta name="description" content="介绍Swift中的内存管理及循环引用问题">
+  <meta name="keywords" content="Swift, ARC, 循环引用, 内存管理">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://yangshebing.github.io/blog/2016/01/15/swiftnei-cun-guan-li-(arc)zhi-xun-huan-yin-yong/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="杨社兵的技术博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="http://cdn.staticfile.org/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">杨社兵的技术博客</a></h1>
+  
+    <h2>业精于勤荒于嬉，行成于思毁于随.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="yangshebing.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">我的博客</a></li>
+  <li><a href="/blog/archives">所有文章</a></li>
+  <li><a href="http://weibo.com/yangshebing" target="_blank">新浪微博</a></li>
+  <li><a href="/about">关于我</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Swift内存管理（ARC）之循环引用</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-01-15T01:37:31+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>1:37 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Swift中是采用自动引用计数(ARC，AutomaticReferenceCounting)机制来对内存进行管理的。</p>
+
+<h4>一、简述ARC如何工作：</h4>
+
+<p>每当你每创建一个新的对象，它便会分配一块内存来存储该对象的相关信息。当你不再需要这个对象的时候，它就会自动释放这个对象，避免它再占用内存空间。当然，如果该对象只要至少存在一个引用就不会被释放。另外，你如果访问了一个已经被释放的对象，则很有可能会出现崩溃（野指针）。
+拿《The Swift Programming Language》里面的例子来套一下：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>//创建一个Cat类，自带常量name属性
+</span><span class='line'>class Cat {
+</span><span class='line'>    let name: String
+</span><span class='line'>    init(name: String) {
+</span><span class='line'>    //初始化name属性
+</span><span class='line'>        self.name = name;
+</span><span class='line'>        print("\(name) 对象已经被初始化")
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    deinit {
+</span><span class='line'>        print("\(name) 对象释放成功！")
+</span><span class='line'>    }
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<!--more-->
+
+
+<p>接下来定义三个变量类型为:Cat?用来对一个新的Cat对象建立多个引用。因为变量是一个可选类型（是Cat?而不是Cat）， 他们会自动给变量初始化为nil，所有当前它不需要引用一个Cat对象。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var cat1: Cat?
+</span><span class='line'>var cat2: Cat?
+</span><span class='line'>var cat3: Cat?</span></code></pre></td></tr></table></div></figure>
+
+
+<p>创建一个新的Cat对象，并对之前定义的三个变量进行赋值操作：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cat1 = Cat(name: "jack")
+</span><span class='line'>//输出：jack 对象已经被初始化
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当你调用Cat类构造器，它会输出："jack 对象已经被初始化"。这就代表已经完成了对象初始化操作。接下来，一个新的Cat对象被赋值给了 cat1变量，从而建立了cat1对新Cat实例对象的强引用。因此，它存在了至少一个强引用。这个新的Cat对象就不会被释放。
+如果你把同一个Cat实例对象赋值给另外两个变量，它则又多建立了两个强引用。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>//通过赋值对Cat实例对象建立强引用
+</span><span class='line'>cat2 = cat1
+</span><span class='line'>cat3 = cat1</span></code></pre></td></tr></table></div></figure>
+
+
+<p>此时这个Cat实例对象已经有三个强引用了。
+如果你用把其中两个变量赋值为nil的方式来打破这些强引用，对象是不会被释放的。因为它还存在一个强引用。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>//通过把置nil来打破cat1,cat2对Cat实例对象的强引用
+</span><span class='line'>cat1 = nil
+</span><span class='line'>cat2 = nil</span></code></pre></td></tr></table></div></figure>
+
+
+<p>只有直到对象所有的引用被打破，ARC才会释放该对象</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>//打破最后一个强引用
+</span><span class='line'>cat3 = nil
+</span><span class='line'>//输出：jack 对象释放成功！</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当最后一个强引用被打破后，这个Cat对象被成功释放，输出：jack 对象释放成功！</p>
+
+<h4>二、循环引用</h4>
+
+<p>1、什么是循环引用？
+简单的来说就是两个对象互相持有对方，使对方处于活跃状态不被释放，从而导致了循环引用。套个例子：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>//创建一个Cat类，拥有一个String类型的name属性与一个可选类型的dog属性。
+</span><span class='line'>class Cat {
+</span><span class='line'>    let name: String
+</span><span class='line'>    init(name: String) {
+</span><span class='line'>        self.name = name;
+</span><span class='line'>        print("\(name) 对象已经被初始化")
+</span><span class='line'>    }
+</span><span class='line'>    var dog: Dog?
+</span><span class='line'>    
+</span><span class='line'>    deinit {
+</span><span class='line'>        print("\(name) 对象释放成功！")
+</span><span class='line'>    }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>//创建一个Dog类，拥有一个String类型的type属性与一个可选类型的jack属性。
+</span><span class='line'>class Dog {
+</span><span class='line'>    let type: String
+</span><span class='line'>    init(type: String) {
+</span><span class='line'>        self.type = type
+</span><span class='line'>        print("\(type) 对象已经被初始化")
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    var cat: Cat?
+</span><span class='line'>    deinit {
+</span><span class='line'>        print("\(type) 对象释放成功")
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>定义两个变量并初始化</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var jack: Cat?
+</span><span class='line'>var tom: Dog?
+</span><span class='line'>
+</span><span class='line'>jack = Cat(name: "jack")
+</span><span class='line'>//print:jack 对象已经被初始化
+</span><span class='line'>tom = Dog(type: "red")
+</span><span class='line'>//print:red 对象已经被初始化</span></code></pre></td></tr></table></div></figure>
+
+
+<p>建立强引用</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>jack!.dog = tom
+</span><span class='line'>tom!.cat = jack</span></code></pre></td></tr></table></div></figure>
+
+
+<p>通过把对象置nil打破强引用</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>jack = nil
+</span><span class='line'>tom = nil</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这个地方Cat对象和Dog对象都不会被释放，因为他们两个之间还存在强引用。</p>
+
+<ul>
+<li><p>解决循环引用办法
+  Swift提供了两种方法来解决循环引用问题：</p>
+
+<p>  （1）弱引用（weak）</p>
+
+<p>  （2）无主引用（unowned）</p></li>
+</ul>
+
+
+<p>声明变量或属性时，在前面加上"weak"关键词表示它是一个弱引用。如果确定访问属性或函数的时候该对象不会被释放，也可以用无主引用（unowned）来取代。unowned跟Objective-C中的unsafe_unretained类似。它与weak的区别在于weak在引用的对象被释放后，会自动置nil。所以它必须声明成可选类型（？）。而unowned在引用对象被释放后不会自动置nil(因为非可选类型的变量不能被设置成nil)，而是保留对原有对象的无效引用，一旦对象被释放，再访问该对象的属性或函数就会造成崩溃。官方建议是当你在可以确定访问属性或函数所属对象不会被释放时，使用unowned。否则，还是使用weak吧！</p>
+
+<p>解决上面代码的循环引用问题，可做如下修改：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class Dog {
+</span><span class='line'>    let type: String
+</span><span class='line'>    init(type: String) {
+</span><span class='line'>        self.type = type
+</span><span class='line'>        print("\(type) 对象已经被初始化")
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    weak var jack: Cat
+</span><span class='line'>    deinit {
+</span><span class='line'>        print("\(type) 对象释放成功")
+</span><span class='line'>    }
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>jack = nil
+</span><span class='line'>tom = nil</span></code></pre></td></tr></table></div></figure>
+
+
+<p>2、常见的循环引用问题：</p>
+
+<p>（1）delegate
+在项目中我们经常会用到代理模式，在Objective-C中我们一般在delegate前面加上weak关键词，表示它是一个弱引用。从而达到打破循环引用的效果。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>//在前面加上@objc是指定这里的代码属于Objective-C的代码，因为Swift中协议可以用于class、struct、enum。对于基本数据类型，它不是对象，没有引用计数这个概念，因此无法使用weak关键词。  Objective-C中的协议只适用于类，所以这里需要加上@objc。
+</span><span class='line'>@objc protocol AClassDelegate {
+</span><span class='line'>    func wash()
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>class A {
+</span><span class='line'>    weak var delegate: AClassDelegate!
+</span><span class='line'>    func cry() {
+</span><span class='line'>        
+</span><span class='line'>    }
+</span><span class='line'>    func play() {
+</span><span class='line'>        delegate.wash()
+</span><span class='line'>    }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>class B: AClassDelegate {
+</span><span class='line'>    
+</span><span class='line'>    func feed() {
+</span><span class='line'>        let nurse = A()
+</span><span class='line'>        nurse.delegate = self
+</span><span class='line'>        nurse.cry()
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    @objc func wash() {
+</span><span class='line'>        print("begin wash and sleep")
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>（2）Block(闭包)中的循环引用
+Block(闭包)的循环引用在于它会持有所有引用的元素。比如我们在Block(闭包)中访问了self，那么它就持有了self。这样一来就形成了一个环：self持有Block(闭包)，Block(闭包)持有self。下面我们举个栗子加以说明：类A中有个闭包，我们在闭包中访问了self的name属性。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class A {
+</span><span class='line'>    let name: String
+</span><span class='line'>    lazy var wash: Void -&gt;Void = {
+</span><span class='line'>        var name = self.name + " nurse"
+</span><span class='line'>        print("wash room is \(name)")
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    init(name: String) {
+</span><span class='line'>        self.name = name
+</span><span class='line'>        print("\(self.name) 创建了")
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    deinit {
+</span><span class='line'>        print("\(self.name) 释放了")
+</span><span class='line'>    }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>class B {
+</span><span class='line'>    func play() {
+</span><span class='line'>        var nurse: A?
+</span><span class='line'>        nurse = A(name: "jack")
+</span><span class='line'>        nurse?.wash()
+</span><span class='line'>    }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>var baby: B?
+</span><span class='line'>baby = B()
+</span><span class='line'>baby?.play()
+</span><span class='line'>
+</span><span class='line'>输出结果：
+</span><span class='line'>jack 创建了
+</span><span class='line'>wash room is jack nurse</span></code></pre></td></tr></table></div></figure>
+
+
+<p> 因为wash是self的一个属性，所以wash被self持有。这个时候我们又在闭包中访问了self的name属性，所以它又在闭包中持有了self。这样便导致了循环引用。为了解决闭包中的循环引用问题，Swift中提供了一个叫”闭包捕获列表”的解决方案。</p>
+
+<ul>
+<li>定义一个捕获列表</li>
+</ul>
+
+
+<p> 捕获列表中的每一项都是一个用weak或 unowned关键字与一个实例对象的引用（如self）或者是一个用初始化值的变量（如delegate = self.delegate!）搭配成对，配对之间用逗号隔开，最后用方括号括起来。如下所示：</p>
+
+<pre><code class="`">
+  lazy var someClosure:(Int, String) -&gt; String = {
+        [unowned self, weak delegate = self.delegate!] (index: Int, stringToProcess: String) -&gt; String in
+
+    }
+</code></pre>
+
+<p> 如果闭包中没有指定参数列表或者返回类型，可直接把捕获列表放置在闭包开始的地方（花括号后面）然后紧跟着是"in"关键词，示例代码如下：</p>
+
+<pre><code class="``">  lazy var someClosure:Void -&gt; String = {
+        [unowned self, weak delegate = self.delegate!]  in
+
+    }
+</code></pre>
+
+<ul>
+<li>解决Block(闭包)中的循环引用，ClassA中的Block(闭包)代码可做以下修改：</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>lazy var wash:Void -&gt;Void = { [weak self] in
+</span><span class='line'>//这个地方使用self!.name而不是self.name。是因为weak修饰，self有可能为nil，如果是unowned修饰，这个地方应该是self.name。因为unowned修饰的self永远不可能为空。
+</span><span class='line'>        var name = self!.name + " nurse"
+</span><span class='line'>        print("wash room is \(name)")
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'> 输出结果：
+</span><span class='line'>jack 创建了
+</span><span class='line'>wash room is jack nurse
+</span><span class='line'>jack 释放了</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>参考资料及文章</h4>
+
+<ul>
+<li><a herf="https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/">《The Swift Programming Language》</a></li>
+<li><a href="http://swifter.tips/retain-cycle/">内存管理，WEAK 和 UNOWNED </a></li>
+<li><a href="http://skyfly.xyz/2015/12/18/Swift/Swift%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">Swift学习笔记-内存管理</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">杨社兵</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-01-15T01:37:31+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>1:37 am</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/swift/'>swift</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+  <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <span class="jiathis_txt">分享到：</span>
+  <a class="jiathis_button_tools_1"></a>
+  <a class="jiathis_button_tools_2"></a>
+  <a class="jiathis_button_tools_3"></a>
+  <a class="jiathis_button_tools_4"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2059530"></script>
+<!-- UY END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/01/04/swiftzhong-uitableviewde-yong-fa-zi-ding-yi-uitableviewhe-uitableviewcell/" title="Previous Post: Swift中UITableView的用法(自定义UITableView和UITableViewCell)">&laquo; Swift中UITableView的用法(自定义UITableView和UITableViewCell)</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2016/01/21/react-native-ios-kai-fa-huan-jing-da-jian/" title="Next Post: React Native iOS 开发环境搭建">React Native iOS 开发环境搭建 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/14/iostu-xing-hui-zhi-coregraphicspian/">iOS图形绘制CoreGraphics篇</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/05/14/iostu-xing-hui-zhi-uibezierpathpian/">iOS图形绘制UIBezierPath篇</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/05/09/swift2-dot-2xin-te-xing/">Swift2.2新特性</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-chang-jian-suan-fa/">iOS面试题系列之常见算法</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-uiji-chu/">iOS面试题系列之UI相关</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+ <h1>iOS开发</h1>
+ <ul id="categories">
+  <li class='category'><a href='/blog/categories/objective-c/'>objective-c (6)</a></li>
+<li class='category'><a href='/blog/categories/others/'>others (7)</a></li>
+<li class='category'><a href='/blog/categories/swift/'>swift (5)</a></li>
+
+ </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - 杨社兵 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  <span class="credit">, 感谢 <a href="http://gitcafe.com/signup?invited_by=yangshebing" target="_blank">GitCafe</a> 为本站提供存储空间</span>
+
+  	<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?be50b7d5e40e390ecfdd9cc1a14fe0e6";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

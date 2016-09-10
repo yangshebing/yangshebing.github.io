@@ -1,0 +1,320 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>动态限制UITextField或UITextView用户输入中英文混编字数统计 - 杨社兵的技术博客</title>
+  <meta name="author" content="杨社兵">
+
+  
+  <meta name="description" content="ios开发中如何动态限制UITextField或UITextView用户输入中英文混编字数统计">
+  <meta name="keywords" content="ios开发, 限制用户输入, UITextField, UITextView">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://yangshebing.github.io/blog/2015/09/12/test/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="杨社兵的技术博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="http://cdn.staticfile.org/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">杨社兵的技术博客</a></h1>
+  
+    <h2>业精于勤荒于嬉，行成于思毁于随.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="yangshebing.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">我的博客</a></li>
+  <li><a href="/blog/archives">所有文章</a></li>
+  <li><a href="http://weibo.com/yangshebing" target="_blank">新浪微博</a></li>
+  <li><a href="/about">关于我</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">动态限制UITextField或UITextView用户输入中英文混编字数统计</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-09-12T11:31:37+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:31 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><strong>动态限制用户输入字数，这个在很多app中都会涉及，由于NSString的Length属性获取的长度中英文都是一个字节，不满足一个汉字两个字节、一个字符一个字节的需求。网上的方法大致是以下两种：</strong></p>
+
+<h6>1、使用Unicode编码把OC中的NSString字符串转换成C的字符串。然后对字符串遍历进行统计长度。</h6>
+
+<!--more-->
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>-  (int)convertToInt:(NSString*)strtemp {  
+</span><span class='line'>    int strlength = 0;
+</span><span class='line'>    char* p = (char*)[strtemp cStringUsingEncoding:NSUnicodeStringEncoding];
+</span><span class='line'>    for (int i=0 ; i&lt;[strtemp lengthOfBytesUsingEncoding:NSUnicodeStringEncoding];i++) {
+</span><span class='line'>        if (*p) {
+</span><span class='line'>            p++;
+</span><span class='line'>            strlength++;
+</span><span class='line'>        }
+</span><span class='line'>        else {
+</span><span class='line'>            p++;
+</span><span class='line'>        }
+</span><span class='line'>    }
+</span><span class='line'>    return strlength;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h6>2、直接计算OC中的NSString字符串中单词的个数</h6>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (NSInteger)countWordWithStr:(NSString *)s
+</span><span class='line'>{
+</span><span class='line'>    NSInteger i,n=[s length],l=0,a=0,b=0;
+</span><span class='line'>    unichar c;
+</span><span class='line'>    for(i=0;i&lt;n;i++){
+</span><span class='line'>        c=[s characterAtIndex:i];
+</span><span class='line'>        if(isblank(c)){
+</span><span class='line'>            b++;
+</span><span class='line'>        }else if(isascii(c)){
+</span><span class='line'>            a++;
+</span><span class='line'>        }else{
+</span><span class='line'>            l++;
+</span><span class='line'>        }
+</span><span class='line'>    }
+</span><span class='line'>    if(a==0 && l==0) return 0;
+</span><span class='line'>    return l+(NSInteger)ceilf((float)(a+b)/2.0);
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>以上资料均为网上整理得来，仅供学习交流使用。有关于此类问题，欢迎在最下方留言一起探讨优化学习。</strong></p>
+
+<h6>参考博客地址：</h6>
+
+<ul>
+<li>1、<a href="http://mobilesolutions.blog.163.com/blog/static/18922417620116133910181/">统计含中英文混编的NSString 字符串长度 </a></li>
+<li>2、<a href="http://blog.csdn.net/toss156/article/details/8993270">【IOS】IOS开发常用函数</a></li>
+<li>3、<a href="http://code.qtuba.com/article-60968.html">iOS - 推断输入字符串长度函数</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">杨社兵</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-09-12T11:31:37+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:31 am</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/objective-c/'>objective-c</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+  <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <span class="jiathis_txt">分享到：</span>
+  <a class="jiathis_button_tools_1"></a>
+  <a class="jiathis_button_tools_2"></a>
+  <a class="jiathis_button_tools_3"></a>
+  <a class="jiathis_button_tools_4"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2059530"></script>
+<!-- UY END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/09/12/swift/" title="Next Post: swift语言编程">swift语言编程 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/14/iostu-xing-hui-zhi-coregraphicspian/">iOS图形绘制CoreGraphics篇</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/05/14/iostu-xing-hui-zhi-uibezierpathpian/">iOS图形绘制UIBezierPath篇</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/05/09/swift2-dot-2xin-te-xing/">Swift2.2新特性</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-chang-jian-suan-fa/">iOS面试题系列之常见算法</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-uiji-chu/">iOS面试题系列之UI相关</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+ <h1>iOS开发</h1>
+ <ul id="categories">
+  <li class='category'><a href='/blog/categories/objective-c/'>objective-c (6)</a></li>
+<li class='category'><a href='/blog/categories/others/'>others (7)</a></li>
+<li class='category'><a href='/blog/categories/swift/'>swift (5)</a></li>
+
+ </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - 杨社兵 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  <span class="credit">, 感谢 <a href="http://gitcafe.com/signup?invited_by=yangshebing" target="_blank">GitCafe</a> 为本站提供存储空间</span>
+
+  	<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?be50b7d5e40e390ecfdd9cc1a14fe0e6";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

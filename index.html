@@ -1,0 +1,698 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>杨社兵的技术博客</title>
+  <meta name="author" content="杨社兵">
+
+  
+  <meta name="description" content="1、绘制直线 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19 //获取当前上下文 CGContextRef contextRef = UIGraphicsGetCurrentContext(); UIColor *color = [UIColor &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://yangshebing.github.io/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="杨社兵的技术博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="http://cdn.staticfile.org/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">杨社兵的技术博客</a></h1>
+  
+    <h2>业精于勤荒于嬉，行成于思毁于随.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="yangshebing.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">我的博客</a></li>
+  <li><a href="/blog/archives">所有文章</a></li>
+  <li><a href="http://weibo.com/yangshebing" target="_blank">新浪微博</a></li>
+  <li><a href="/about">关于我</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/05/14/iostu-xing-hui-zhi-coregraphicspian/">iOS图形绘制CoreGraphics篇</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-05-14T21:57:43+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:57 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>1、绘制直线</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>//获取当前上下文
+</span><span class='line'>    CGContextRef contextRef = UIGraphicsGetCurrentContext();
+</span><span class='line'>    UIColor *color = [UIColor colorWithRed:0.5 green:0.35 blue:0.8 alpha:0.7];
+</span><span class='line'>    //设置线条颜色
+</span><span class='line'>//    CGContextSetStrokeColor(contextRef, CGColorGetComponents([UIColor redColor].CGColor));
+</span><span class='line'>    //官方推荐首选这个API
+</span><span class='line'>    CGContextSetStrokeColorWithColor(contextRef, [UIColor redColor].CGColor);
+</span><span class='line'>    //设置线条颜色
+</span><span class='line'>    CGContextSetLineWidth(contextRef, 5);
+</span><span class='line'>    //设置线条端点(不带端点)
+</span><span class='line'>    CGContextSetLineCap(contextRef, kCGLineCapButt);
+</span><span class='line'>    //设置线条绘制的起始坐标点
+</span><span class='line'>    CGContextMoveToPoint(contextRef, 50, 20);
+</span><span class='line'>    //结束点
+</span><span class='line'>    CGContextAddLineToPoint(contextRef, 100, 20);
+</span><span class='line'>    //绘制线条路径
+</span><span class='line'>    CGContextStrokePath(contextRef);
+</span><span class='line'>    </span></code></pre></td></tr></table></div></figure>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/05/14/iostu-xing-hui-zhi-coregraphicspian/">阅读全篇...</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/05/14/iostu-xing-hui-zhi-uibezierpathpian/">iOS图形绘制UIBezierPath篇</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-05-14T21:55:19+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:55 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>1、绘制直线</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>UIBezierPath *line = [[UIBezierPath alloc] init];
+</span><span class='line'>//设置线宽
+</span><span class='line'>line.lineWidth = 3;
+</span><span class='line'>[line moveToPoint:CGPointMake(50, 20)];
+</span><span class='line'>[line addLineToPoint:CGPointMake(150, 20)];
+</span><span class='line'>//设置绘制线条颜色，这个地方需要注意！UIBezierPath本身类中不包含设置颜色的属性，它是通过UIColor来直接设置。
+</span><span class='line'>[[UIColor orangeColor] setStroke];
+</span><span class='line'>/*
+</span><span class='line'>*线条形状
+</span><span class='line'>*kCGLineCapButt,   //不带端点
+</span><span class='line'>*kCGLineCapRound,  //端点带圆角
+</span><span class='line'>*kCGLineCapSquare  //端点是正方形
+</span><span class='line'>*/
+</span><span class='line'>line.lineCapStyle = kCGLineCapRound;
+</span><span class='line'>[line stroke];
+</span></code></pre></td></tr></table></div></figure>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/05/14/iostu-xing-hui-zhi-uibezierpathpian/">阅读全篇...</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/05/09/swift2-dot-2xin-te-xing/">Swift2.2新特性</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-05-09T23:09:48+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>11:09 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>1、编译期Swift版本检测</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>#if swift(&gt;=3.0)
+</span><span class='line'>    print("Running Swift 3.0 or later")
+</span><span class='line'>#else
+</span><span class='line'>    print("Running Swift 2.2 or earlier")
+</span><span class='line'>#endif
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>它和Swift2中介绍过的<code>#available</code>表达式不同,#available表达式是运行时检查,<code>#if swift(&gt;=3.0)... #else... #endif</code>是编译期检查。</p>
+
+<p><strong>一个警告:这个特性这次不可用,因为Swift2.1编译器并不知道<code>#if swift(&gt;=2.2)</code>意味着什么。然而,一旦Swift3.0以及未来所有版本可用,Swift编译期版本检查将会是一个非常有用的工具。</strong></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/05/09/swift2-dot-2xin-te-xing/">阅读全篇...</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-chang-jian-suan-fa/">iOS面试题系列之常见算法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-04-24T23:59:06+08:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>11:59 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>iOS面试中熟悉常见算法</h4>
+
+<p>1、    对以下一组数据进行降序排序（冒泡排序）。“24，17，85，13，9，54，76，45，5，63”</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-chang-jian-suan-fa/">阅读全篇...</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-uiji-chu/">iOS面试题系列之UI相关</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-04-24T23:58:39+08:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>11:58 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>1、  简述app启动周期。</strong></p>
+
+<p>打开应用程序，它先会执行main函数，再执行UIApplicationMain函数。初始化
+UIApplication，设置代理对象，开启事件循环，调用代理方法进行事件处理。</p>
+
+<p>首先会调用application:didFinishLaunchingWithOptions:代理方法。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-uiji-chu/">阅读全篇...</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/04/24/iosmian-shi-ti-zhi-objective-cji-chu/">iOS面试题系列之Objective-C相关</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-04-24T23:58:04+08:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>11:58 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>1、简述你项目中常用的设计模式。它们有什么优缺点？</strong></p>
+
+<p>常用的设计模式有：代理、观察者、单例。</p>
+
+<p>（1）单例：它是用来限制一个类只能创建一个对象。这个对象中的属性可以存储全局共享的数据。所有的类都能访问、设置此单例中的属性数据。</p>
+
+<p>优点：是它只会创建一个对象容易供外界访问，节约性能。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/04/24/iosmian-shi-ti-zhi-objective-cji-chu/">阅读全篇...</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/01/21/react-native-ios-kai-fa-huan-jing-da-jian/">React Native iOS 开发环境搭建</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-01-21T01:07:09+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>1:07 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>一、React Native基础环境搭建</h4>
+
+<p>1、安装<a href="http://brew.sh">Homebrew</a></p>
+
+<p>打开终端输入：
+<code>
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+</code></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/01/21/react-native-ios-kai-fa-huan-jing-da-jian/">阅读全篇...</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/01/15/swiftnei-cun-guan-li-(arc)zhi-xun-huan-yin-yong/">Swift内存管理（ARC）之循环引用</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-01-15T01:37:31+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>1:37 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Swift中是采用自动引用计数(ARC，AutomaticReferenceCounting)机制来对内存进行管理的。</p>
+
+<h4>一、简述ARC如何工作：</h4>
+
+<p>每当你每创建一个新的对象，它便会分配一块内存来存储该对象的相关信息。当你不再需要这个对象的时候，它就会自动释放这个对象，避免它再占用内存空间。当然，如果该对象只要至少存在一个引用就不会被释放。另外，你如果访问了一个已经被释放的对象，则很有可能会出现崩溃（野指针）。
+拿《The Swift Programming Language》里面的例子来套一下：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>//创建一个Cat类，自带常量name属性
+</span><span class='line'>class Cat {
+</span><span class='line'>    let name: String
+</span><span class='line'>    init(name: String) {
+</span><span class='line'>    //初始化name属性
+</span><span class='line'>        self.name = name;
+</span><span class='line'>        print("\(name) 对象已经被初始化")
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    deinit {
+</span><span class='line'>        print("\(name) 对象释放成功！")
+</span><span class='line'>    }
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/01/15/swiftnei-cun-guan-li-(arc)zhi-xun-huan-yin-yong/">阅读全篇...</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/01/04/swiftzhong-uitableviewde-yong-fa-zi-ding-yi-uitableviewhe-uitableviewcell/">Swift中UITableView的用法(自定义UITableView和UITableViewCell)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-01-04T21:23:33+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:23 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>一、自定义表视图（UITableView）</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/01/04/swiftzhong-uitableviewde-yong-fa-zi-ding-yi-uitableviewhe-uitableviewcell/">阅读全篇...</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/01/02/ioskai-fa-zhi-ji-chu-kong-jian-(swiftban-)/">iOS开发之基础控件（Swift版）</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-01-02T11:08:19+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2016</span></span> <span class='time'>11:08 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>  1、文本（UILabel）：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  let titleLabel = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
+</span><span class='line'>        //设置titleLabel的文本对齐方式：左：.Left, 中:.Center, 右:.Right
+</span><span class='line'>        titleLabel.textAlignment = .Center
+</span><span class='line'>        //设置titleLabel的文本颜色
+</span><span class='line'>        titleLabel.textColor = UIColor.lightGrayColor()
+</span><span class='line'>        //设置titleLabel文字的字体为系统字体，大小为15
+</span><span class='line'>        titleLabel.font = UIFont.systemFontOfSize(15)
+</span><span class='line'>        //设置titleLabel文字的字体为"Helvetica", 大小为15
+</span><span class='line'>        titleLabel.font = UIFont(name: "Helvetica", size: 15)
+</span><span class='line'>        titleLabel.text = "心灵鸡汤，每天一起干"
+</span><span class='line'>        //titleLabel字体大小自适应宽度，根据指定宽度titleLabel自动调整字体显示大小
+</span><span class='line'>        titleLabel.adjustsFontSizeToFitWidth = true
+</span><span class='line'>        //指定titleLabel的显示行数，0代表自动折行
+</span><span class='line'>        titleLabel.numberOfLines = 1
+</span><span class='line'>        //获取系统所有字体名称
+</span><span class='line'>        let fontFamily = UIFont.familyNames()
+</span><span class='line'>        print(fontFamily)
+</span><span class='line'>        view.addSubview(titleLabel)</span></code></pre></td></tr></table></div></figure>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/01/02/ioskai-fa-zhi-ji-chu-kong-jian-(swiftban-)/">阅读全篇...</a>
+    </footer>
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/posts/2">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/14/iostu-xing-hui-zhi-coregraphicspian/">iOS图形绘制CoreGraphics篇</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/05/14/iostu-xing-hui-zhi-uibezierpathpian/">iOS图形绘制UIBezierPath篇</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/05/09/swift2-dot-2xin-te-xing/">Swift2.2新特性</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-chang-jian-suan-fa/">iOS面试题系列之常见算法</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-uiji-chu/">iOS面试题系列之UI相关</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+ <h1>iOS开发</h1>
+ <ul id="categories">
+  <li class='category'><a href='/blog/categories/objective-c/'>objective-c (6)</a></li>
+<li class='category'><a href='/blog/categories/others/'>others (7)</a></li>
+<li class='category'><a href='/blog/categories/swift/'>swift (5)</a></li>
+
+ </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - 杨社兵 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  <span class="credit">, 感谢 <a href="http://gitcafe.com/signup?invited_by=yangshebing" target="_blank">GitCafe</a> 为本站提供存储空间</span>
+
+  	<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?be50b7d5e40e390ecfdd9cc1a14fe0e6";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

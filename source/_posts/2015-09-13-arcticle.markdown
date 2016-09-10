@@ -1,0 +1,36 @@
+---
+layout: post
+title: "iOS中点击状态栏让滑动视图回到顶部"
+date: 2015-09-13 23:28:31 +0800
+comments: true
+tags: [iOS, xcode, Objective-C]
+keywords: ios开发, 返回顶部, UIScrollView, UITableView
+categories: Objective-C
+---
+###### 在产品开发过程中，有时候会有这种需求，需要点击状态栏让滑动视图（UIScrollView）或者表视图（UITableView）返回到顶部，让用户可以更快的浏览最新的信息。 
+###### 这个时候我们需要设置滑动视图的scrollsToTop属性，让它决定点击状态栏是否返回顶部。 
+<!--more-->
+``` 
+// When the user taps the status bar, 
+the scroll view beneath the touch which is closest to the status bar will be scrolled to top,
+ but only if its scrollsToTop property is YES, 
+ its delegate does not return NO from shouldScrollViewScrollToTop,
+  and it is not already at the top. 
+// On iPhone, we execute this gesture only if there’s one on-screen scroll view with scrollsToTop == YES.
+ If more than one is found, none will be scrolled.
+@property(nonatomic) BOOL scrollsToTop; // default is YES.
+```
+
+###### 设置这个属性，可以让点击状态栏不返回顶部。如果我们需要让它点击状态栏回到顶部，我们可以把这个属性值设置为YES（默认为YES）。按正常情况来说，这个时候点击状态栏是可以返回到顶部。但是点击状态栏还是没有反应怎么办？
+
+###### 解决方法如下： 
+###### 按照上面官方文档的说法，只有把当前主控制器需要设置的那个scrollview找到并把它的scrollsToTop属性设置为YES，然后再把其他scrollview的scrollsToTop属性设置为NO 。这样它才会响应这个事件。其中的原理非常简单，如果当前主控制器中有2个scrollview，系统压根就不知道你想要其中的哪个scrollview滑动到顶部。
+
+###### 举个栗子： 
+* 假设当前控制器中有三个表视图（UITableView）或者滑动视图(UIScrollView)要切换，把当前显示的滑动视图scrollsToTop属性设置为YES,其他滑动视图的scrollsToTop属性设置为NO即可。
+
+**注意：如果当前滑动视图中存在子视图也是滑动视图的情况，那么它子视图中的滑动视图scrollsToTop属性也要设置为NO，不然它仍然会造成点击状态栏无法响应返回到顶部操作。**
+
+###### 参考博客地址： 
+* <a href="http://blog.sina.com.cn/s/blog_463dc5b90101k9ib.html">点击状态栏不返回顶部问题</a>
+

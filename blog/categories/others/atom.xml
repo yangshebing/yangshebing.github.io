@@ -1,0 +1,1381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Others | 杨社兵的技术博客]]></title>
+  <link href="http://yangshebing.github.io/blog/categories/others/atom.xml" rel="self"/>
+  <link href="http://yangshebing.github.io/"/>
+  <updated>2016-05-15T00:11:46+08:00</updated>
+  <id>http://yangshebing.github.io/</id>
+  <author>
+    <name><![CDATA[杨社兵]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[iOS面试题系列之常见算法]]></title>
+    <link href="http://yangshebing.github.io/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-chang-jian-suan-fa/"/>
+    <updated>2016-04-24T23:59:06+08:00</updated>
+    <id>http://yangshebing.github.io/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-chang-jian-suan-fa</id>
+    <content type="html"><![CDATA[<h4>iOS面试中熟悉常见算法</h4>
+
+<p>1、    对以下一组数据进行降序排序（冒泡排序）。“24，17，85，13，9，54，76，45，5，63”</p>
+
+<!--more-->
+
+
+<pre><code class="">int main(int argc, char *argv[]) {
+    int array[10] = {24, 17, 85, 13, 9, 54, 76, 45, 5, 63};
+        int num = sizeof(array)/sizeof(int);
+        for(int i = 0; i &lt; num-1; i++) {
+            for(int j = 0; j &lt; num - 1 - i; j++) {
+                    if(array[j] &lt; array[j+1]) {
+                            int tmp = array[j];
+                                array[j] = array[j+1];
+                                array[j+1] = tmp;
+                            }
+                    }
+            }
+
+    for(int i = 0; i &lt; num; i++) {
+            printf("%d", array[i]);
+                if(i == num-1) {
+                    printf("\n");
+                    }
+                else {
+                    printf(" ");
+                    }
+            }
+    }
+</code></pre>
+
+<p>2、    对以下一组数据进行升序排序（选择排序）。“86, 37, 56, 29, 92, 73, 15, 63, 30, 8”</p>
+
+<pre><code>
+void sort(int a[],int n)
+{
+
+    int i, j, index;
+
+    for(i = 0; i &lt; n - 1; i++) {
+
+        index = i;
+
+        for(j = i + 1; j &lt; n; j++) {
+
+            if(a[index] &gt; a[j]) {
+
+                index = j;
+
+            }
+
+        }
+
+        if(index != i) {
+
+            int temp = a[i];
+
+            a[i] = a[index];
+
+            a[index] = temp;
+
+        }
+
+    }
+
+}
+
+int main(int argc, const char * argv[]) {
+
+    int numArr[10] = {86, 37, 56, 29, 92, 73, 15, 63, 30, 8};
+
+    sort(numArr, 10);
+
+    for (int i = 0; i &lt; 10; i++) {
+
+        printf("%d, ", numArr[i]);
+
+    }
+
+    printf("\n");
+
+    return 0;
+
+}
+</code></pre>
+
+<p>3、    快速排序算法</p>
+
+<pre><code>void sort(int *a, int left, int right) {
+if(left &gt;= right) {
+return ;
+}
+int i = left;
+int j = right;
+int key = a[left];
+while (i &lt; j) {
+while (i &lt; j &amp;&amp; key &gt;= a[j]) {
+j--;
+}
+a[i] = a[j];
+while (i &lt; j &amp;&amp; key &lt;= a[i]) {
+    i++;
+    }
+a[j] = a[i];
+}
+a[i] = key;
+sort(a, left, i-1);
+sort(a, i+1, right);
+}
+</code></pre>
+
+<p>4、    归并排序</p>
+
+<pre><code>void merge(int sourceArr[], int tempArr[], int startIndex, int midIndex, int endIndex) {
+    int i = startIndex;
+        int j = midIndex + 1;
+        int k = startIndex;
+        while (i != midIndex + 1 &amp;&amp; j != endIndex + 1) {
+            if (sourceArr[i] &gt;= sourceArr[j]) {
+                    tempArr[k++] = sourceArr[j++];
+                    } else {
+                    tempArr[k++] = sourceArr[i++];
+                     }
+            }        while (i != midIndex + 1) {
+            tempArr[k++] = sourceArr[i++];
+            }        while (j != endIndex + 1) {
+            tempArr[k++] = sourceArr[j++];
+            }        for (i = startIndex; i &lt;= endIndex; i++) {
+            sourceArr[i] = tempArr[i];
+            }
+    }
+
+void sort(int souceArr[], int tempArr[], int startIndex, int endIndex) {
+    int midIndex;
+        if (startIndex &lt; endIndex) {
+            midIndex = (startIndex + endIndex) / 2;
+                sort(souceArr, tempArr, startIndex, midIndex);
+                sort(souceArr, tempArr, midIndex + 1, endIndex);
+                merge(souceArr, tempArr, startIndex, midIndex, endIndex);
+            }
+    }
+
+int main(int argc, const char * argv[]) {
+    int numArr[10] = {86, 37, 56, 29, 92, 73, 15, 63, 30, 8};
+        int tempArr[10];
+        sort(numArr, tempArr, 0, 9);
+        for (int i = 0; i &lt; 10; i++) {
+            printf("%d, ", numArr[i]);
+            }
+        printf("\n");
+        return 0;
+    }
+</code></pre>
+
+<p>5、    实现二分查找算法（编程语言不限）</p>
+
+<pre><code>int bsearchWithoutRecursion(int array[],int low,int high,int target) {
+while(low &lt;= high) {
+int mid = (low + high) / 2;
+if(array[mid] &gt; target)
+high = mid - 1;
+else if(array[mid] &lt; target)
+low = mid + 1;
+else    //findthetarget
+return mid;
+}
+//the array does not contain the target
+return -1;
+}
+----------------------------------------
+递归实现
+int binary_search(const int arr[],int low,int high,int key){
+int mid=low + (high - low) / 2;
+if(low &gt; high)
+return -1;
+else{
+if(arr[mid] == key)
+    return mid;
+else if(arr[mid] &gt; key)
+return binary_search(arr, low, mid-1, key);
+else
+return binary_search(arr, mid+1, high, key);
+}
+}
+</code></pre>
+
+<p>6、    如何实现链表翻转（链表逆序）？思路：每次把第二个元素提到最前面来。</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+typedef struct NODE {
+    struct NODE *next;
+        int num;
+    }node;
+
+node *createLinkList(int length) {
+    if (length &lt;= 0) {
+            return NULL;
+            }
+        node *head,*p,*q;
+        int number = 1;
+        head = (node *)malloc(sizeof(node));
+        head-&gt;num = 1;
+        head-&gt;next = head;
+        p = q = head;
+        while (++number &lt;= length) {
+            p = (node *)malloc(sizeof(node));
+                p-&gt;num = number;
+                p-&gt;next = NULL;
+                q-&gt;next = p;
+                q = p;
+            }
+        return head;}
+
+void printLinkList(node *head) {
+    if (head == NULL) {
+            return;
+            }
+        node *p = head;
+        while (p) {
+            printf("%d ", p-&gt;num);
+                p = p -&gt; next;
+            }
+        printf("\n");
+    }
+
+node *reverseFunc1(node *head) {
+    if (head == NULL) {
+            return head;
+
+            }
+
+        node *p,*q;
+        p = head;
+        q = NULL;
+        while (p) {
+            node *pNext = p -&gt; next;
+                p -&gt; next = q;
+                q = p;
+                p = pNext;
+            }
+        return q;
+    }
+
+int main(int argc, const char * argv[]) {
+    node *head = createLinkList(7);
+        if (head) {
+            printLinkList(head);
+                node *reHead = reverseFunc1(head);
+                printLinkList(reHead);
+                free(reHead);    
+    }
+        free(head);
+        return 0;
+    }
+</code></pre>
+
+<p>7、    实现一个字符串“how are you”的逆序输出（编程语言不限）。如给定字符串为“hello world”,输出结果应当为“world hello”。</p>
+
+<pre><code>int spliterFunc(char *p) {
+    char c[100][100];
+        int i = 0;
+        int j = 0;
+
+        while (*p != '\0') {
+            if (*p == ' ') {
+                    i++;
+                        j = 0;
+                    } else {
+                    c[i][j] = *p;
+                        j++;
+                    }
+                p++;    
+
+    }
+
+        for (int k = i; k &gt;= 0; k--) {
+            printf("%s", c[k]);
+                if (k &gt; 0) {
+                    printf(" ");
+                    } else {
+                    printf("\n");
+                        }
+            }    return 0;
+
+    }
+</code></pre>
+
+<p>8、    给定一个字符串，输出本字符串中只出现一次并且最靠前的那个字符的位置？如“abaccddeeef”,字符是b,输出应该是2。</p>
+
+<pre><code>
+char *strOutPut(char *);
+
+int compareDifferentChar(char, char *);
+
+int main(int argc, const char * argv[]) {    
+        char *inputStr = "abaccddeeef";
+        char *outputStr = strOutPut(inputStr);
+        printf("%c \n", *outputStr);
+        return 0;
+    }
+
+char *strOutPut(char *s) {
+    char str[100];
+        char *p = s;
+        int index = 0;
+        while (*s != '\0') {
+            if (compareDifferentChar(*s, p) == 1) {
+                    str[index] = *s;
+                        index++;
+                    }
+                s++;
+            }
+        return &amp;str;}
+
+int compareDifferentChar(char c, char *s) {
+    int i = 0;
+        while (*s != '\0' &amp;&amp; i&lt;= 1) {
+            if (*s == c) {
+                    i++;
+                    }
+                s++;    }
+        if (i == 1) {
+            return 1;
+            } else {
+            return 0;
+            }
+    }
+</code></pre>
+
+<p>9、    二叉树的先序遍历为FBACDEGH,中序遍历为：ABDCEFGH,请写出这个二叉树的后序遍历结果。
+<strong>ADECBHGF</strong></p>
+
+<ul>
+<li>先序+中序遍历还原二叉树：先序遍历是：ABDEGCFH 中序遍历是：DBGEACHF</li>
+</ul>
+
+
+<p>首先从先序得到第一个为A，就是二叉树的根，回到中序，可以将其分为三部分：</p>
+
+<p>左子树的中序序列DBGE，根A，右子树的中序序列CHF
+接着将左子树的序列回到先序可以得到B为根，这样回到左子树的中序再次将左子树分割为三部分：
+左子树的左子树D，左子树的根B，左子树的右子树GE
+同样地，可以得到右子树的根为C
+类似地将右子树分割为根C，右子树的右子树HF，注意其左子树为空
+如果只有一个就是叶子不用再进行了，刚才的GE和HF再次这样运作，就可以将二叉树还原了。</p>
+
+<p>10、   打印2-100之间的素数。</p>
+
+<pre><code>int main(int argc, const char * argv[]) {
+    for (int i = 2; i &lt; 100; i++) {
+            int r = isPrime(i);
+                if (r == 1) {
+                    printf("%ld ", i);
+                    }
+            }
+        return 0;
+    }
+
+int isPrime(int n){
+    int i, s;
+        for(i = 2; i &lt;= sqrt(n); i++)
+            if(n % i == 0)  return 0;
+            return 1;
+    }
+</code></pre>
+
+<p>11、   求两个整数的最大公约数。</p>
+
+<pre><code>int gcd(int a, int b) {
+    int temp = 0;
+        if (a &lt; b) {
+            temp = a;
+                a = b;
+                b = temp;
+            }        while (b != 0) {
+            temp = a % b;
+                a = b;
+                b = temp;
+            }
+        return a;
+    }
+</code></pre>
+
+<p><strong>本文内容中部分来自网络，后续会持续更新完善。欢迎一起学习交流！</strong></p>
+
+<p><strong>如需转载，请注明出处</strong></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iOS面试题系列之UI相关]]></title>
+    <link href="http://yangshebing.github.io/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-uiji-chu/"/>
+    <updated>2016-04-24T23:58:39+08:00</updated>
+    <id>http://yangshebing.github.io/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-uiji-chu</id>
+    <content type="html"><![CDATA[<p><strong>1、  简述app启动周期。</strong></p>
+
+<p>打开应用程序，它先会执行main函数，再执行UIApplicationMain函数。初始化
+UIApplication，设置代理对象，开启事件循环，调用代理方法进行事件处理。</p>
+
+<p>首先会调用application:didFinishLaunchingWithOptions:代理方法。</p>
+
+<!--more-->
+
+
+<p>接下来会调用applicationDidBecomeActive:代理方法。监听系统事件，结束程序。当程序正常退出UIApplicationMain函数才会返回。</p>
+
+<p>监听系统事件：</p>
+
+<p>锁屏后app会调用：applicationWillResignActive:代理方法。然后接着调用
+applicationDidEnterBackground:方法。</p>
+
+<p>解锁后app会调用：applicationWillEnterForeground:代理方法。接着调用
+applicationDidBecomeActive代理方法。</p>
+
+<p>杀死进程会调用：applicationWillTerminate:代理方法。</p>
+
+<p>接听电话：先调用applicationWillResignActive:代理方法。挂断电话后会直接进入
+应用调：applicationDidBecomeActive:代理方法。</p>
+
+<p>出现内存警告会调用：applicationDidReceiveMemoryWarning:代理方法</p>
+
+<p><strong>2、  简单的说说UIApplication的作用及继承关系。</strong></p>
+
+<p>（1）UIApplication是继承UIResponder的。UIApplication是整个应用程序的核
+心。每一个程序在运行期必须有UIApplication(或子类)的一个实例（有且只有一
+个），通过[UIApplication shareApplication]可以得到这个单例实例。</p>
+
+<p>（2）UIApplication帮助管理应用程序的生命周期，通过delegate来履行任务。</p>
+
+<p>（3）UIApplication可以接收事件，把所有用户事件都放入队列，逐个处理。它会发送
+当前事件给一个合适的目标控件进行处理。他还将部分事件转给delegate对象来处理。
+delegate可以处理的事件包括：应用程序的生命周期事件（如程序启动与关闭）、系统事
+件（如来电）。</p>
+
+<p><strong>3、  简述推送消息原理。</strong></p>
+
+<p>（1）应用程序注册接收远程通知的时候，系统会发送请求到APNS服务器。APNS服务器收
+到请求后会根据请求所带的key值生成一个独一无二的deviceToken。然后APNS服务器会把deviceToken包装成NSData对象发送到对应请求的App上。接下来APP把deviceToken发送给我们自己的服务器（Provider）。服务器接收到deviceToken后进行存储等相关处理。服务器会把推送给用户的消息发送至APNS服务器，最后APNS服务器再发送通知给app。</p>
+
+<p>（2）有关于deviceToken变化问题：重新安装或卸载应用程序，deviceToken不会发生变化。系统升级deviceToken可能会发生变化。抹掉所有内容和设置，重置设备后，deviceToken会变化</p>
+
+<p>（3）注册远程通知方法注册远程通知：一般在app启动完成的时候注册远程通知，注册方法一般在didFinishLaunchingWithOptions：代理方法中处理注册远程通知回调方法：注册成功会回调didRegisterForRometoNotificationsWithDeviceToken:其中的deviceToken参数就是APNS服务器返回的token。注册失败会回调didFailToRegisterForRemoteNotificationsWithError:</p>
+
+<p>（4）处理接收到的远程通知消息程序启动时，app从Terminate状态进入Foreground状态时，会根据didFinishLaunchingWithOptions:代理方法中的luanchOptions参数来获取userInfo。判断是否有推送消息。方式如下：   // userInfo为收到远程通知的内容NSDictionary*userInfo=launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];if (userInfo) {   // 有推送的消息，处理推送的消息  }如果app处于Background状态时，只有用户点击了通知消息才会调用didReceiveRemoteNotification:，如果当前app处于Foreground状态，会直接调用该方法。</p>
+
+<p><strong>4、  简单说下UITableView、UIButton、UIWindow控件的继承关系。</strong></p>
+
+<p>（1）UITableView的继承关系：UITableView继承UIScrollView。UIScrollView继承UIView。UIView继承UIResponder。UIResponder继承NSObject。</p>
+
+<p>（2）UIButton的继承关系：UIButton继承UIControl，UIControl继承UIView。UIView继承UIResponder，UIResponder继承NSObject。</p>
+
+<p>（3）UIWindow继承UIView。</p>
+
+<p><strong>5、  UIView与UIButton有什么区别？UISwitch呢？</strong></p>
+
+<p>UIView继承自UIResponder，它能响应某个动作。UIButton继承UIControl。它不仅可以响应某个动作，还能为某个对象添加对应的动作加以响应。UIButton也能实现UISwitch的功能，它们的区别是分发的事件不一样。</p>
+
+<p><strong>6、  简述UIControl的继承关系，它用来做什么？</strong></p>
+
+<p>UIControl继承UIView。UIView继承UIResponder，UIResponder继承NSObject。它能为某个特定对象添加事件。能进行事件分发。</p>
+
+<p><strong>7、  简述UIViewController中view的生命周期。</strong></p>
+
+<p>先调用loadView方法，再调用viewDidLoad方法，调用viewWillAppear方法，调用viewWillLayoutSubviews方法，调用viewDidLayoutSubviews方法，再调用viewDidApper方法。控制器消失的时候先调用viewWillDisappear方法，再调用viewDidDisapper方法。最后调用dealloc方法。当出现内存警告的时候会调用didReceiveMemoryWarning方法。</p>
+
+<p><strong>8、  简述UITableView的代理方法调用顺序。</strong></p>
+
+<p>先调用numberOfSectionsInTableView:方法，</p>
+
+<p>numberOfRowsInSection:</p>
+
+<p>heightForRowAtIndexPath:</p>
+
+<p>cellForRowAtIndexPath:</p>
+
+<p><strong>9、  你在用CollectionView的时候有没有遇到什么问题？问题是怎么解决的？</strong></p>
+
+<p>刷新的时候会闪烁。在刷新的时候会默认附加一个隐式的fade动画。可以通过取消动画来达到取消闪烁的目的。</p>
+
+<p><strong>10、 简述UIResponder类的作用。</strong></p>
+
+<p>UIResponder类主要是为那些需要响应并处理事件的对象定义了一组接口。这些事件包括：触摸事件、运动事件、远程控制事件（如耳机控制音视频播放）。当用户触发某一事件时，UIKit会创建一个UIEvent事件对象，事件对象会加入到一个FIFO先进先出的队列中。UIApplication对象处理事件时，会从队列头部取出一个事件对象进行分发。</p>
+
+<p><strong>11、 如何监听View的触摸事件？事件如何传递？简述视图的响应者链。</strong></p>
+
+<p>可以通过View类的touchesBegan、touchesMoved、touchesEnded、touchesCancelled方法监听视图的触摸。
+当触摸一个视图对象时，系统会捕捉此事件，并给这个事件创建一个UIEvent对象，将此对象加入当前应用程序的事件队列中，然后由UIApplication对象从队列中取出来进行事件分发，首先会分发给UIWindow对象，然后由UIWindow对象分发给触摸的视图对象，即第一响应者对象。</p>
+
+<p>响应者链：当事件交给第一响应者处理，如果第一响应者不处理，事件就会沿着响应者链向上传递，交给下一个响应者。一般来说，第一响应者是一个视图对象或者是其子类对象，当其被触摸后事件被交由它处理，如果它不处理，事件就会被传递给它的视图控制器对象，然后是它的父视图对象，以此类推，直到顶层视图。接下来会沿着顶层视图到UIWindow对象，再到UIApplication对象。如果整个过程都没有响应这个事件，该事件就会被丢弃，一般情况下，在响应者链中只要有对象处理事件，事件就会停止传递。有时候可以在视图的响应方法中根据一些条件判断来决定是否需要继续传递事件。</p>
+
+<p><strong>12、 CALayer与UIView有什么区别？</strong></p>
+
+<p>（1）UIView是iOS系统中界面元素的继承。所有的界面元素都继承自它，他本身完全是由CoreAnimation来实现的。它真正的绘图部分，是由一个叫CALayer的类来管理。UIView本身更像是一个CALayer的管理器，访问它的跟绘图和跟坐标有关的属性，如frame,bounds等，实际上内部都是在访问它所包含的CALayer的相关属性。</p>
+
+<p>（2）UIView有个layer属性，可以返回它的主CALayer实例，UIView有一个layerClass方法，返回主layer所使用的类，UIView的子类，可以通过重载这个方法，来让UIView使用不同的CALayer来显示。</p>
+
+<p>（3）UIView的CALayer类似UIView的子View树形结构，也可以向它的layer上添加子layer。</p>
+
+<p>（4）CALayer坐标系统与UIView有点不一样，它多了一个anchorPoint的属性。</p>
+
+<p>（5）UIView的layer树形在系统内部，被系统维护着三份copy。逻辑树，动画树，显示树。</p>
+
+<p>（6）CALayer默认修改属性支持隐式动画</p>
+
+<p>（7）View可以接受并处理事件，Layer不可以。</p>
+
+<p><strong>13、 如何优化UITableView?</strong></p>
+
+<p>（1）复用单元格</p>
+
+<p>（2）使用不透明的视图，单元格中少使用动画。</p>
+
+<p>（3）图片使用异步加载，设置图片加载的并发数。</p>
+
+<p>（4）滑动时不加载图片，停止滑动时再加载。</p>
+
+<p>（5）图片和文字可以直接drawRect</p>
+
+<p>（6）如果cell是动态行高，计算缓存单元格高度</p>
+
+<p>（7）尽量少reloadData，只reloadRowsAtIndexPaths</p>
+
+<p>（8）cell高度固定直接用rowHeight属性设置高度。</p>
+
+<p><strong>14、 简述加载到控制器上的根视图创建与加载时机。</strong></p>
+
+<p>视图控制器的根视图加载是在UIViewController的loadView方法中。当视图控制中的loadView方法被调用时，会先通过NSBundle加载，通过控制器的类名作为xib文件名加载xib文件，如果存在，加载View为根视图，如果不存在，则自动创建一个View作为根视图。</p>
+
+<p><strong>15、 简述UITableView中cell的复用机制。</strong></p>
+
+<p>UITableView会创建屏幕显示单元格个数（N）+1个单元格，当滑动到第N+2个单元格时就会复用第1个单元格。UITableView中还有单元格复用池的概念。当tableView调用初始化单元格协议方法获取单元格时，它会根据你设定的reuse identifier先去复用池中查找可用的复用单元格，找到则复用该单元格，没找到这创建一个新的单元格对象。</p>
+
+<p><strong>本文内容中部分来自网络，后续会持续更新完善。欢迎一起学习交流！</strong></p>
+
+<p><strong>如需转载，请注明出处</strong></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iOS面试题系列之Objective-C相关]]></title>
+    <link href="http://yangshebing.github.io/blog/2016/04/24/iosmian-shi-ti-zhi-objective-cji-chu/"/>
+    <updated>2016-04-24T23:58:04+08:00</updated>
+    <id>http://yangshebing.github.io/blog/2016/04/24/iosmian-shi-ti-zhi-objective-cji-chu</id>
+    <content type="html"><![CDATA[<p><strong>1、简述你项目中常用的设计模式。它们有什么优缺点？</strong></p>
+
+<p>常用的设计模式有：代理、观察者、单例。</p>
+
+<p>（1）单例：它是用来限制一个类只能创建一个对象。这个对象中的属性可以存储全局共享的数据。所有的类都能访问、设置此单例中的属性数据。</p>
+
+<p>优点：是它只会创建一个对象容易供外界访问，节约性能。</p>
+
+<!--more-->
+
+
+<p>缺点：是一个类只有一个对象，可能造成责任过重，在一定程度上违背了“单一职责原则”。单例模式中没有抽象层，所以单例类的扩展有很大的困难。不能过多创建单例，因为单例从创建到程序关闭前会一直存在，过多的单例会影响性能，浪费系统资源。</p>
+
+<p>（2）观察者（KVO）:它提供了观察某一属性变化的方法。当指定对象的属性发生改变后，它会自动通知相应的观察者。</p>
+
+<p>优点：能提供被观察者属性的新值与旧值。用keypaths来观察属性，因此也可以观察嵌套对象。</p>
+
+<p>缺点：需要注册观察者，实现observeValueForKeyPath:方法，属性必须通过KVC的方法来修改。否则观察者收不到通知。</p>
+
+<p>（3）代理：可以实现类与类之间一对一的通信。</p>
+
+<p>优点：代理协议方法都有清晰的定义。代理方法可以设置可选或必须实现。</p>
+
+<p>缺点：需要定义协议方法，需要设置代理对象，代理对象实现协议方法。内存管理方面，需要注意循环引用问题。</p>
+
+<p><strong>2、代理模式能否实现一对多的通信？</strong></p>
+
+<p>可以，采用多播委托的方式来实现。多播委托：它是指允许创建方法的调用列表或者链表的能力。当多播委托被调用时，列表中的方法均自动执行。</p>
+
+<p>普通代理只能是一对一的回调，无法做到一对多的回调，而多播委托正式对delegate的一种扩展与延伸，多了一个注册和取消的过程。任何需要回调的对象都必须先注册。</p>
+
+<p><strong>3、  重复注册通知会有问题吗？</strong></p>
+
+<p>不会出现问题，若多次发送同一通知，对方就会多次响应。如果重复注册通知，也会有多次响应的效果。为了避免重复注册通知而造成的错误，建议每次注册一个通知前，可以移除一次该通知。</p>
+
+<p><strong>4、项目中是否用过多线程编程？简述你常用的多线程实现方式？</strong></p>
+
+<p>常用的是GCD。</p>
+
+<p>GCD是苹果开发中一个多核编程的解决方案。GCD的队列分为两种类型，SerialDispatchQueue与ConcurrentDispatchQueue。系统默认提供了一个dispatch_get_main_queue，一个dispatch_get_global_queue。</p>
+
+<p><strong>5、简述NSOperationQueue与GCD的区别。</strong></p>
+
+<p>(1) GCD是底层的C语言构成的API。NSOperationQueue及相关对象是Objc对象。在GCD中，在队列中执行的是由block构成的任务，这是一个轻量级的数据结构。而Operation作为一个对象，为我们提供了更多的选择。</p>
+
+<p>(2) 在NSOperationQueue中，我们可以取消任务，而GCD没法停止已经加入queue的block。</p>
+
+<p>(3) NSOperation能够方便的设置依赖关系。还能设置NSOperation的priority优先级，能够使同一个并行队列中的任务区分先后地执行。在GCD中，我们只能区分不同任务队列的优先级，如果要区分block任务优先级也需要大量复杂代码。NSOperation还可以设置并发数。</p>
+
+<p><strong>6、实现多线程有哪几种方式？</strong></p>
+
+<p>（1）NSThread:detachNewThreadSelector:</p>
+
+<p>（2）继承NSOperation</p>
+
+<p>（3）GCD：dispatch_async</p>
+
+<p>（4）NSObject：performSelectorInBackground:</p>
+
+<p><strong>7、KVC、KVO是什么？简述KVO的实现原理。KVO能否监听数组？如何实现？</strong></p>
+
+<p>KVC:键值编码，它是一种间接访问对象实例变量机制，可以不通过存取方法访问对象的实例变量。</p>
+
+<p>KVO:键值观察，它可以使对象获取其他对象属性变化的通知机制。</p>
+
+<p>键值编码和键值观察是根据isa-swizzling技术来实现的，主要依据runtime的强大动态能力。当给某个对象第一次添加KVO监听的时候，运行时会动态的创建一个被监听对象的派生类，然后重写KVO需要监听属性值对应的setter方法，在这个setter方法中实现了通知机制。最后将被监听对象的isa指向动态创建的派生类。这样当使用KVC修改属性值时，就会调用动态创建的派生类中对应的setter方法，触发通知机制，从而实现了KVO了。KVO可以监听数组。</p>
+
+<p>实现 NSMutableArray 的增删改操作遵从 KVC 的规则，需要实现其对应方法:</p>
+
+<p>增操作 -insertObject:in<Key>AtIndex: 或者 -insert<Key>:atIndexes:</p>
+
+<p>删操作 -removeObjectFrom<Key>AtIndex: 或者 -remove<Key>AtIndexes:</p>
+
+<p>改操作 -replaceObjectIn<Key>AtIndex:withObject: 或者 -replace<Key>AtIndexes:with<Key>:</p>
+
+<p>并将这些接口暴露给调用者，在对数组进行操作时需使用上述实现的接口。</p>
+
+<p><strong>8、简单说下C++，JAVA，Objective-C这几种语言有什么区别？</strong></p>
+
+<p>Objective-C与JAVA都是单继承语言，C++是多继承语言。</p>
+
+<p>Objective-C不支持命名空间机制，通过类名前面加前缀NS来区分。</p>
+
+<p>Objective-C与JAVA不支持运算符重载。</p>
+
+<p>Objective-C协议可选实现，JAVA的接口必须实现。</p>
+
+<p><strong>9、数组添加nil元素有问题吗？字典object与key可以设置为nil吗？</strong></p>
+
+<p>会有问题，数组中添加nil元素，程序会崩溃！报object cannot be nil错误。字典的key不能为nil，否则会造成崩溃。字典的object也不能为nil。</p>
+
+<p><strong>10、oc中向一个nil对象发送消息会出现问题吗？</strong></p>
+
+<p>不会出现问题，因为objc是动态语言，每个方法在运行时会被动态转为消息发送。即：objc_msgSend(receiver，selector)。objc在向一个对象发送消息时，runtime库会根据对象的isa指针找到该对象实际所属的类，然后在该类中的方法列表以及其父类方法列表中寻找方法运行，然后在发送消息的时候，objc_msgSend方法不会返回值，所谓的返回内容都是具体调用时执行的。 那么，回到本题，如果向一个nil对象发送消息，首先在寻找对象的isa指针时就是0地址返回了，所以不会出现任何错误。</p>
+
+<p><strong>11、可变数组是线程安全的吗？什么情况下不安全？可以加锁吗？它锁住的是添加元素操作还是数组对象？</strong></p>
+
+<p>可变数组不是线程安全的，在异步读取数据的情况下是不安全的。可以加锁，锁住的是数组。</p>
+
+<p><strong>12、数组能添加一个block吗？数组添加一个block之后再取出来，这个block还有用吗？</strong></p>
+
+<p>可以，还有用，它只是多retain了一次</p>
+
+<p><strong>13、NSMutableDictionary中的setObject:forKey:与setValue:forKey:方法有什么区别?</strong></p>
+
+<p>setObject:forkey:中value是不能够为nil的，不然会报错。</p>
+
+<p>setValue:forKey:中的value能够为nil，但是当value为nil的时候，会自动调用removeObject:forKey方法。</p>
+
+<p>setValue:forKey:中的key的参数只能是NSString类型，而setObject:forKey是可以任何类型。</p>
+
+<p><strong>14、简述copy与mutablecopy的区别。</strong></p>
+
+<p>（1）非容器对象：</p>
+
+<p>对不可变对象：copy是指针复制（浅拷贝）， mutableCopy是对象复制（深拷贝）。对可变对象：copy和mutableCopy都是对象复制。</p>
+
+<p>（2）容器对象：</p>
+
+<p>对不可变对象：copy是指针复制，mutableCopy是对象复制。</p>
+
+<p>对可变对象：copy和mutableCopy都是对象复制，只是返回的对象类型不一样，前者返回的是不可变对象，后者返回的是可变对象。</p>
+
+<p>容器对象复制仅限于对象本身，对象元素仍然是指针复制。</p>
+
+<p><strong>15、简述weak与assign的区别。</strong></p>
+
+<p>weak用来修饰对象，不能修饰基本数据类型。assign一般用来修饰基本数据类型。weak修饰对象，在对象释放之后会把对象置为nil。</p>
+
+<p><strong>16、ARC下，不显示指定任何属性关键字时，默认的关键字有哪些？</strong></p>
+
+<p>基本数据类型默认修饰关键字：atomic,readwrite,assign</p>
+
+<p>普通的OC对象默认修饰关键字：atomic,readwrite,strong</p>
+
+<p><strong>17、weak在什么时候置空？</strong></p>
+
+<p>runtime 对注册的类， 会进行布局，对于 weak 对象会放入一个 hash 表中。 用 weak 指向的对象内存地址作为 key，当此对象的引用计数为0的时候会 dealloc，假如 weak 指向的对象内存地址是a，那么就会以a为键， 在这个 weak 表中搜索，找到所有以a为键的 weak 对象，从而设置为 nil。</p>
+
+<p>我们可以设计一个函数（伪代码）来表示上述机制：</p>
+
+<p>objc_storeWeak(&amp;a, b)函数：</p>
+
+<p>objc_storeWeak函数把第二个参数&ndash;赋值对象（b）的内存地址作为键值key，将第一个参数&ndash;weak修饰的属性变量（a）的内存地址（&amp;a）作为value，注册到 weak 表中。如果第二个参数（b）为0（nil），那么把变量（a）的内存地址（&amp;a）从weak表中删除，你可以把objc_storeWeak(&amp;a, b)理解为：objc_storeWeak(value, key)，并且当key变nil，将value置nil。</p>
+
+<p>在b非nil时，a和b指向同一个内存地址，在b变nil时，a变nil。此时向a发送消息不会崩溃：在Objective-C中向nil发送消息是安全的。</p>
+
+<p>而如果a是由assign修饰的，则： 在b非nil时，a和b指向同一个内存地址，在b变nil时，a还是指向该内存地址，变野指针。此时向a发送消息极易崩溃。</p>
+
+<p>下面我们将基于objc_storeWeak(&amp;a, b)函数，使用伪代码模拟“runtime如何实现weak属性”：</p>
+
+<p>// 使用伪代码模拟：runtime如何实现weak属性id obj1;objc_initWeak(&amp;obj1, obj);/<em>obj引用计数变为0，变量作用域结束</em>/objc_destroyWeak(&amp;obj1);</p>
+
+<p>下面对用到的两个方法objc_initWeak和objc_destroyWeak做下解释：</p>
+
+<p>总体说来，作用是： 通过objc_initWeak函数初始化“附有weak修饰符的变量（obj1）”，在变量作用域结束时通过objc_destoryWeak函数释放该变量（obj1）。</p>
+
+<p>下面分别介绍下方法的内部实现：</p>
+
+<p>objc_initWeak函数的实现是这样的：在将“附有weak修饰符的变量（obj1）”初始化为0（nil）后，会将“赋值对象”（obj）作为参数，调用objc_storeWeak函数。obj1 = 0；obj_storeWeak(&amp;obj1, obj);</p>
+
+<p>也就是说：weak 修饰的指针默认值是 nil （在Objective-C中向nil发送消息是安全的）然后obj_destroyWeak函数将0（nil）作为参数，调用objc_storeWeak函数。objc_storeWeak(&amp;obj1, 0);前面的源代码与下列源代码相同。</p>
+
+<p>// 使用伪代码模拟：runtime如何实现weak属性id obj1;obj1 = 0;objc_storeWeak(&amp;obj1, obj);/<em> &hellip; obj的引用计数变为0，被置nil &hellip; </em>/objc_storeWeak(&amp;obj1, 0);</p>
+
+<p>objc_storeWeak函数把第二个参数&ndash;赋值对象（obj）的内存地址作为键值，将第一个参数&ndash;weak修饰的属性变量（obj1）的内存地址注册到 weak 表中。如果第二个参数（obj）为0（nil），那么把变量（obj1）的地址从weak表中删除，在后面的相关一题会详解。</p>
+
+<p>以上内容总结如下：</p>
+
+<p>（1）从weak表中获取废弃对象的地址为键值的记录</p>
+
+<p>（2）将包含在记录中的所有附有__weak修饰符变量的地址，赋值为nil</p>
+
+<p>（3）从weak表中删除该记录</p>
+
+<p>（4）从引用计数表中删除废弃对象的地址为键值的记录。</p>
+
+<p><strong>18、自动释放池用过吗？它是什么时候释放？什么情况下对象会被加入到自动释放池，它会加入到哪个自动释放池?</strong></p>
+
+<p>主线程默认开启runloop,同时runloop会自动创建一个autoreleasepool，autorelease对象会自动被加入autoreleasepool中，一次runloop后清空自动释放池。用__autoreleasing修饰符修饰，或类方法创建会自动加入autoreleasepool。它会加入到最近的autoreleasepool中。</p>
+
+<p><strong>19、你知道iOS中有哪些数据持久化方式吗？请简要加以说明。</strong></p>
+
+<p>iOS中数据持久化方式有：SQLite3数据库，CoreData，文件归档，属性列表（plist文件写入）。</p>
+
+<p>属性列表：涉及的主要类是NSUserDefaults，存储小量的数据。</p>
+
+<p>文件归档：对象必须实现NSCoding协议。实现initWithCoder:方法与encodeWithCoder方法。同时也建议实现NSCopying协议。</p>
+
+<p>SQLite3数据库:SQLite是一个开源的嵌入式关系数据库。可移植性好，容易使用，需要内存开销小。适合嵌入式设备。</p>
+
+<p>CoreData：它可以使用SQLite保存数据，而且不需要写SQL语句。另外它还可以使用XML方式保存数据。要使用CoreData，需要在Xcode中的数据模型编辑器中设计好各个实体以及定义好他们的属性和关系。通过操作这些对象来完成数据的持久化。</p>
+
+<p><strong>20、fmdb中支持多线程吗？它是如何实现的！</strong></p>
+
+<p>支持多线程。它里面有个FMDatabaseQueue类。它看似是一个队列，实际上它本身并不是，它继承NSObject，通过内部创建一个Serial的dipatch_queue_t来处理inDatabase和inTransaction传入的Block，所以当我们在主线程（或者后台）调用inDatabase或者inTransaction时，代码实际上是同步的。FMDatabaseQueue如此设计的目的是为了避免并发访问数据库的线程安全问题，所有的数据库访问都是同步执行，比@synchronized与NSLock效率高。</p>
+
+<p><strong>21、简述category与extension的区别。Category与extension加载的时机。</strong></p>
+
+<p>category中只能增加方法，不可添加实例变量（可添加属性）。extension不仅可以增加方法，还可以增加实例变量或属性（私有的）。extension不能像category一样有独立的实现部分。category是运行时决定的。extension是编译期决定的。</p>
+
+<p><strong>22、category的方法能被子类继承吗？它覆盖原有类的方法后，原有类的方法还能调用吗？如果能，你说明理由。</strong></p>
+
+<p>category的方法可以被子类继承。category并不是绝对的覆盖了类的同名方法，而是category的方法排在了类的同名方法之前，方法的检索方式是顺序检索，所以在调用方法时，调用到的同名方法是category，从而产生了覆盖。利用运行时遍历方法列表，可以调用被category覆盖的方法。</p>
+
+<p><strong>23、 扩展一个类的方式用继承好还是category好？请说明理由。</strong></p>
+
+<p>用类目好。因为继承还需要定义子类。类目不需要通过创建子类来增加现有类的方法。用category去重写一个类的方法，仅仅只对本category有效，不会影响到其他类与原有类的关系。</p>
+
+<p><strong>24、 block有几种类型？block的实现？</strong></p>
+
+<p>block分为三种类型:</p>
+
+<p>_NSConcreteGlobalBlock</p>
+
+<p>_NSConcreteStackBlock</p>
+
+<p>_NSConcreteMallocBlock</p>
+
+<p>block：匿名函数</p>
+
+<p><strong>25、 Swift用的多吗？简单的说说1.0与2.0的区别。</strong></p>
+
+<p>swift2.0新增:guard语句，异常处理，协议扩展，打印语句改变，avaliable检查，do-while语句重命名：repeat-while，defer关键字</p>
+
+<p><strong>26、 在Swift用有没有用过defer关键字？</strong></p>
+
+<p>对defer语句进行的延迟，函数结束时调用。</p>
+
+<p><strong>27、 SDWebImage的图片保存在什么位置？</strong></p>
+
+<p>图片保存在沙盒中的library/caches文件夹下。</p>
+
+<p><strong>28、 Objective-C中类目为什么不能添加实例变量？</strong></p>
+
+<p>因为在运行时，对象的内存布局已经确定，如果添加实例变量会破坏类的内部布局。</p>
+
+<p><strong>29、 Objective-C中的协议默认是@optional还是@require？在使用协议的时候应当注意哪些问题？</strong></p>
+
+<p>Objective-C中的协议默是必须实现的@require，使用协议的时候应当注意循环引用问题，多个协议之间采用逗号分隔。</p>
+
+<p><strong>30、 Objective-C的协议与JAVA中的接口有什么区别？</strong>
+OC中的协议可选实现，JAVA中的接口必须实现。</p>
+
+<p><strong>31、 类目的应用场景有哪些？</strong></p>
+
+<p>（1）可以把类的实现分开在几个不同的文件里面</p>
+
+<p>（2）声明私有方法</p>
+
+<p>（3）模拟多继承</p>
+
+<p>（4）把Framework的私有方法公开</p>
+
+<p><strong>32、 self与super的区别？</strong></p>
+
+<p>super本质上是一个编译器标示符，它和self指向的是同一个消息接受者，两者不同在于：super会告诉编译器，调用class这个方法时，要去父类方法，而不是本类方法。
+<strong>33、 图片缓存为什么不保存到沙盒下的tmp文件目录中？</strong></p>
+
+<p>因为tmp文件夹是用来存放临时文件，iTunes不会备份和恢复此目录，此目录下文件可能会在应用退出后删除。</p>
+
+<p><strong>34、 NSURLConnection与NSURLSession。</strong>
+NSURLConnection它是CoreFoundation/CFNetwork框架的API之上的一个抽象。</p>
+
+<p>NSURLConnection这个名字实际指代Foundation框架的URL加载系统中一系列有关联的组件：NSURLRequest、NSURLResponse、NSURLProtocol、NSURLCache、NSHTTPCookieStorage、NSURLCredentialStorage以及同名类NSURLConnection。NSURLRequest 被传递给 NSURLConnection。被委托对象（遵守以前的非正式协议 <NSURLConnectionDelegate> 和 <NSURLConnectionDataDelegate>）异步地返回一个 NSURLResponse 以及包含服务器返回信息的 NSData。</p>
+
+<p>NSURLSession包括：NSURLRequest、NSURLCache、NSURLSession、NSURLSessionConfiguration、NSURLSessionDataTask、NSURLSessionUploadTask、NSURLSessionDownloadTask。它与NSURLConnection的区别在于：NSURLSession最直接的改进就是可以配置每个Session的缓存，协议，cookie以及正式策略。甚至跨程序共享这些信息。每个NSURLSession对象都由一个NSURLSessionConfiguration对象来进行初始化。session task：负责处理数据的加载以及文件和数据在客户端与服务器之间的上次和下载。</p>
+
+<p><strong>35、 简述ARC与MRC的区别。</strong></p>
+
+<p>ARC:自动引用计数。MRC：手动引用计数。ARC是把内存交给系统管理。系统会在编译的时候自动插入retain/release。MRC则需要手动管理对象的引用计数。当你alloc,new,copy,mutablecopy或者retain一个对象时，你就有义务向它发送一条release或autorelease消息。</p>
+
+<p><strong>36、 简述ARC的实现原理。它在什么时机插入retain/release？</strong></p>
+
+<p>ARC：自动引用计数。它会在对象创建或者消亡的时候自动插入retain/release。达到自动管理内存的目的。</p>
+
+<p><strong>37、 Framework与Library的区别？动态库与静态库的区别？</strong>
+library与Framework的区别：</p>
+
+<p>在iOS中，Library 仅能包含编译后的代码，即 .a 文件。但一般来说，一个完整的模块不仅有代码，还可能包含.h 头文修的、.nib 视图文件、图片资源文件、说明文档。（像 UMeng 提供的那些库，集成时，要把一堆的文件拖到Xcode中，配置起来真不是省心的事。Framework 作为 Cocoa/Cocoa Touch 中使用的一种资源打包方式，可以上述文件等集中打包在一起，方便开发者使用（就像Bundle）。</p>
+
+<p>静态库与动态库的区别：</p>
+
+<p>简单的说，静态链接库是指模块被编译合并到应用中，应用程序本身比较大，但不再需要依赖第三方库。运行多个含有该库的应用时，就会有多个该库的Copy在内存中，冗余。动态库可以分开发布，在运行时查找并载入到内存，如果有通用的库，可以共用，节省空间和内存。同时库也可以直接单独升级，或作为插件发布。</p>
+
+<p><strong>38、 什么是runloop？</strong></p>
+
+<p>一般来说，一个线程一次只能执行一个任务，执行完成后线程就会退出，如果我们需要一个机制，让线程能随时处理事件但并不退出。代码逻辑如下：</p>
+
+<pre><code>function loop() {       initialize();       do {    var message = get_next_message();   process_message(message);} while(message != quit)}
+</code></pre>
+
+<p>这种模型我们通常称之为EventLoop（事件循环）。RunLoop实际上是一个对象，这个对象管理了其需要处理的事件和消息。并提供了一个入口函数来执行上面EventLoop逻辑。在OSX/iOS系统中，提供了两个这样的对象：NSRunLoop和CFRunLoopRef。</p>
+
+<p>CFRunLoopRef是在CoreFoundation框架内，它提供了纯C函数的API,所有这些API都是线程安全的。</p>
+
+<p>NSRunLoop是基于CFRunLoopRef的封装，提供了面向对象的API，这些API不是线程安全的。</p>
+
+<p>苹果不允许直接创建RunLoop，只提供了两个自动获取的函数：CFRunLoopGetMain()和CFRunLoopGetCurrent()。</p>
+
+<p>线程和RunLoop之间是一一对应的。</p>
+
+<p><strong>39、#include与#import的区别？#import与@class的区别？</strong></p>
+
+<p>&ldquo;#include"与&rdquo;#import"功能一样，都是导出头文件。只是#import不会引起交叉编译，可以确保头文件只导入一次。#import会包含这个类的所有信息。包括实例变量和方法，而@class只是告诉编译器，它后面声明的名称是类的名称，至于类的定义，后面会告诉你。使用#import编译效率高，可以防止相互包含的编译错误。</p>
+
+<p><strong>40、Static与const的区别？</strong>
+const表示只读的意思，只在声明中使用。</p>
+
+<p>static一般有2个作用，规定作用域和存储方法。对于局部变量，static规定其为静态存储区，每次调用的初始值为上一次调用的值，调用结束后存储空间不释放。</p>
+
+<p>对于全局变量，如果以文件划分作用域的话，此变量只在当前文件可见，对于static函数也是在当前模块内函数可见。</p>
+
+<p><strong>41、简述GET请求与POST请求的区别。</strong></p>
+
+<p>(1)POST 需要明确制定方法 GET不需要 ，并且默认就是GET方法，并且GET有缓存，POST没有缓存</p>
+
+<p>(2)GET的参数放在URL的后面,并且第一个参数用?拼接,后面的从第二个参数开始,直到最后一个,如果有多个,用&amp;分割;POST 的参数放在请求体里面,并且第一个参数,不用,后面从第二开始,直到最后,如果有多个,用&amp;分割;</p>
+
+<p>(3)GET 一般用于获取数据，POST向服务器提交数据用到</p>
+
+<p>(4)GET的参数是暴漏在地址栏的,不安全;POST的参数隐藏在请求体里面,相对安全一点;</p>
+
+<p>(5)GET请求没有请求体，POST请求有请求体。</p>
+
+<p>(6)GET请求提交数据受浏览器限制，1k，POST请求理论上无限制。</p>
+
+<p><strong>42、属性用__block修饰时在内存中会发生什么变化？</strong></p>
+
+<p>为什么在block外面用weak修饰属性来打破循环，在block还需要把属性转换成strong。</p>
+
+<p><strong>43、谈谈block与函数的区别。</strong></p>
+
+<p>block可以写在方法里面，函数需要写在方法外面。block可以访问方法中的局部变量。</p>
+
+<p><strong>44、你了解runloop吗？它有几种模式？简要的说下它的应用场景。</strong></p>
+
+<p>runloop模式：</p>
+
+<p>Default：</p>
+
+<p>NSDefaultRunLoopMode(Cocoa)、kCFRunLoopDefaultMode(CoreFoundation)</p>
+
+<p>Connection：</p>
+
+<p>NSConnectionReplyMode</p>
+
+<p>Modal：</p>
+
+<p>NSModalPanelRunLoopMode</p>
+
+<p>Event tracking:</p>
+
+<p>NSEventTrackingRunLoopMode</p>
+
+<p>Common modes:</p>
+
+<p>NSRunLoopCommonModes(Cocoa)、kCFRunLoopCommonModes(CoreFoundation)</p>
+
+<p>应用场景：</p>
+
+<p>（1）使用端口或自定义输入源与其他线程通信。</p>
+
+<p>（2）在线程中使用计时器</p>
+
+<p>（3）使用任意的performSelector方法</p>
+
+<p>（4）保持线程去执行一个周期任务。</p>
+
+<p><strong>45、你工作中用到的版本管理工具是什么？</strong></p>
+
+<p>用的是git工具来进行版本管理。</p>
+
+<p><strong>46、你用过git工具吗？用过哪些常见的命令？</strong></p>
+
+<p>git init，git add, git commit，git merge，git branch，git checkout，git pull，git push等</p>
+
+<p><strong>47、CoreAnimation常用的动画有哪些类型？</strong></p>
+
+<p>所有的核心动画的动画类都从CAAnimation类继承而来。CAAnimationGroup组动画，CATransition转场动画，CABasicAnimation:基础动画，CAKeyframeAnimation关键帧动画。</p>
+
+<p><strong>48、GCD中系统提供了几种queue？</strong></p>
+
+<p>两种：DispatchSerialQueue、DispatchConcurrentQueue。</p>
+
+<p><strong>49、二叉搜索树的概念及时间复杂度是多少？</strong></p>
+
+<p>O(n)</p>
+
+<p><strong>50、block中的weak self，是任何时候都需要加的么？</strong></p>
+
+<p>不一定，可加可不加。将block置nil也可以打破循环引用。</p>
+
+<p><strong>51、GCD的queue，main queue中执行的代码，一定是在main thread么？</strong></p>
+
+<p>是的。一定是在main thread。</p>
+
+<p><strong>52、你在使用数据库的过程中有没有遇到过问题？如何解决？</strong></p>
+
+<p>遇到过多线程操作数据库读写死锁问题，采用fmdb中提供的回滚的方式解决</p>
+
+<p><strong>53、简述iOS中的沙盒机制。</strong></p>
+
+<p>iOS中的沙盒机制是一种安全体系，它规定了应用程序只能在为该应用创建的文件夹读取文件，不可以访问其他地方的内容。所有非代码文件都保存在这个地方。如图片，声音，属性列表及文本文件等。</p>
+
+<p>（1）每个应用程序都在自己的沙盒内</p>
+
+<p>（2）不能随意跨越自己的沙盒去访问别的应用程序沙盒的内容</p>
+
+<p>（3）应用程序向外请求或者接收数据都需要经过权限认证。</p>
+
+<p>沙盒目录结构这种，因为应用是在沙箱（sandbox）中的，在文件读写权限上受到限制，只能在几个目录下读写文件：</p>
+
+<p>Documents：应用中用户数据可以放在这里，iTunes备份和恢复的时候会包括此目录</p>
+
+<p>tmp：存放临时文件，iTunes不会备份和恢复此目录，此目录下文件可能会在应用退出后删除</p>
+
+<p>Library：存储程序的默认设置或其他状态信息。</p>
+
+<p>Library/Caches：存放缓存文件，iTunes不会备份此目录，此目录下文件不会在应用退出删除</p>
+
+<p><strong>54、字符串为什么要用copy修饰？</strong></p>
+
+<p>是为了防止mutablestring被无意中修改，NSMutableString是NSString的子类。因此NSString指针可以持有NSMutableString对象。</p>
+
+<p><strong>55、nonatomic与atomic有什么区别？</strong></p>
+
+<p>atomic是Objective-C使用的一种线程保护技术，它是为了防止写操作在未完成的时候被另外一个线程读取。从而造成数据错误。这种机制是非常耗费系统资源的，所以在iphone这种小的移动设备上，如果没有使用多线程间的通讯编程。建议使用nonatomic。</p>
+
+<p>默认的访问器是原子操作，就是说在多线程环境下，解析的访问器提供一个对属性安全访问，从获取器得到的返回值或者通过设置器设置的值可以一次完成，即便是多线程也在对其进行访问，如果不指定nonatomic ，在自己管理内存的环境中，解析的访问器保留并自动释放保留的值，如果是指定了nonatomic，访问器只是简单的返回一个值。</p>
+
+<p><strong>56、@synthesize与@dynamic的区别？</strong></p>
+
+<p>@synthesize：如果你没有手动实现setter方法和getter方法，编译器会自动为帮你生成setter方法和getter方法。</p>
+
+<p>@dynamic：告诉编译器属性的setter和getter方法由用户自己实现，不自动生成。如果一个属性声明为@dynamic var，又没有提供setter和getter方法，编译的时候不会有问题，如果程序中运行到person.name = newName;或newName=person.name时候就会导致程序崩溃。因为”unrecognized selector sent to instance …”这就是动态绑定。</p>
+
+<p><strong>57、@property(copy)NSMutableArray *array;这句代码有什么问题？如果有请简述原因；</strong></p>
+
+<p>（1）添加、删除、修改数组内的元素的时候，程序会因为找不到对应的方法而崩溃，因为copy就是复制一个不可变的NSArray对象。</p>
+
+<p>（2）没有使用nonatomic属性修饰符，默认是 atomic修饰，这样会严重影响性能。</p>
+
+<p><strong>58、NSString <em>str = @“hello world!”与NSString </em>str =  [[NSString alloc] initWithString:@&ldquo;hello world!”];在内存管理上有什么区别？</strong></p>
+
+<p>在MRC中，前者表示，你不持有这个对象，所以不需要手动管理其内存。后者意味着你持有这个字符串，需要自己手动管理内存，对其进行释放。</p>
+
+<p><strong>59、对于语句NSString*obj = [[NSData alloc] init]; obj在编译时和运行时分别是什么类型的对象?</strong></p>
+
+<p>编译时是NSString类型对象，运行时时NSData类型对象首先，声明NSString*testObject是告诉编译器,obj是一个指向某个Objective-C对象的指针，因为不管指向的是什么类型的对象，一个指针所占的内存空间都是固定的，所以这里声明称任何类型的对象，最终生成的可执行代码都是没有区别的。这里限定了NSString只不过是告诉编译器，请把obj当做一个NSString来检查，如果后面调用了非NSString的方法，会产生警告，接着，你创建了一个NSData对象，然后把这个对象所在的内存地址保存在obj里。那么运行时，obj指向的内存空间就是一个NSData对象。你可以把obj当做一个NSData对象来用。</p>
+
+<p><strong>60、self.name=object与name=object在内存管理上有什么区别？</strong></p>
+
+<p>前者通过调用setter方法设置值，后者是普通的赋值操作。</p>
+
+<p><strong>61、为什么property声明中只有”copy”特性而没有“mutableCopy”特性？</strong></p>
+
+<p>这是由于当声明property为"copy"特性时，系统会自动根据receiver的特点决定使用copy（已含retain的情况）还是mutableCopy。</p>
+
+<p><strong>62、Objective-C中id与void*有什么区别？id与instancetype有什么区别？nil、null、NULL三者有什么区别？</strong></p>
+
+<p>Objective-C中id与void*区别：</p>
+
+<p>id是指向OC类对象的指针，它可以声明为任何类对象的指针，当在OC中使用id时，编译器会假定你知道，id指向哪个类的对象。与void<em>不同，void</em>编译器不知道也不假定指向任何类型的指针。</p>
+
+<p>id与instancetype区别：</p>
+
+<p>id返回的是id类型，instancetype返回的是所在类的类型。</p>
+
+<p>相同点是同样都是作为方法的返回类型。</p>
+
+<p>区别：</p>
+
+<p>(1) instancetype可以返回和方法所在类相同类型的对象，id只能返回未知类型的对象。</p>
+
+<p>(2) instancetype只能作为返回值，id可以作为参数。</p>
+
+<p>nil、Nil、NULL三者区别：</p>
+
+<p>nil是一个指向不存在的对象指针（对象空指针）。Nil是指向不存在的类指针（类空指针）。NULL指向其他类型的空指针。NSNull在集合对象中，表示空值的对象。</p>
+
+<p><strong>63、数据解析方式有几种？他们有什么区别？你项目中采用的是哪种数据解析方式？</strong></p>
+
+<p>JSON和XML。</p>
+
+<p><strong>64、用预处理指令#define声明一个常数，用以表明1年中有多少秒（忽略闰年问题）</strong></p>
+
+<p>“#define SECONDS_PER_YEAR(60<em>60</em>24*365)UL”</p>
+
+<p><strong>65、写一个”标准"宏MIN ，这个宏输入两个参数并返回较小的一个。</strong></p>
+
+<p>“#define MIN(X,Y) ((X)>(Y)?(X):(Y))”</p>
+
+<p><strong>66、+load和+initialize 的区别是什么？</strong></p>
+
+<p>+initialize:第一次初始化这个类之前被调用，我们用它来初始化静态变量。</p>
+
+<p>+load方法会在加载类的时候就被调用，也就是iOS应用启动的时候，就会加载所有的类。</p>
+
+<p>+initialize方法类似一个懒加载，如果没有使用这个类，系统默认不会去调用这个方法，且默认只加载一次。</p>
+
+<p>如果是在类别中，+load方法会全都执行，但是类别中的load方法会后于类中的方法，+initialize方法会覆盖类中的方法，只执行一个。</p>
+
+<p>+initialize的调用发生在+init方法之前。子类会去调用父类的+initialize方法。</p>
+
+<p><strong>67、new和alloc/init的区别</strong></p>
+
+<p>概括来说，new和alloc/init在功能上几乎是一致的，分配内存并完成初始化。差别在于，采用new的方式只能采用默认的init方法完成初始化。而采用alloc的方式可以用其他定制的初始化方法。</p>
+
+<p><strong>68、如果让你设计接口与API，应该注意点什么？</strong></p>
+
+<p>（1）用前缀避免命名空间冲突</p>
+
+<p>（2）提供“全能初始化方法”</p>
+
+<p>（3）实现description方法</p>
+
+<p>（4）尽量使用不可变对象</p>
+
+<p>（5）使用清晰而协调的命名方法</p>
+
+<p>（6）为私有方法名加前缀</p>
+
+<p>（7）错误处理</p>
+
+<p>（8）实现NSCopying协议。</p>
+
+<p><strong>69、你在项目中用过懒加载吗？能简单的说说懒加载吗？</strong></p>
+
+<p>懒加载又称为延迟加载。写的是其get方法。如果是懒加载的话则一定要注意先判断是否已经有了，如果没有那么再去进行实例化。</p>
+
+<p>好处是不必将创建对象的代码全部写在viewDidLoad方法中，代码的可读性更强。每个控件的getter方法中分别负责各自的实例化处理，代码彼此之间的独立性强，松耦合。</p>
+
+<p><strong>70、进程和线程的区别与联系。</strong></p>
+
+<p>进程是个静态的容器，里面容纳了很多个线程，线程是一系列方法的线性执行路径。</p>
+
+<p><strong>71、简述内存分区情况。</strong></p>
+
+<p>栈区：存放函数的参数值，局部变量的值等。由编译器自动分配释放</p>
+
+<p>堆区：由程序员分配释放。程序员如果不释放，则程序结束时可能由系统回收</p>
+
+<p>全局区：全局变量和静态变量是存储在一块的。初始化的全局变量和静态变量在一块区域，未初始化的全局变量和未初始化的静态变量在另一块区域。程序结束后由系统释放。全局区可分为未初始化全局区：.bbs段和初始化全局区：data段。</p>
+
+<p>常量区：存放常量字符串，程序结束后由系统释放</p>
+
+<p>代码区：存放函数体的二进制代码。</p>
+
+<p><strong>72、队列与栈有什么区别?</strong></p>
+
+<p>栈：限定仅在表尾进行插入或删除操作的线性表。表尾是栈顶，表头是栈底。它又称后进先出线性表。</p>
+
+<p>队列：是一种先进先出的线性表。它只允许在表的一端进行插入，而在另一端删除元素。</p>
+
+<p><strong>73、Objective-C中多线程的编程方式有几种</strong></p>
+
+<p>pthread、NSThread、NSOperation、GCD。</p>
+
+<p><strong>74、Objective-C运行时（runtime）机制了解吗？简单的说说对象调用方法的过程。</strong></p>
+
+<p>对象调用方法的过程：(<a href="http://tech.glowing.com/cn/objective-c-runtime/">Objective-C Runtime</a>)</p>
+
+<p>（1）在对象类的dispatch table中尝试找到该消息。如果找到了，跳到相应的函数IMP去执行实现代码</p>
+
+<p>（2）如果没有找到，Runtime会发送+resolveInstanceMethod: 或者 +resolveClassMethod: 尝试去resolve这个消息</p>
+
+<p>（3）如果resolve方法返回NO，Runtime就发送 -forwardingTargetForSelector: 允许你把这个消息转发给另一个对象；</p>
+
+<p>（4）如果没有新的目标对象返回，Runtime 就会发送 -methodSignatureForSelector: 和 -forwardInvocation: 消息。你可以发送 -invokeWithTarget: 消息来手动转发消息或者发送 -doesNotRecognizeSelector: 抛出异常。</p>
+
+<p><strong>参考资料如下：</strong></p>
+
+<p>（1）<a href="https://github.com/ChenYilong/iOSInterviewQuestions/blob/master/01《招聘一个靠谱的iOS》面试题参考答案/《招聘一个靠谱的iOS》面试题参考答案（上）.md" target="_blank">《招聘一个靠谱的 iOS》—参考答案（上）</a></p>
+
+<p>（2）<a href="https://github.com/ChenYilong/iOSInterviewQuestions/blob/master/01《招聘一个靠谱的iOS》面试题参考答案/《招聘一个靠谱的iOS》面试题参考答案（下）.md" target="_blank">《招聘一个靠谱的 iOS》—参考答案（下）</a></p>
+
+<p><strong>本文内容中部分来自网络，后续会持续更新完善。欢迎一起学习交流！</strong></p>
+
+<p><strong>如需转载，请注明出处</strong></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[React Native iOS 开发环境搭建]]></title>
+    <link href="http://yangshebing.github.io/blog/2016/01/21/react-native-ios-kai-fa-huan-jing-da-jian/"/>
+    <updated>2016-01-21T01:07:09+08:00</updated>
+    <id>http://yangshebing.github.io/blog/2016/01/21/react-native-ios-kai-fa-huan-jing-da-jian</id>
+    <content type="html"><![CDATA[<h4>一、React Native基础环境搭建</h4>
+
+<p>1、安装<a href="http://brew.sh">Homebrew</a></p>
+
+<p>打开终端输入：
+<code>
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+</code></p>
+
+<!--more-->
+
+
+<p>2、安装<a href="https://github.com/creationix/nvm#installation">nvm</a>方法</p>
+
+<p>通过脚本安装方式，在终端执行：
+<code>
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.30.1/install.sh | bash
+</code></p>
+
+<p>激活nvm,在安装脚本执行完之后，在终端执行:
+<code>
+. ~/.nvm/nvm.sh
+</code></p>
+
+<p>nvm其他安装方式详见<a href="https://github.com/creationix/nvm#installation">安装向导</a></p>
+
+<p>3、默认安装最新版本的Node.js并且设置好命令行的环境变量
+<code>
+nvm install node &amp;&amp; nvm alias default node
+</code></p>
+
+<p>可以输入node命令启动Node.js环境，npm(node package manager)文档传送门:<a href="https://docs.npmjs.com">&ldquo;点击此处&rdquo;</a></p>
+
+<p>4、安装watchman</p>
+
+<p>在终端输入：
+<code>
+brew install watchman
+</code></p>
+
+<p>到此处React Native基础环境搭建基本完成，推荐经常运行<code>brew update &amp;&amp; brew upgrade</code>命令保持你的程序是最新的。</p>
+
+<h4>二、iOS开发环境</h4>
+
+<p>1、iOS开发环境：（默认读者已经安装<strong>Xcode7.0或以上版本</strong>，没有可自行前往AppStore下载）</p>
+
+<ul>
+<li>使用npm（node包管理工具）安装react-native-cli(此处应注意权限问题，如果遇到权限问题，请在下面的命令前加上sudo)</li>
+</ul>
+
+
+<p><code>
+npm install -g react-native-cli
+</code></p>
+
+<ul>
+<li>初始化工程（下面的语句中千万不要加sudo，后果自负）</li>
+</ul>
+
+
+<p><code>
+react-native init ReactNativeProject（工程名）
+</code></p>
+
+<p>在初始化的过程中，如果进度缓慢，推荐你将npm仓库源换成国内镜像：(翻墙用户请忽略)
+在终端输入：</p>
+
+<pre><code>npm config set registry https://registry.npm.taobao.org
+npm config set disturl https://npm.taobao.org/dist
+</code></pre>
+
+<p>2、使用Xcode运行调试程序</p>
+
+<ul>
+<li>查找ReactNativeProject文件目录</li>
+</ul>
+
+
+<p>按住快捷键<code>Command+Shift+G</code>，在弹出的“前往文件夹”对话框中输入路径<code>/Users/yangshebing/ReactNativeProject</code>（yangshebing表示电脑用户名，请自行更改）,点击前往。在文件目中的ios文件夹下找到“ReactNativeProject.xcodeproj”工程文件。如图所示：（有关终端查找该文件目录方法，请自行到文章末尾的参考文章中寻找）
+<img src="http://ww4.sinaimg.cn/large/7f266405jw1f0651k88wij216s0oa42t.jpg" alt="" /></p>
+
+<ul>
+<li>运行ReactNativeProject工程</li>
+</ul>
+
+
+<p>使用Xcode打开“ReactNativeProject.xcodeproj”工程文件，按住快捷键"Command+R"运行此项目，运行成功后便可在模拟器上看到效果。</p>
+
+<ul>
+<li>编辑index.ios.js文件修改界面</li>
+</ul>
+
+
+<p>笔者编辑index.ios.js文件工具是Vim，每当编辑完index.ios.js文件并保存之后，在模拟器(Simulator)中，按<code>Command+R</code>可刷新界面查看改变后的效果。</p>
+
+<p>下面我们也试着稍微修改一下index.ios.js文件：</p>
+
+<pre><code>/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ */
+'use strict';
+import React, {
+  AppRegistry,
+  Component,
+  StyleSheet,
+  //添加Image全局变量
+  Image,
+  Text,
+  View
+} from 'react-native';
+
+class ReactNativeProject extends Component {
+  render() {
+    return (
+      &lt;View style={styles.container}&gt;
+      //添加文本展示
+        &lt;Text style={styles.welcome}&gt;
+          美女
+        &lt;/Text&gt;
+        //添加图片展示
+        &lt;Image 
+        source= 
+        //这里需要指定图片的大小
+        style={styles.picture} /&gt;
+      &lt;/View&gt;
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  //这里可以设置文本的字体，对齐方式等
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  //新增图片style，设置图片大小
+  picture: {
+    width: 80,
+    height: 150,
+  },
+});
+
+AppRegistry.registerComponent('ReactNativeProject', () =&gt; ReactNativeProject);
+</code></pre>
+
+<p>刷新后运行效果如下图所示：
+<img src="http://ww3.sinaimg.cn/mw690/7f266405jw1f06flkcxxgj20ku12a3zr.jpg" alt="" /></p>
+
+<ul>
+<li>真机运行调试项目</li>
+</ul>
+
+
+<p>在<code>ReactNativeProject</code>工程中找到AppDelegate.m文件，将<code>localhost</code>替换成自己电脑的IP地址。</p>
+
+<pre><code>//  jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&amp;dev=true"];
+
+  jsCodeLocation = [NSURL URLWithString:@"http://192.168.31.168:8081/index.ios.bundle?platform=ios&amp;dev=true"];
+</code></pre>
+
+<p>替换完成之后再次运行程序，这个时候可以通过摇晃设备唤出开发菜单。</p>
+
+<ul>
+<li>禁用开发菜单</li>
+</ul>
+
+
+<p>在打包提交市场前，需要禁用开发菜单。禁用开发菜单方法如下：
+打开工程，选择<code>Product → Scheme → Edit Scheme</code>或使用快捷键“Command + &lt;”,在弹出的窗口中选择左边的Run菜单项。更改“Build Configuration” 设置项为“Release”。
+<img src="http://ww1.sinaimg.cn/large/7f266405jw1f06e3sf5qjj21ds0s0tc2.jpg" alt="" /></p>
+
+<h4>三、参考资料地址：</h4>
+
+<ul>
+<li><a href="https://facebook.github.io/react-native/docs/tutorial.html">React Native开发指南英文版（官方）</a></li>
+<li><a href="http://reactnative.cn/docs/getting-started.html#content">React Native开发指南中文版</a></li>
+<li><a href="http://www.cnblogs.com/meteoric_cry/p/4862314.html">React Native入门遇到的一些问题</a></li>
+</ul>
+
+
+<p><strong>此文仅供学习交流，转载请注明出处！</strong></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[2015年终总结]]></title>
+    <link href="http://yangshebing.github.io/blog/2016/01/01/2015nian-zhong-zong-jie/"/>
+    <updated>2016-01-01T13:26:26+08:00</updated>
+    <id>http://yangshebing.github.io/blog/2016/01/01/2015nian-zhong-zong-jie</id>
+    <content type="html"><![CDATA[<h4>总结：</h4>
+
+<p>回首过去一年，好像没有什么能说出口的成绩，专业没啥进步。在公司做了两款App，上半年主要开发的是一款叫“在线等”的手机应用，这是一款解决人们选择困难症的应用，经过重重困难，最终上线。没啥成绩可言。下半年主要研发的是一款叫“斗图神器”的应用，由于Android版早就开发好了，所以iOS版开发起来就快很多了。总的来说成绩还不错，其中也有点小波折。<!--more-->现在已经提交过3，4版了。目前“斗图神器”项目已经引入了全新的Swift语言与Objective-C语言混编。目的是拥抱Swift，它才是未来。这对我们来说是好事，有项目环境学习新语言就更快了。现在我还是处于Swift 初级入门阶段，明年希望能进一步提高吧！在学习方面，搭建了自己的<a href="http://yangshebing.github.io"><strong>个人技术博客</strong></a>，另外还写了几篇质量不高的博文，在github上放了几个质量不高的demo。买了手机和电脑，这也算专业学习上的投入吧。生活上，除了每天写写代码，并没有什么其他变化。4月份去了一趟泰山，7月份去了一次十渡，10月份游了半个北京（虽然来北京久了，却很少出去）顺带去了一趟天津。今年最大的事情就是拔了一颗智齿和一颗蛀牙，花了不少钱，现在都没弄好！折腾了半条命（太背），一直不太顺。其次就是大病没犯，小病不断，北京这边雾霾比较严重。咽炎也挺折腾人的。本来年底是计划上线一款自己的app,由于各种借口各种拖最终没能实现，也没啥可遗憾的，主要是自己没有努力。其实还计划学习一门除专业外的语言，这个计划也耽搁了！计划内的写一个插件，现在也还没开动！专业书今年没有仔细读过，其实应该多读几本。扩展书籍就读过《高效能人士的7个习惯》与《从0到1》。总而言之就是读的书还是太少，平常大部分时间是在网上看别人的博客学习，看官方文档，不会的就自己用google搜索。人丑就要多读书。越来越不会说话了，已经想不起还有什么要说的了，那就先写到这吧！共勉！
+2016的计划与展望：</p>
+
+<h4>计划：</h4>
+
+<ul>
+<li>1、  读10本以上的专业相关的书籍，扩展阅读书籍不少于5本。</li>
+<li>2、  学一门专业外的语言</li>
+<li>3、  在github上开源5个项目（高质量）</li>
+<li>4、  博客不少于50篇博文（高质量）</li>
+<li>5、  找个女盆友</li>
+<li>6、  福利计划：去国外旅游一次（条件如下）</li>
+</ul>
+
+
+<pre><code>if plan five implement {
+        implement plan six
+} else {
+        nothing happened
+}
+</code></pre>
+
+<h4>展望：</h4>
+
+<p>马上迎来全新的2016年，又是一个全新的开始。时间匆匆，趁着年轻就要好好努力，物尽其用。希望在新的一年里，事业蒸蒸日上，身体健健康康（身体是革命的本钱，是实现计划的基石），愿家人幸福安康。</p>
+]]></content>
+  </entry>
+  
+</feed>

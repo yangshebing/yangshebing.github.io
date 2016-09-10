@@ -1,0 +1,1310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Swift | 杨社兵的技术博客]]></title>
+  <link href="http://yangshebing.github.io/blog/categories/swift/atom.xml" rel="self"/>
+  <link href="http://yangshebing.github.io/"/>
+  <updated>2016-05-15T00:11:46+08:00</updated>
+  <id>http://yangshebing.github.io/</id>
+  <author>
+    <name><![CDATA[杨社兵]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Swift2.2新特性]]></title>
+    <link href="http://yangshebing.github.io/blog/2016/05/09/swift2-dot-2xin-te-xing/"/>
+    <updated>2016-05-09T23:09:48+08:00</updated>
+    <id>http://yangshebing.github.io/blog/2016/05/09/swift2-dot-2xin-te-xing</id>
+    <content type="html"><![CDATA[<h4>1、编译期Swift版本检测</h4>
+
+<pre><code>
+#if swift(&gt;=3.0)
+    print("Running Swift 3.0 or later")
+#else
+    print("Running Swift 2.2 or earlier")
+#endif
+</code></pre>
+
+<p>它和Swift2中介绍过的<code>#available</code>表达式不同,#available表达式是运行时检查,<code>#if swift(&gt;=3.0)... #else... #endif</code>是编译期检查。</p>
+
+<p><strong>一个警告:这个特性这次不可用,因为Swift2.1编译器并不知道<code>#if swift(&gt;=2.2)</code>意味着什么。然而,一旦Swift3.0以及未来所有版本可用,Swift编译期版本检查将会是一个非常有用的工具。</strong></p>
+
+<!--more-->
+
+
+<h4>2、编译期选择器检查</h4>
+
+<p>在Swift2.1,下面这段代码完全没有问题:</p>
+
+<pre><code>
+override func viewDidLoad() {
+  super.viewDidLoad()
+  navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "addNewFireflyRefernce")
+}
+
+func addNewFireflyReference() {
+   gratuitousReferences.append("We should start dealing in black-market beagles.")
+}
+</code></pre>
+
+<p>上面这段代码在应用程序中会崩溃,因为导航栏按钮调用了一个方法<code>addNewFireflyRefernce</code>,方法名中的<code>Refrence</code>少了一个字母”e”.这类简单的单词拼写错误很容易造成bug,所以在Swift2.2中弃用了使用字符串作为选择器。使用新语法:<code>#selector</code>来取代它。</p>
+
+<p>使用<code>#selector</code>将会在编译期检查你的代码,确定你想调用的方法真实存在。甚至更好的是,如果方法不存在,你会得到一个编译错误。</p>
+
+<p>下面是通过<code>#selector</code>来重写之前的代码:</p>
+
+<pre><code>override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationItem.rightBarButtonItem =
+        UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(addNewFireflyReference))
+}
+
+func addNewFireflyReference() {
+  gratuitousReferences.append("Curse your sudden but inevitable betrayal!")
+}
+</code></pre>
+
+<p>这里需要注意的:</p>
+
+<p>Objective-C Selectors(OC选择器)</p>
+
+<p>一个OC选择器是一种特指OC方法名的类型。在Swift里,OC选择器是通过Selector结构来表示的.你可以使用#selector表达式来构造一个选择器。例如<code>let mySelector = #selector(MyViewController.tappedButton)</code>,用一个直接引用一个OC方法作为子表达式。一个OC方法引用能被括号括起来,它能使用”as”操作符消除它与重载之间的歧义。例如<code>let anotherSelector = #selector(((UIView.insertSubview(_:at:)) as(UIView) -&gt;(UIView, Int) -&gt;Void))</code>。</p>
+
+<p>示例代码如下:为按钮添加事件</p>
+
+<pre><code>
+import UIKit
+class MyViewController: UIViewController {
+    let myButton = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
+
+    override init?(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        let action = #selector(MyViewController.tappedButton)
+        myButton.addTarget(self, action: action, forControlEvents: .TouchUpInside)
+    }
+
+    func tappedButton(sender: UIButton!) {
+        print("tapped button")
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+}
+</code></pre>
+
+<p><a href="https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithObjective-CAPIs.html">官方文档入口</a></p>
+
+<h4>3、更多的关键词作为参数标签</h4>
+
+<p>Swift中有很多关键词，像<code>class</code>、<code>fund</code>、<code>let</code>和<code>public</code>这些都有其特殊意义，所以不能作为标识符使用。Swift中是允许你使用关键词作为参数标签的。如果你像下面代码一样把它们放在引号里面：</p>
+
+<pre><code>
+func visitCity(name: String, `in` state: String) {
+   print("I'm going to visit \(name) in \(state)")
+}
+
+visitCity("Nashville", `in`: "Tennessee")
+</code></pre>
+
+<p>Swift2.2中除了<code>inout</code>、<code>var</code>、<code>let</code>之外，任何关键字都能被用作一个参数标签。如果你在代码中把关键字放在引号里，你将会得到一个Xcode的Fix-it警告，点击该警告便可自动移除引号。去掉引号的代码很可能是这样的：</p>
+
+<pre><code>
+func visitCity(name: String, in state: String) {
+  print("I'm going to visit \(name) in \(state)")
+}
+
+visitCity("Nashville", in: "Tennessee")
+</code></pre>
+
+<h4>4、内置元组比较</h4>
+
+<p>Swift2.2介绍了比较两个元组相等的能力。这意味着它将会检查元组中的每一个元素与另一个元组中的元素是否匹配，如果所有元素匹配，返回true。</p>
+
+<p>举个例子，下面的代码将会打印“不匹配”：</p>
+
+<pre><code>
+let singer = (first: "Taylor", last: "Swift")
+let alien = (first: "Justin", last: "Bieber")
+
+if singer == alien {
+   print("They match! That explains why you never see them together…")
+} else {
+   print("No match.")
+}
+</code></pre>
+
+<p><strong>Swift2.2元组的比较元素个数不能超过6个。</strong></p>
+
+<p><strong>警告：Swift2.2在检查平等性时将会忽略你的元素名，因此下面代码中的“singer”与”bird”会被认为是相等的：</strong></p>
+
+<pre><code>
+let singer = (first: "Taylor", last: "Swift")
+let bird = (name: "Taylor", breed: "Swift")
+
+if singer == bird {
+   print("This explains why she sings so well.")
+} else {
+   print("No match.")
+}
+</code></pre>
+
+<h4>5、元组的splat语法被弃用</h4>
+
+<p>在Swift2.1之前，有可能会使用一个元组来填充一个函数的参数。因此，如果你有一个函数带了两个参数，你能用一个含有两个元素的元组来调用它，只要元组有正确的类型和元素名称，例如：</p>
+
+<pre><code>
+func describePerson(name: String, age: Int) {
+    print("\(name) is \(age) years old")
+}
+let person = ("Malcolm Reynolds", age: 49)
+describePerson(person)
+</code></pre>
+
+<p>这种语法，被称为“元组splat语法”。这是不符合Swift的自身描述的语言习惯及可读性的风格。因此在Swift2.2中被弃用。</p>
+
+<h4>6、C语言风格的for循环被弃用</h4>
+
+<p>即使Swift有很多种循环语法可选择，但是C语言风格的for循环仍然是语言中的一部分，偶尔会被使用。例如：</p>
+
+<pre><code>
+for var i = 0; i &lt; 10; i++ {
+    print(i)
+}
+</code></pre>
+
+<p>这种语法在Swift2.2中已经被弃用了，可能在Swift3.0中全部移除。</p>
+
+<p>如果你使用的是Xcode，你可能会得到一个Fix-it的警告，它将会把你C语言风格的for循环转换成现代的Swift。现在我们应该这样写：</p>
+
+<pre><code>
+ for i in 0 ..&lt; 10 {
+    print(i)
+ }
+</code></pre>
+
+<p>然而，修复功能是被限制的，因此，有些事情需要你自己去做。例如，下面两个循环它将不会帮你修复它：</p>
+
+<pre><code>
+for var i = 10; i &gt; 0; i-- {
+   print(i)
+}
+
+for var i = 0; i &lt; 10; i += 2 {
+   print(i)
+}
+</code></pre>
+
+<p>第一种情况，你应该使用"(1&hellip;10).reverse()&ldquo;创建一个反向范围。这个不能像之前一样写成"i in 10…1”,这样写编译没有问题，但是在运行时会崩溃。第二种情况，你应该使用“stride(to:by:)”去累加2。因此，正确重写上面两个循环的方式如下所示：</p>
+
+<pre><code>
+for i in (1...10).reverse() {
+    print(i)
+}
+
+for i in 0.stride(to: 10, by: 2) {
+    print(i)
+}
+</code></pre>
+
+<h4>7、++和—-运算符被弃用</h4>
+
+<p>如果你使用过C语言风格的for循环，肯定对++和——运算符并不陌生。在Swift3.0中，++和&ndash;运算符也被弃用了。例如像：<code>i++</code>,<code>i--</code>,<code>++i</code>,<code>--i</code>,<code>i = i++</code>这些都不能用了。取而代之的是:<code>i += 1</code>或<code>i -= 1</code>，像上面例子中的代码，Xcode也会提供Fix-it修复警告帮你修复代码。</p>
+
+<h4>8、var参数被弃用</h4>
+
+<p>Swift2.2之前，如果你想在函数里面修改函数参数，可以把函数参数声明为var,例如：</p>
+
+<pre><code>
+func greet(var name: String) {
+    name = name.uppercaseString
+    print("Hello, \(name)!")
+}
+
+var name = "Taylor"
+greet(name)
+print("After function, name is \(name)")
+</code></pre>
+
+<p>这样容易困惑，最后print()语句输出到底是“Taylor”还是”TAYLOR”呢？在inout关键字中存在更多的困惑：下面的例子中使用inout而不是使用var，然后添加一个”&amp;”符号。便产生了这段代码：</p>
+
+<pre><code>
+func greet(inout name: String) {
+    name = name.uppercaseString
+    print("Hello, \(name)!")
+}
+
+var name = "Taylor"
+greet(&amp;name)
+print("After function, name is \(name)")
+</code></pre>
+
+<p>当程序运行时，var的例子与inout例子会产生不同的输出结果，因为改变var参数仅仅应用于函数内部，而改变inout参数则会直接影响到初始值。</p>
+
+<p>所以，在Swift2.2中，通过在函数参数中弃用var关键字来清楚这个困惑。在Swift3.0中将会被移除。如何你还想按照以前的习惯写，可以像下面这样：</p>
+
+<pre><code>
+ func greet(name: String) {
+    let uppercaseName = name.uppercaseString
+    print("Hello, \(uppercaseName)!")
+ }
+</code></pre>
+
+<h4>9、重命名debug标识符</h4>
+
+<p>Swift编译器在调试的时候自动提供了一些有用的符号，<code>__FILE__</code>会被替换成当前Swift文件名，<code>__LINE__</code>代表行数等等。在Swift2.2中，这些老的标识符被弃用，用<code>#file</code>,<code>#line</code>,<code>#column</code>,和<code>#function</code>取代。</p>
+
+<p>下面的例子中列出了新旧语法的区别：</p>
+
+<pre><code>
+ func visitCity(name: String, in state: String) {
+        // old - deprecated!
+        print("This is on line \(__LINE__) of \(__FUNCTION__)")
+
+        print("I'm going to visit \(name) in \(state)")
+
+        // new - shiny!
+        print("This is on line \(#line) of \(#function)")
+  }
+</code></pre>
+
+<p>和其他的变化一样，Xcode会有Fix-it警告，来帮助你更新正确的代码。</p>
+
+<p><strong>本文内容来自网络，后续会持续更新完善。以上部分是我自己的学习与理解，欢迎一起学习交流！多多批评与指正！</strong></p>
+
+<p><strong>参考资料如下：</strong></p>
+
+<p>（1）<a href="https://swift.org/blog/swift-2-2-new-features/">New Features in Swift 2.2</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Swift内存管理（ARC）之循环引用]]></title>
+    <link href="http://yangshebing.github.io/blog/2016/01/15/swiftnei-cun-guan-li-(arc)zhi-xun-huan-yin-yong/"/>
+    <updated>2016-01-15T01:37:31+08:00</updated>
+    <id>http://yangshebing.github.io/blog/2016/01/15/swiftnei-cun-guan-li-(arc)zhi-xun-huan-yin-yong</id>
+    <content type="html"><![CDATA[<p>Swift中是采用自动引用计数(ARC，AutomaticReferenceCounting)机制来对内存进行管理的。</p>
+
+<h4>一、简述ARC如何工作：</h4>
+
+<p>每当你每创建一个新的对象，它便会分配一块内存来存储该对象的相关信息。当你不再需要这个对象的时候，它就会自动释放这个对象，避免它再占用内存空间。当然，如果该对象只要至少存在一个引用就不会被释放。另外，你如果访问了一个已经被释放的对象，则很有可能会出现崩溃（野指针）。
+拿《The Swift Programming Language》里面的例子来套一下：</p>
+
+<pre><code>//创建一个Cat类，自带常量name属性
+class Cat {
+    let name: String
+    init(name: String) {
+    //初始化name属性
+        self.name = name;
+        print("\(name) 对象已经被初始化")
+    }
+
+    deinit {
+        print("\(name) 对象释放成功！")
+    }
+}
+</code></pre>
+
+<!--more-->
+
+
+<p>接下来定义三个变量类型为:Cat?用来对一个新的Cat对象建立多个引用。因为变量是一个可选类型（是Cat?而不是Cat）， 他们会自动给变量初始化为nil，所有当前它不需要引用一个Cat对象。</p>
+
+<pre><code>var cat1: Cat?
+var cat2: Cat?
+var cat3: Cat?
+</code></pre>
+
+<p>创建一个新的Cat对象，并对之前定义的三个变量进行赋值操作：</p>
+
+<pre><code>cat1 = Cat(name: "jack")
+//输出：jack 对象已经被初始化
+</code></pre>
+
+<p>当你调用Cat类构造器，它会输出："jack 对象已经被初始化"。这就代表已经完成了对象初始化操作。接下来，一个新的Cat对象被赋值给了 cat1变量，从而建立了cat1对新Cat实例对象的强引用。因此，它存在了至少一个强引用。这个新的Cat对象就不会被释放。
+如果你把同一个Cat实例对象赋值给另外两个变量，它则又多建立了两个强引用。</p>
+
+<pre><code>//通过赋值对Cat实例对象建立强引用
+cat2 = cat1
+cat3 = cat1
+</code></pre>
+
+<p>此时这个Cat实例对象已经有三个强引用了。
+如果你用把其中两个变量赋值为nil的方式来打破这些强引用，对象是不会被释放的。因为它还存在一个强引用。</p>
+
+<pre><code>//通过把置nil来打破cat1,cat2对Cat实例对象的强引用
+cat1 = nil
+cat2 = nil
+</code></pre>
+
+<p>只有直到对象所有的引用被打破，ARC才会释放该对象</p>
+
+<pre><code>//打破最后一个强引用
+cat3 = nil
+//输出：jack 对象释放成功！
+</code></pre>
+
+<p>当最后一个强引用被打破后，这个Cat对象被成功释放，输出：jack 对象释放成功！</p>
+
+<h4>二、循环引用</h4>
+
+<p>1、什么是循环引用？
+简单的来说就是两个对象互相持有对方，使对方处于活跃状态不被释放，从而导致了循环引用。套个例子：</p>
+
+<pre><code>//创建一个Cat类，拥有一个String类型的name属性与一个可选类型的dog属性。
+class Cat {
+    let name: String
+    init(name: String) {
+        self.name = name;
+        print("\(name) 对象已经被初始化")
+    }
+    var dog: Dog?
+
+    deinit {
+        print("\(name) 对象释放成功！")
+    }
+}
+
+//创建一个Dog类，拥有一个String类型的type属性与一个可选类型的jack属性。
+class Dog {
+    let type: String
+    init(type: String) {
+        self.type = type
+        print("\(type) 对象已经被初始化")
+    }
+
+    var cat: Cat?
+    deinit {
+        print("\(type) 对象释放成功")
+    }
+}
+</code></pre>
+
+<p>定义两个变量并初始化</p>
+
+<pre><code>var jack: Cat?
+var tom: Dog?
+
+jack = Cat(name: "jack")
+//print:jack 对象已经被初始化
+tom = Dog(type: "red")
+//print:red 对象已经被初始化
+</code></pre>
+
+<p>建立强引用</p>
+
+<pre><code>jack!.dog = tom
+tom!.cat = jack
+</code></pre>
+
+<p>通过把对象置nil打破强引用</p>
+
+<pre><code>jack = nil
+tom = nil
+</code></pre>
+
+<p>这个地方Cat对象和Dog对象都不会被释放，因为他们两个之间还存在强引用。</p>
+
+<ul>
+<li><p>解决循环引用办法
+  Swift提供了两种方法来解决循环引用问题：</p>
+
+<p>  （1）弱引用（weak）</p>
+
+<p>  （2）无主引用（unowned）</p></li>
+</ul>
+
+
+<p>声明变量或属性时，在前面加上"weak"关键词表示它是一个弱引用。如果确定访问属性或函数的时候该对象不会被释放，也可以用无主引用（unowned）来取代。unowned跟Objective-C中的unsafe_unretained类似。它与weak的区别在于weak在引用的对象被释放后，会自动置nil。所以它必须声明成可选类型（？）。而unowned在引用对象被释放后不会自动置nil(因为非可选类型的变量不能被设置成nil)，而是保留对原有对象的无效引用，一旦对象被释放，再访问该对象的属性或函数就会造成崩溃。官方建议是当你在可以确定访问属性或函数所属对象不会被释放时，使用unowned。否则，还是使用weak吧！</p>
+
+<p>解决上面代码的循环引用问题，可做如下修改：</p>
+
+<pre><code>class Dog {
+    let type: String
+    init(type: String) {
+        self.type = type
+        print("\(type) 对象已经被初始化")
+    }
+
+    weak var jack: Cat
+    deinit {
+        print("\(type) 对象释放成功")
+    }
+}
+</code></pre>
+
+<pre><code>jack = nil
+tom = nil
+</code></pre>
+
+<p>2、常见的循环引用问题：</p>
+
+<p>（1）delegate
+在项目中我们经常会用到代理模式，在Objective-C中我们一般在delegate前面加上weak关键词，表示它是一个弱引用。从而达到打破循环引用的效果。</p>
+
+<pre><code>//在前面加上@objc是指定这里的代码属于Objective-C的代码，因为Swift中协议可以用于class、struct、enum。对于基本数据类型，它不是对象，没有引用计数这个概念，因此无法使用weak关键词。  Objective-C中的协议只适用于类，所以这里需要加上@objc。
+@objc protocol AClassDelegate {
+    func wash()
+}
+
+class A {
+    weak var delegate: AClassDelegate!
+    func cry() {
+
+    }
+    func play() {
+        delegate.wash()
+    }
+}
+
+class B: AClassDelegate {
+
+    func feed() {
+        let nurse = A()
+        nurse.delegate = self
+        nurse.cry()
+    }
+
+    @objc func wash() {
+        print("begin wash and sleep")
+    }
+}
+</code></pre>
+
+<p>（2）Block(闭包)中的循环引用
+Block(闭包)的循环引用在于它会持有所有引用的元素。比如我们在Block(闭包)中访问了self，那么它就持有了self。这样一来就形成了一个环：self持有Block(闭包)，Block(闭包)持有self。下面我们举个栗子加以说明：类A中有个闭包，我们在闭包中访问了self的name属性。</p>
+
+<pre><code>class A {
+    let name: String
+    lazy var wash: Void -&gt;Void = {
+        var name = self.name + " nurse"
+        print("wash room is \(name)")
+    }
+
+    init(name: String) {
+        self.name = name
+        print("\(self.name) 创建了")
+    }
+
+    deinit {
+        print("\(self.name) 释放了")
+    }
+}
+
+class B {
+    func play() {
+        var nurse: A?
+        nurse = A(name: "jack")
+        nurse?.wash()
+    }
+}
+
+var baby: B?
+baby = B()
+baby?.play()
+
+输出结果：
+jack 创建了
+wash room is jack nurse
+</code></pre>
+
+<p> 因为wash是self的一个属性，所以wash被self持有。这个时候我们又在闭包中访问了self的name属性，所以它又在闭包中持有了self。这样便导致了循环引用。为了解决闭包中的循环引用问题，Swift中提供了一个叫”闭包捕获列表”的解决方案。</p>
+
+<ul>
+<li>定义一个捕获列表</li>
+</ul>
+
+
+<p> 捕获列表中的每一项都是一个用weak或 unowned关键字与一个实例对象的引用（如self）或者是一个用初始化值的变量（如delegate = self.delegate!）搭配成对，配对之间用逗号隔开，最后用方括号括起来。如下所示：</p>
+
+<pre><code class="`">
+  lazy var someClosure:(Int, String) -&gt; String = {
+        [unowned self, weak delegate = self.delegate!] (index: Int, stringToProcess: String) -&gt; String in
+
+    }
+</code></pre>
+
+<p> 如果闭包中没有指定参数列表或者返回类型，可直接把捕获列表放置在闭包开始的地方（花括号后面）然后紧跟着是"in"关键词，示例代码如下：</p>
+
+<pre><code class="``">  lazy var someClosure:Void -&gt; String = {
+        [unowned self, weak delegate = self.delegate!]  in
+
+    }
+</code></pre>
+
+<ul>
+<li>解决Block(闭包)中的循环引用，ClassA中的Block(闭包)代码可做以下修改：</li>
+</ul>
+
+
+<pre><code>lazy var wash:Void -&gt;Void = { [weak self] in
+//这个地方使用self!.name而不是self.name。是因为weak修饰，self有可能为nil，如果是unowned修饰，这个地方应该是self.name。因为unowned修饰的self永远不可能为空。
+        var name = self!.name + " nurse"
+        print("wash room is \(name)")
+    }
+
+ 输出结果：
+jack 创建了
+wash room is jack nurse
+jack 释放了
+</code></pre>
+
+<h4>参考资料及文章</h4>
+
+<ul>
+<li><a herf="https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/">《The Swift Programming Language》</a></li>
+<li><a href="http://swifter.tips/retain-cycle/">内存管理，WEAK 和 UNOWNED </a></li>
+<li><a href="http://skyfly.xyz/2015/12/18/Swift/Swift%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">Swift学习笔记-内存管理</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Swift中UITableView的用法(自定义UITableView和UITableViewCell)]]></title>
+    <link href="http://yangshebing.github.io/blog/2016/01/04/swiftzhong-uitableviewde-yong-fa-zi-ding-yi-uitableviewhe-uitableviewcell/"/>
+    <updated>2016-01-04T21:23:33+08:00</updated>
+    <id>http://yangshebing.github.io/blog/2016/01/04/swiftzhong-uitableviewde-yong-fa-zi-ding-yi-uitableviewhe-uitableviewcell</id>
+    <content type="html"><![CDATA[<p>一、自定义表视图（UITableView）</p>
+
+<!--more-->
+
+
+<pre><code>
+import UIKit
+class HomeTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
+//表视图的数据源：dataList
+    var dataList = [AnyObject]()
+//单元格的标识符：homeCellId
+    let identify = "homeCellId"
+    //重写表视图初始化方法
+    override init(frame: CGRect, style: UITableViewStyle) {
+        super.init(frame:frame, style:style)
+        //调用初始化子视图方法
+        initSubviews()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    //初始化表视图的子视图方法
+    func initSubviews () {
+    //设置数据源代理
+        dataSource = self;
+   //设置表视图代理
+        delegate = self;
+        //注册单元格class方式
+        registerClass(HomeCell.self, forCellReuseIdentifier: identify)
+       //设置表视图的分割线显示风格
+        separatorStyle = .None;
+        //注册单元格xib方式
+        //registerNib(UINib(nibName: "HomeCell", bundle: nil), forCellReuseIdentifier:identify)
+    }
+   //实现表视图返回组数代理方法：不实现默认为1
+    func numberOfSectionsInTableView(tableView: UITableView) -&gt; Int {
+        return 1;
+    }
+//实现表视图返回行数代理方法
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int {
+        return dataList.count;
+    }
+    //实现表视图返回单元格代理方法
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -&gt; UITableViewCell {
+    //取单元格
+        let cell = tableView.dequeueReusableCellWithIdentifier(identify) as! HomeCell
+        //设置单元格的选中风格
+        cell.selectionStyle = .None;
+        cell.titleStr = dataList[indexPath.row] as? String
+        return cell
+    }
+    //选中单元格的代理方法
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        print("the indexpath row is \(indexPath.row)")
+    }
+    //返回单元格高度的代理方法
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -&gt; CGFloat {
+        return 80;
+    }
+}
+</code></pre>
+
+<p>二、自定义单元格（UITableViewCell）</p>
+
+<pre><code>import UIKit
+
+class HomeCell: UITableViewCell {
+//定义子视图变量
+    var imgView: UIImageView!
+    var titleLabel: UILabel!
+    var button: UIButton!
+    var titleStr: String?
+    // 重写单元格初始化方法
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier);
+        //调用单元格初始化方法
+        initSubviews()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:)has not been implemented")
+    }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+    //单元格子视图初始化方法
+    func initSubviews () {
+        imgView = UIImageView(frame: CGRectMake(0, 0, 30, 30))
+        imgView.image = UIImage(named: "exam.png")
+        contentView.addSubview(imgView);
+
+        titleLabel = UILabel(frame: CGRectMake(0, 0, frame.size.width, frame.size.height))
+        titleLabel.textAlignment = .Left;
+        titleLabel.textColor = UIColor.lightGrayColor();
+        titleLabel.font = UIFont.systemFontOfSize(15);
+        titleLabel.text = "心灵鸡汤，每天一起干"
+        contentView.addSubview(titleLabel)
+
+        button = UIButton(type: .Custom)
+        button.frame = CGRectMake(0, 0, frame.size.width, frame.size.height)
+        button.setTitle("关注", forState: .Normal)
+        button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        button.backgroundColor = UIColor.grayColor()
+        contentView.addSubview(button)
+    }
+    //重写单元格布局子视图方法
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        titleLabel.text = titleStr
+      //...
+      //布局单元格子视图
+      //...
+    override func setSelected(selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        // Configure the view for the selected state
+    }
+}
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iOS开发之基础控件（Swift版）]]></title>
+    <link href="http://yangshebing.github.io/blog/2016/01/02/ioskai-fa-zhi-ji-chu-kong-jian-(swiftban-)/"/>
+    <updated>2016-01-02T11:08:19+08:00</updated>
+    <id>http://yangshebing.github.io/blog/2016/01/02/ioskai-fa-zhi-ji-chu-kong-jian-(swiftban-)</id>
+    <content type="html"><![CDATA[<p>  1、文本（UILabel）：</p>
+
+<pre><code>  let titleLabel = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
+        //设置titleLabel的文本对齐方式：左：.Left, 中:.Center, 右:.Right
+        titleLabel.textAlignment = .Center
+        //设置titleLabel的文本颜色
+        titleLabel.textColor = UIColor.lightGrayColor()
+        //设置titleLabel文字的字体为系统字体，大小为15
+        titleLabel.font = UIFont.systemFontOfSize(15)
+        //设置titleLabel文字的字体为"Helvetica", 大小为15
+        titleLabel.font = UIFont(name: "Helvetica", size: 15)
+        titleLabel.text = "心灵鸡汤，每天一起干"
+        //titleLabel字体大小自适应宽度，根据指定宽度titleLabel自动调整字体显示大小
+        titleLabel.adjustsFontSizeToFitWidth = true
+        //指定titleLabel的显示行数，0代表自动折行
+        titleLabel.numberOfLines = 1
+        //获取系统所有字体名称
+        let fontFamily = UIFont.familyNames()
+        print(fontFamily)
+        view.addSubview(titleLabel)
+</code></pre>
+
+<!--more-->
+
+
+<p>2、按钮（UIButton）：</p>
+
+<pre><code>//按钮类型：常见的两种如下
+         /**
+         *.Custom:自定义类型
+         *.System:系统类型（iOS7.0）
+         **/
+        let followButton = UIButton(type: .Custom)
+        followButton.frame = CGRectMake(100, 100, 100, 50)
+        //设置按钮在特定状态下的文本显示，常见的有：
+        /**
+         *.Normal:按钮常规显示状态
+         *.Selected:按钮选中显示状态
+         *.Highlighted:按钮高亮显示状态
+         *.Disabled:按钮关闭状态显示
+        **/
+        followButton.setTitle("关注", forState: .Normal)
+        //设置按钮在特定状态下的文本色值显示
+        followButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        //设置按钮在特定状态下的图片显示
+        followButton.setImage(UIImage(named: "back"), forState: .Normal)
+        followButton.setImage(UIImage(named: "select"), forState: .Disabled)
+        //设置按钮显示文本的字体大小
+        followButton.titleLabel?.font = UIFont.systemFontOfSize(15)
+        //设置按钮选中状态
+        followButton.selected = true
+        //设置按钮是否打开状态
+        followButton.enabled = true
+        //设置是否响应用户touch事件
+        followButton.userInteractionEnabled = true
+        //设置按钮的背景颜色
+        followButton.backgroundColor = UIColor.grayColor()
+        //关闭按钮处于高亮状态图片变暗显示状态
+        followButton.adjustsImageWhenHighlighted = false
+        //设置按钮图片的内部填充
+        followButton.imageEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
+        //设置按钮文本的内部填充
+        followButton.titleEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
+        //为按钮添加点击事件
+        followButton.addTarget(self, action: "followAction", forControlEvents: .TouchUpInside)
+        view.addSubview(followButton)
+</code></pre>
+
+<ul>
+<li>按钮点击事件响应方法：</li>
+</ul>
+
+
+<pre><code>    func followAction(sender: UIButton) {
+        print("关注")
+    }
+</code></pre>
+
+<p>3、图片展示视图（UIImageView）：</p>
+
+<pre><code>let imgView = UIImageView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
+        //设置图片视图显示图片
+        imgView.image = UIImage(named: "exam.png")
+        //设置图片视图高亮状态显示图片
+        imgView.highlightedImage = UIImage(named: "exam1.png")
+        //设置图片视图内容展示模式：常见的几种内容展示模式
+        /**
+        *.ScaleToFill:缩放图片填满整个图片视图
+        *.ScaleAspectFit:缩放内容以适应原图尺寸，没有铺满的地方保持透明
+        *.ScaleAspectFill:按钮高亮显示状态
+        **/
+        imgView.contentMode = .ScaleAspectFit
+        //设置图片视图是否高亮显示
+        imgView.highlighted = true
+        //设置是否响应用户touch事件,默认为false
+        imgView.userInteractionEnabled = true
+        //播放一组图片
+        let img1 = UIImage(named: "play1.png")!
+        let img2 = UIImage(named: "play2.png")!
+        let img3 = UIImage(named: "play3.png")!
+        let images = [img1, img2, img3]
+        //设置需要播放的一组图片
+        imgView.animationImages = images
+        //设置播放持续时间
+        imgView.animationDuration = 1
+        //设置播放重复次数
+        imgView.animationRepeatCount = 20
+        //开始播放
+        imgView.startAnimating()
+        //停止播放
+        imgView.stopAnimating()
+
+        view.addSubview(imgView);
+</code></pre>
+
+<p>4、文字输入框（UITextField）：</p>
+
+<pre><code>let textField = UITextField(frame: CGRectMake(20, 100, 100,30))
+        //设置文本编辑框显示文字
+        textField.text = "将编程进行到底"
+        //设置文本编辑框占位文字
+        textField.placeholder = "客官，你想不想要？"
+        //设置文本编辑框的边框显示类型
+        textField.borderStyle = .RoundedRect
+        //设置文本编辑框的文字字体
+        textField.font = UIFont.systemFontOfSize(15)
+        //设置文本编辑框的文本颜色
+        textField.textColor = UIColor.blackColor()
+        //设置文本编辑框输入文本时首字母是否自动大写
+        textField.autocapitalizationType = .None
+        //设置文本编辑框清除按钮显示模式
+        textField.clearButtonMode = .WhileEditing
+        //设置文本编辑框的文本对齐方式
+        textField.textAlignment = .Center
+        //设置文本编辑框返回键显示类型
+        textField.returnKeyType = .Search
+        //设置是否为安全文本输入状态
+        textField.secureTextEntry = true
+        //设置输入键盘类型
+        textField.keyboardType = .NumberPad
+        //设置文本编辑框的代理
+        textField.delegate = self
+        //唤起键盘，让文本编辑框成为第一响应者
+        textField.becomeFirstResponder()
+        view.addSubview(textField)
+</code></pre>
+
+<ul>
+<li>UITextFiled代理方法（UITextFiledDelegate）:</li>
+</ul>
+
+
+<pre><code>//将要开始编辑代理方法,此方法会在键盘弹出之前调用
+    func textFieldShouldBeginEditing(textField: UITextField) -&gt; Bool {
+        return true
+    }
+
+    //已经开始编辑代理方法，此方法会在键盘弹出之后调用
+    func textFieldDidBeginEditing(textField: UITextField) {
+        print(textField.text)
+    }
+
+    //当return按钮被点击时调用
+    func textFieldShouldReturn(textField: UITextField) -&gt; Bool {
+        //收起键盘，注销文本编辑框为第一响应者
+        textField.resignFirstResponder()
+        return true
+    }
+
+    //将要结束编辑代理方法，此方法会在收起键盘的时候调用
+    func textFieldShouldEndEditing(textField: UITextField) -&gt; Bool {
+        return true
+    }
+</code></pre>
+
+<p>5、开关控件（UISwitch）：</p>
+
+<pre><code>        let sliderControl = UISlider(frame: CGRectMake(30, 200, 100, 30))
+        //设置滑动条控件最大值
+        sliderControl.maximumValue = 10
+        //设置滑动条控件最小值
+        sliderControl.minimumValue = 1
+        //设置滑动条控件初始值
+        sliderControl.value = 5
+        //设置滑动条控件最大值方向颜色显示
+        sliderControl.maximumTrackTintColor = UIColor.redColor()
+        //设置滑动条控件最小值方向颜色显示
+        sliderControl.minimumTrackTintColor = UIColor.brownColor()
+        //设置滑动条控件拖动按钮颜色
+        sliderControl.thumbTintColor = UIColor.blueColor()
+        //设置滑动条控件最大值方向图片显示：正常状态
+        sliderControl.setMaximumTrackImage(UIImage(named: "slidermax.png"), forState: .Normal)
+        //设置滑动条控件最小值方向图片显示：正常状态
+        sliderControl.setMinimumTrackImage(UIImage(named: "slidermin.png"), forState: .Normal)
+        //设置滑动条控件拖动按钮显示图片：正常状态
+        sliderControl.setThumbImage(UIImage(named: "thumb.png"), forState: .Normal)
+        //为滑动条控件添加：值改变触发事件
+        sliderControl.addTarget(self, action: "sliderAction:", forControlEvents: .ValueChanged)
+        view.addSubview(sliderControl)
+</code></pre>
+
+<ul>
+<li>开关值改变事件响应方法：</li>
+</ul>
+
+
+<pre><code>func sliderAction(sliderControl: UISlider) {
+        print("the slider value is \(sliderControl.value)")
+    }
+</code></pre>
+
+<p>6、加载指示器视图（UIActivityIndicatorView）：</p>
+
+<pre><code>let activityControl = UIActivityIndicatorView(frame: CGRectMake(100, 200, 30, 30))
+        //设置加载指示器视图的风格
+        activityControl.activityIndicatorViewStyle = .Gray
+        //设置加载指示器视图的背景颜色
+        activityControl.backgroundColor = UIColor.redColor()
+        //开始动画
+        activityControl.startAnimating()
+        //停止动画
+        activityControl.stopAnimating()
+        view.addSubview(activityControl)
+</code></pre>
+
+<p>7、分段控件视图（UISegmentedControl）:</p>
+
+<pre><code>let items = ["全部", "电影", "新闻", "科技"]
+        let segmentedControl = UISegmentedControl(items: items)
+        segmentedControl.frame = CGRectMake(30, 200, 180, 30)
+        //设置分段控件颜色
+        segmentedControl.tintColor = UIColor.redColor()
+        //设置分段控件默认选中索引
+        segmentedControl.selectedSegmentIndex = 1
+        //为分段控件添加值改变响应事件
+        segmentedControl.addTarget(self, action: "segmentControlAction:", forControlEvents: .ValueChanged)
+        view.addSubview(segmentedControl)
+</code></pre>
+
+<ul>
+<li>分段控件值改变事件响应方法：</li>
+</ul>
+
+
+<pre><code>func segmentControlAction(segmentedControl: UISegmentedControl) {
+        if segmentedControl.selectedSegmentIndex == 0 {
+
+        } else if segmentedControl.selectedSegmentIndex == 1 {
+
+        } else if segmentedControl.selectedSegmentIndex == 2{
+
+        } else {
+
+        }
+       print("the segmented Control selected Index is \(segmentedControl.selectedSegmentIndex)")
+    }
+</code></pre>
+
+<p>8、页面控件（UIPageControl）：</p>
+
+<pre><code>let pageControl = UIPageControl(frame: CGRectMake(30, 200, 180, 30))
+        //设置页面控件的背景颜色
+        pageControl.backgroundColor = UIColor.brownColor()
+        //设置总页数
+        pageControl.numberOfPages = 4
+        //设置当前页数
+        pageControl.currentPage = 1
+        //设置页面控件指示器颜色
+        pageControl.pageIndicatorTintColor = UIColor.redColor()
+        //设置页面控件当前页面指示器颜色
+        pageControl.currentPageIndicatorTintColor = UIColor.blueColor()
+        //添加页面控件点击响应事件
+        pageControl.addTarget(self, action: "changeAction:", forControlEvents: .TouchUpInside)
+        view.addSubview(pageControl)
+</code></pre>
+
+<ul>
+<li>页面控件点击响应事件：</li>
+</ul>
+
+
+<pre><code>func changeAction(pageControl: UIPageControl) {   
+  print("the current select page is :\(pageControl.currentPage)")
+}
+</code></pre>
+
+<p>9、警告视图控制器（UIAlertController）：(UIAlertView 与 UIActionSheet在iOS8.0之后就弃用了，推荐使用UIAlertController)</p>
+
+<pre><code>        /**
+         * .Alert
+         * .ActionSheet
+         */
+        let alertCtrl = UIAlertController(title: "提示信息", message: "确定返回吗？", preferredStyle: .Alert)
+        //初始化警告动作
+        let cancelAction = UIAlertAction(title: "取消", style: .Cancel) { (action) -&gt; Void in
+            //...
+            //添加相应处理代码
+            //...
+            //把UIAlertController从父视图控制器中移除，防止内存泄漏
+            alertCtrl.removeFromParentViewController()
+        }
+        let okAction = UIAlertAction(title: "立即返回", style: .Default) { (action) -&gt; Void in
+            //...
+            //添加相应处理代码
+            //...
+            //把UIAlertController从父视图控制器中移除，防止内存泄漏
+            alertCtrl.removeFromParentViewController()
+        }
+        //添加动作
+        alertCtrl.addAction(cancelAction)
+        alertCtrl.addAction(okAction)
+        //弹出警告视图控制器
+        self.presentViewController(alertCtrl, animated: true, completion: nil)
+</code></pre>
+
+<p>10、 进度条视图（UIProgressView）：</p>
+
+<pre><code>     let progressView = UIProgressView(progressViewStyle: .Bar)
+        progressView.frame = CGRectMake(30, 200, 180, 30)
+        //设置默认进度
+        progressView.progress = 0.3
+        //设置进度条加载过的颜色
+        progressView.progressTintColor = UIColor.redColor()
+        //设置进度条未加载过的颜色
+        progressView.trackTintColor = UIColor.blueColor()
+        //设置进度条加载过的图片展示
+        progressView.progressImage = UIImage(named: "progress.png")
+        //设置进度条未加载过的图片展示
+        progressView.trackImage = UIImage(named: "track.png")
+        view.addSubview(progressView)
+</code></pre>
+
+<p>11、 工具条控件（UIToolBar）：</p>
+
+<pre><code>        let toolBar = UIToolbar(frame: CGRectMake(30, 200, 180, 49))
+        //设置工具条展示风格
+        toolBar.barStyle = .Default
+        //添加工具条按钮
+        let item = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "itemButtonAction")
+        let item1 = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "itemButtonAction")
+        //固定间距工具条按钮
+        let item2 = UIBarButtonItem(barButtonSystemItem: .FixedSpace, target: self, action: "itemButtonAction")
+        item2.width = 30
+        let customButton = UIButton(type: .DetailDisclosure)
+        customButton.addTarget(self, action: "itemButtonAction", forControlEvents: .TouchUpInside)
+        //自定义按钮为工具条按钮
+        let item3 = UIBarButtonItem(customView: customButton)
+        let items = [item, item1, item2, item3]
+        //设置工具条要显示的所有按钮
+        toolBar.items = items
+        view.addSubview(toolBar)
+</code></pre>
+
+<ul>
+<li>工具条按钮点击响应事件：</li>
+</ul>
+
+
+<pre><code>func itemButtonAction() {
+        print("tool bar button")
+    }
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Swift语言编程]]></title>
+    <link href="http://yangshebing.github.io/blog/2015/09/12/swift/"/>
+    <updated>2015-09-12T12:53:21+08:00</updated>
+    <id>http://yangshebing.github.io/blog/2015/09/12/swift</id>
+    <content type="html"><![CDATA[<h4>Swift语言基础学习</h4>
+
+<ul>
+<li>导入系统类库头文件（swift中称之为模块）</li>
+</ul>
+
+
+<p><code>
+import UIKit
+</code></p>
+
+<ul>
+<li>定义一个常量</li>
+</ul>
+
+
+<p><code>
+let a = 5
+</code></p>
+
+<ul>
+<li>定义一个变量</li>
+</ul>
+
+
+<p><code>
+var str = "Hello, World!"
+</code></p>
+
+<ul>
+<li>swift中打印输出</li>
+</ul>
+
+
+<p><code>
+print("Hi,Girl!");
+</code></p>
+
+<p><strong>注意事项：如果在一行内想要写多条语句时需要用分号隔开，一行内写一句代码分号可加可不加（不推荐加）</strong></p>
+
+<!--more-->
+
+
+<p><code>
+//一行内多句代码
+let dog = "ddd";print(dog)
+</code></p>
+
+<pre><code>//一行内一句代码
+let my = "我的"
+let age = 20
+let sex = "male"
+print(my)
+print(age)
+print(sex)
+</code></pre>
+
+<ul>
+<li>一次性定义多个变量</li>
+</ul>
+
+
+<p><code>
+var a = 0.0, b = 0.0, c = 0.0
+</code></p>
+
+<ul>
+<li>定义变量并赋初值</li>
+</ul>
+
+
+<pre><code>var a : Float = 5;
+var userName = "yangshebing"
+</code></pre>
+
+<ul>
+<li>字符串插值方式：相当于占位符输出</li>
+</ul>
+
+
+<p><code>
+print("the user name is \(userName)”)
+</code></p>
+
+<ul>
+<li>定义一个指定类型的变量</li>
+</ul>
+
+
+<pre><code>var name : String
+name = "yangshebing";
+print(name);
+</code></pre>
+
+<p><strong>注意：在Swift中支持多行注释嵌套</strong></p>
+
+<ul>
+<li>定义一个数组</li>
+</ul>
+
+
+<p>最简单粗暴的方法：</p>
+
+<p><code>
+let array = ["a", "b", "c"]
+</code></p>
+
+<p>常规写法：</p>
+
+<pre><code>let array1: [String] = ["A", "B", "C"]
+let array2: Array&lt;String&gt; = ["A", "B", "D”]
+</code></pre>
+
+<ul>
+<li>整数和浮点数之间转换</li>
+</ul>
+
+
+<pre><code>let num = 3
+let pointNum = 0.14159
+let pi = Double(num) + pointNum
+let numPi = Int(pi)
+//Float转换成Int类型时，实型值总是会被缩短，意味着4.75将会变成4, -3.9将会变成-3
+print(numPi)
+</code></pre>
+
+<ul>
+<li>自定义类型别名</li>
+</ul>
+
+
+<pre><code>typealias MyIntType = Int
+let num : MyIntType = 10
+</code></pre>
+
+<ul>
+<li>布尔</li>
+</ul>
+
+
+<p>Swift 有一个基本布尔类型，称之为Bool。它提供了两个布尔常量值:true和false</p>
+
+<pre><code>let isMore = true
+let isRainy = false
+</code></pre>
+
+<ul>
+<li>布尔类型在if语句中的使用</li>
+</ul>
+
+
+<pre><code>let isApple = true
+if isApple {
+    println("this is Apple")
+}
+</code></pre>
+
+<p><strong>使用布尔类型应当注意事项：Swift的类型安全机制会防止non-Boolean代替Bool值，比如下面的代码就会报编译时错误：</strong></p>
+
+<pre><code>let num = 1
+if num {
+    //这个例子编译的时候会报错，但是在Objective-C语言中不会。
+}
+</code></pre>
+
+<p>正确使用的方式如下：</p>
+
+<pre><code>let number = 1
+if number == 1 {
+    println("this is one")
+    //这个编译成功
+}
+</code></pre>
+
+<p>另外，这里提一下：在Swift中判断两个对象是否相等是使用”===“”!=="</p>
+
+<ul>
+<li>Swift中元组的使用</li>
+</ul>
+
+
+<pre><code>//定义一个元组
+let salaryCombination = （10000, "one month"）
+//它代表的是一个（Int, String）类型的元组
+</code></pre>
+
+<pre><code>//分解元组
+let (salary, month) = salaryCombination
+print("The salary is \(salary)")
+print("The month is \(month)")
+//你如果只需要元组的一部分值，你也可以这样写
+let (salary,_)
+print(the salary is \(salary))
+</code></pre>
+
+<ul>
+<li>元组取值方式总结</li>
+</ul>
+
+
+<pre><code>方式一
+let firstSalary = (10000, "one month")
+let (salary1,month1) = firstSalary
+let secondSalary = (20000,"two month")
+let (salary2, month2) = secondSalary
+print("一月收入month1: \(salary1)")
+print("二月收入month2: \(salary2)”)
+
+//方式二
+let firstSalary = (10000, "one month")
+let (salary1,month1) = firstSalary
+let secondSalary = (20000,"two month")
+let (salary2, month2) = secondSalary
+//输出元组中的第0个元素， firstSalary.0：firstSalary代表元组名，0代表下标
+print("一月的收入month1: \(firstSalary.0)")
+print("二月的收入month2: \(secondSalary.0)”)
+
+//方式三
+let firstSalary = (salary : 10000,month : "one month")
+let (salary1,month1) = firstSalary
+let secondSalary = (salary :20000,month : "two month")
+let (salary2, month2) = secondSalary
+//输出元组中的第0个元素， firstSalary.salary：firstSalary代表元组名，salary代表元组元素的名字
+print("一月的收入month1: \(firstSalary.salary)")
+print("二月的收入month2: \(secondSalary.salary)")
+</code></pre>
+
+<h4>本文参考文章资料：</h4>
+
+<ul>
+<li>《The Swift Programming Language》</li>
+</ul>
+
+
+<p><strong>欢迎共同学习进步，本着分享的精神，只是为了让你学习起来更加轻松。</strong></p>
+
+<p><strong>如需转载，请注明出处</strong></p>
+]]></content>
+  </entry>
+  
+</feed>

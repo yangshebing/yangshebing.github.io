@@ -1,661 +1,0 @@
----
-layout: post
-title: "iOS面试题系列之Objective-C相关"
-date: 2016-04-24 23:58:04 +0800
-comments: true
-tags: [iOS, xcode, iOS面试]
-keywords: ios开发, iOS面试
-categories: Others
----
-
-**1、简述你项目中常用的设计模式。它们有什么优缺点？**
-
-常用的设计模式有：代理、观察者、单例。
-
-（1）单例：它是用来限制一个类只能创建一个对象。这个对象中的属性可以存储全局共享的数据。所有的类都能访问、设置此单例中的属性数据。
-
-优点：是它只会创建一个对象容易供外界访问，节约性能。
-<!--more-->
-缺点：是一个类只有一个对象，可能造成责任过重，在一定程度上违背了“单一职责原则”。单例模式中没有抽象层，所以单例类的扩展有很大的困难。不能过多创建单例，因为单例从创建到程序关闭前会一直存在，过多的单例会影响性能，浪费系统资源。
-
-（2）观察者（KVO）:它提供了观察某一属性变化的方法。当指定对象的属性发生改变后，它会自动通知相应的观察者。
-
-优点：能提供被观察者属性的新值与旧值。用keypaths来观察属性，因此也可以观察嵌套对象。 
-
-缺点：需要注册观察者，实现observeValueForKeyPath:方法，属性必须通过KVC的方法来修改。否则观察者收不到通知。
-
-（3）代理：可以实现类与类之间一对一的通信。
-
-优点：代理协议方法都有清晰的定义。代理方法可以设置可选或必须实现。
-
-缺点：需要定义协议方法，需要设置代理对象，代理对象实现协议方法。内存管理方面，需要注意循环引用问题。
-
-**2、代理模式能否实现一对多的通信？**
-
-可以，采用多播委托的方式来实现。多播委托：它是指允许创建方法的调用列表或者链表的能力。当多播委托被调用时，列表中的方法均自动执行。
-
-普通代理只能是一对一的回调，无法做到一对多的回调，而多播委托正式对delegate的一种扩展与延伸，多了一个注册和取消的过程。任何需要回调的对象都必须先注册。
-
-**3、	重复注册通知会有问题吗？**
-
-不会出现问题，若多次发送同一通知，对方就会多次响应。如果重复注册通知，也会有多次响应的效果。为了避免重复注册通知而造成的错误，建议每次注册一个通知前，可以移除一次该通知。
-
-
-**4、项目中是否用过多线程编程？简述你常用的多线程实现方式？**
-
-常用的是GCD。
-
-
-GCD是苹果开发中一个多核编程的解决方案。GCD的队列分为两种类型，SerialDispatchQueue与ConcurrentDispatchQueue。系统默认提供了一个dispatch_get_main_queue，一个dispatch_get_global_queue。
-
-
-**5、简述NSOperationQueue与GCD的区别。**
-
-(1)	GCD是底层的C语言构成的API。NSOperationQueue及相关对象是Objc对象。在GCD中，在队列中执行的是由block构成的任务，这是一个轻量级的数据结构。而Operation作为一个对象，为我们提供了更多的选择。
-
-(2)	在NSOperationQueue中，我们可以取消任务，而GCD没法停止已经加入queue的block。
-
-(3)	NSOperation能够方便的设置依赖关系。还能设置NSOperation的priority优先级，能够使同一个并行队列中的任务区分先后地执行。在GCD中，我们只能区分不同任务队列的优先级，如果要区分block任务优先级也需要大量复杂代码。NSOperation还可以设置并发数。
-
-**6、实现多线程有哪几种方式？**
-
-（1）NSThread:detachNewThreadSelector:
-
-（2）继承NSOperation
-
-（3）GCD：dispatch_async
-
-（4）NSObject：performSelectorInBackground:
-
-
-**7、KVC、KVO是什么？简述KVO的实现原理。KVO能否监听数组？如何实现？**
-
-KVC:键值编码，它是一种间接访问对象实例变量机制，可以不通过存取方法访问对象的实例变量。
-
-KVO:键值观察，它可以使对象获取其他对象属性变化的通知机制。
-
-键值编码和键值观察是根据isa-swizzling技术来实现的，主要依据runtime的强大动态能力。当给某个对象第一次添加KVO监听的时候，运行时会动态的创建一个被监听对象的派生类，然后重写KVO需要监听属性值对应的setter方法，在这个setter方法中实现了通知机制。最后将被监听对象的isa指向动态创建的派生类。这样当使用KVC修改属性值时，就会调用动态创建的派生类中对应的setter方法，触发通知机制，从而实现了KVO了。KVO可以监听数组。
-
-实现 NSMutableArray 的增删改操作遵从 KVC 的规则，需要实现其对应方法:
-
-增操作 -insertObject:in<Key>AtIndex: 或者 -insert<Key>:atIndexes:
-
-删操作 -removeObjectFrom<Key>AtIndex: 或者 -remove<Key>AtIndexes:
-
-改操作 -replaceObjectIn<Key>AtIndex:withObject: 或者 -replace<Key>AtIndexes:with<Key>:
-
-并将这些接口暴露给调用者，在对数组进行操作时需使用上述实现的接口。
-
-
-**8、简单说下C++，JAVA，Objective-C这几种语言有什么区别？**
-
-Objective-C与JAVA都是单继承语言，C++是多继承语言。
-
-Objective-C不支持命名空间机制，通过类名前面加前缀NS来区分。
-
-Objective-C与JAVA不支持运算符重载。
-
-Objective-C协议可选实现，JAVA的接口必须实现。
-
-
-**9、数组添加nil元素有问题吗？字典object与key可以设置为nil吗？**
-
-会有问题，数组中添加nil元素，程序会崩溃！报object cannot be nil错误。字典的key不能为nil，否则会造成崩溃。字典的object也不能为nil。
-
-**10、oc中向一个nil对象发送消息会出现问题吗？**
-
-不会出现问题，因为objc是动态语言，每个方法在运行时会被动态转为消息发送。即：objc_msgSend(receiver，selector)。objc在向一个对象发送消息时，runtime库会根据对象的isa指针找到该对象实际所属的类，然后在该类中的方法列表以及其父类方法列表中寻找方法运行，然后在发送消息的时候，objc_msgSend方法不会返回值，所谓的返回内容都是具体调用时执行的。 那么，回到本题，如果向一个nil对象发送消息，首先在寻找对象的isa指针时就是0地址返回了，所以不会出现任何错误。
-
-
-**11、可变数组是线程安全的吗？什么情况下不安全？可以加锁吗？它锁住的是添加元素操作还是数组对象？**
-
-可变数组不是线程安全的，在异步读取数据的情况下是不安全的。可以加锁，锁住的是数组。
-
-
-**12、数组能添加一个block吗？数组添加一个block之后再取出来，这个block还有用吗？**
-
-可以，还有用，它只是多retain了一次
-
-
-**13、NSMutableDictionary中的setObject:forKey:与setValue:forKey:方法有什么区别?**
-
-setObject:forkey:中value是不能够为nil的，不然会报错。
-
-setValue:forKey:中的value能够为nil，但是当value为nil的时候，会自动调用removeObject:forKey方法。
-
-setValue:forKey:中的key的参数只能是NSString类型，而setObject:forKey是可以任何类型。
-
-
-**14、简述copy与mutablecopy的区别。**
-
-
-（1）非容器对象：
-
-对不可变对象：copy是指针复制（浅拷贝）， mutableCopy是对象复制（深拷贝）。对可变对象：copy和mutableCopy都是对象复制。
-
-（2）容器对象：
-
-对不可变对象：copy是指针复制，mutableCopy是对象复制。
-
-对可变对象：copy和mutableCopy都是对象复制，只是返回的对象类型不一样，前者返回的是不可变对象，后者返回的是可变对象。
-
-容器对象复制仅限于对象本身，对象元素仍然是指针复制。
-
-
-**15、简述weak与assign的区别。**
-
-weak用来修饰对象，不能修饰基本数据类型。assign一般用来修饰基本数据类型。weak修饰对象，在对象释放之后会把对象置为nil。
-
-
-**16、ARC下，不显示指定任何属性关键字时，默认的关键字有哪些？**
-
-基本数据类型默认修饰关键字：atomic,readwrite,assign
-
-普通的OC对象默认修饰关键字：atomic,readwrite,strong
-
-
-**17、weak在什么时候置空？**
-
-
-runtime 对注册的类， 会进行布局，对于 weak 对象会放入一个 hash 表中。 用 weak 指向的对象内存地址作为 key，当此对象的引用计数为0的时候会 dealloc，假如 weak 指向的对象内存地址是a，那么就会以a为键， 在这个 weak 表中搜索，找到所有以a为键的 weak 对象，从而设置为 nil。
-
-我们可以设计一个函数（伪代码）来表示上述机制：
-
-objc_storeWeak(&a, b)函数：
-
-objc_storeWeak函数把第二个参数--赋值对象（b）的内存地址作为键值key，将第一个参数--weak修饰的属性变量（a）的内存地址（&a）作为value，注册到 weak 表中。如果第二个参数（b）为0（nil），那么把变量（a）的内存地址（&a）从weak表中删除，你可以把objc_storeWeak(&a, b)理解为：objc_storeWeak(value, key)，并且当key变nil，将value置nil。
-
-在b非nil时，a和b指向同一个内存地址，在b变nil时，a变nil。此时向a发送消息不会崩溃：在Objective-C中向nil发送消息是安全的。
-
-而如果a是由assign修饰的，则： 在b非nil时，a和b指向同一个内存地址，在b变nil时，a还是指向该内存地址，变野指针。此时向a发送消息极易崩溃。
-
-下面我们将基于objc_storeWeak(&a, b)函数，使用伪代码模拟“runtime如何实现weak属性”：
-
-// 使用伪代码模拟：runtime如何实现weak属性id obj1;objc_initWeak(&obj1, obj);/*obj引用计数变为0，变量作用域结束*/objc_destroyWeak(&obj1);
-
-下面对用到的两个方法objc_initWeak和objc_destroyWeak做下解释：
-
-总体说来，作用是： 通过objc_initWeak函数初始化“附有weak修饰符的变量（obj1）”，在变量作用域结束时通过objc_destoryWeak函数释放该变量（obj1）。
-
-下面分别介绍下方法的内部实现：
-
-objc_initWeak函数的实现是这样的：在将“附有weak修饰符的变量（obj1）”初始化为0（nil）后，会将“赋值对象”（obj）作为参数，调用objc_storeWeak函数。obj1 = 0；obj_storeWeak(&obj1, obj);
-
-也就是说：weak 修饰的指针默认值是 nil （在Objective-C中向nil发送消息是安全的）然后obj_destroyWeak函数将0（nil）作为参数，调用objc_storeWeak函数。objc_storeWeak(&obj1, 0);前面的源代码与下列源代码相同。
-
-// 使用伪代码模拟：runtime如何实现weak属性id obj1;obj1 = 0;objc_storeWeak(&obj1, obj);/* ... obj的引用计数变为0，被置nil ... */objc_storeWeak(&obj1, 0);
-
-objc_storeWeak函数把第二个参数--赋值对象（obj）的内存地址作为键值，将第一个参数--weak修饰的属性变量（obj1）的内存地址注册到 weak 表中。如果第二个参数（obj）为0（nil），那么把变量（obj1）的地址从weak表中删除，在后面的相关一题会详解。
-
-以上内容总结如下：
-
-（1）从weak表中获取废弃对象的地址为键值的记录
-
-（2）将包含在记录中的所有附有__weak修饰符变量的地址，赋值为nil
-
-（3）从weak表中删除该记录
-
-（4）从引用计数表中删除废弃对象的地址为键值的记录。
-
-
-**18、自动释放池用过吗？它是什么时候释放？什么情况下对象会被加入到自动释放池，它会加入到哪个自动释放池?**
-
-
-主线程默认开启runloop,同时runloop会自动创建一个autoreleasepool，autorelease对象会自动被加入autoreleasepool中，一次runloop后清空自动释放池。用__autoreleasing修饰符修饰，或类方法创建会自动加入autoreleasepool。它会加入到最近的autoreleasepool中。
-
-
-**19、你知道iOS中有哪些数据持久化方式吗？请简要加以说明。**
-
-iOS中数据持久化方式有：SQLite3数据库，CoreData，文件归档，属性列表（plist文件写入）。
-
-属性列表：涉及的主要类是NSUserDefaults，存储小量的数据。
-
-文件归档：对象必须实现NSCoding协议。实现initWithCoder:方法与encodeWithCoder方法。同时也建议实现NSCopying协议。
-
-SQLite3数据库:SQLite是一个开源的嵌入式关系数据库。可移植性好，容易使用，需要内存开销小。适合嵌入式设备。
-
-CoreData：它可以使用SQLite保存数据，而且不需要写SQL语句。另外它还可以使用XML方式保存数据。要使用CoreData，需要在Xcode中的数据模型编辑器中设计好各个实体以及定义好他们的属性和关系。通过操作这些对象来完成数据的持久化。
-
-**20、fmdb中支持多线程吗？它是如何实现的！**
-
-支持多线程。它里面有个FMDatabaseQueue类。它看似是一个队列，实际上它本身并不是，它继承NSObject，通过内部创建一个Serial的dipatch_queue_t来处理inDatabase和inTransaction传入的Block，所以当我们在主线程（或者后台）调用inDatabase或者inTransaction时，代码实际上是同步的。FMDatabaseQueue如此设计的目的是为了避免并发访问数据库的线程安全问题，所有的数据库访问都是同步执行，比@synchronized与NSLock效率高。
-
-
-**21、简述category与extension的区别。Category与extension加载的时机。**
-
-category中只能增加方法，不可添加实例变量（可添加属性）。extension不仅可以增加方法，还可以增加实例变量或属性（私有的）。extension不能像category一样有独立的实现部分。category是运行时决定的。extension是编译期决定的。
-
-
-**22、category的方法能被子类继承吗？它覆盖原有类的方法后，原有类的方法还能调用吗？如果能，你说明理由。**
-
-category的方法可以被子类继承。category并不是绝对的覆盖了类的同名方法，而是category的方法排在了类的同名方法之前，方法的检索方式是顺序检索，所以在调用方法时，调用到的同名方法是category，从而产生了覆盖。利用运行时遍历方法列表，可以调用被category覆盖的方法。
-
-
-**23、	扩展一个类的方式用继承好还是category好？请说明理由。**
-
-用类目好。因为继承还需要定义子类。类目不需要通过创建子类来增加现有类的方法。用category去重写一个类的方法，仅仅只对本category有效，不会影响到其他类与原有类的关系。
-
-
-**24、	block有几种类型？block的实现？**
-
-block分为三种类型:
-
-_NSConcreteGlobalBlock
-
-_NSConcreteStackBlock
-
-_NSConcreteMallocBlock
-
-block：匿名函数
-
-
-**25、	Swift用的多吗？简单的说说1.0与2.0的区别。**
-
-swift2.0新增:guard语句，异常处理，协议扩展，打印语句改变，avaliable检查，do-while语句重命名：repeat-while，defer关键字
-
-
-**26、	在Swift用有没有用过defer关键字？**
-
-对defer语句进行的延迟，函数结束时调用。
-
-
-**27、	SDWebImage的图片保存在什么位置？**
-
-图片保存在沙盒中的library/caches文件夹下。
-
-
-**28、	Objective-C中类目为什么不能添加实例变量？**
-
-因为在运行时，对象的内存布局已经确定，如果添加实例变量会破坏类的内部布局。
-
-
-**29、	Objective-C中的协议默认是@optional还是@require？在使用协议的时候应当注意哪些问题？**
-
-Objective-C中的协议默是必须实现的@require，使用协议的时候应当注意循环引用问题，多个协议之间采用逗号分隔。
-
-
-**30、	Objective-C的协议与JAVA中的接口有什么区别？**
-OC中的协议可选实现，JAVA中的接口必须实现。
-
-**31、	类目的应用场景有哪些？**
-
-（1）可以把类的实现分开在几个不同的文件里面
-
-（2）声明私有方法
-
-（3）模拟多继承
-
-（4）把Framework的私有方法公开
-
-
-**32、	self与super的区别？**
-
-super本质上是一个编译器标示符，它和self指向的是同一个消息接受者，两者不同在于：super会告诉编译器，调用class这个方法时，要去父类方法，而不是本类方法。
-**33、	图片缓存为什么不保存到沙盒下的tmp文件目录中？**
-
-因为tmp文件夹是用来存放临时文件，iTunes不会备份和恢复此目录，此目录下文件可能会在应用退出后删除。
-
-
-**34、	NSURLConnection与NSURLSession。**
-NSURLConnection它是CoreFoundation/CFNetwork框架的API之上的一个抽象。
-
-NSURLConnection这个名字实际指代Foundation框架的URL加载系统中一系列有关联的组件：NSURLRequest、NSURLResponse、NSURLProtocol、NSURLCache、NSHTTPCookieStorage、NSURLCredentialStorage以及同名类NSURLConnection。NSURLRequest 被传递给 NSURLConnection。被委托对象（遵守以前的非正式协议 <NSURLConnectionDelegate> 和 <NSURLConnectionDataDelegate>）异步地返回一个 NSURLResponse 以及包含服务器返回信息的 NSData。
-
-NSURLSession包括：NSURLRequest、NSURLCache、NSURLSession、NSURLSessionConfiguration、NSURLSessionDataTask、NSURLSessionUploadTask、NSURLSessionDownloadTask。它与NSURLConnection的区别在于：NSURLSession最直接的改进就是可以配置每个Session的缓存，协议，cookie以及正式策略。甚至跨程序共享这些信息。每个NSURLSession对象都由一个NSURLSessionConfiguration对象来进行初始化。session task：负责处理数据的加载以及文件和数据在客户端与服务器之间的上次和下载。
-
-
-**35、	简述ARC与MRC的区别。**
-
-ARC:自动引用计数。MRC：手动引用计数。ARC是把内存交给系统管理。系统会在编译的时候自动插入retain/release。MRC则需要手动管理对象的引用计数。当你alloc,new,copy,mutablecopy或者retain一个对象时，你就有义务向它发送一条release或autorelease消息。
-
-**36、	简述ARC的实现原理。它在什么时机插入retain/release？**
-
-ARC：自动引用计数。它会在对象创建或者消亡的时候自动插入retain/release。达到自动管理内存的目的。
-
-**37、	Framework与Library的区别？动态库与静态库的区别？**
-library与Framework的区别：
-
-在iOS中，Library 仅能包含编译后的代码，即 .a 文件。但一般来说，一个完整的模块不仅有代码，还可能包含.h 头文修的、.nib 视图文件、图片资源文件、说明文档。（像 UMeng 提供的那些库，集成时，要把一堆的文件拖到Xcode中，配置起来真不是省心的事。Framework 作为 Cocoa/Cocoa Touch 中使用的一种资源打包方式，可以上述文件等集中打包在一起，方便开发者使用（就像Bundle）。
-
-静态库与动态库的区别：
-
-简单的说，静态链接库是指模块被编译合并到应用中，应用程序本身比较大，但不再需要依赖第三方库。运行多个含有该库的应用时，就会有多个该库的Copy在内存中，冗余。动态库可以分开发布，在运行时查找并载入到内存，如果有通用的库，可以共用，节省空间和内存。同时库也可以直接单独升级，或作为插件发布。
-
-
-**38、	什么是runloop？**
-
-一般来说，一个线程一次只能执行一个任务，执行完成后线程就会退出，如果我们需要一个机制，让线程能随时处理事件但并不退出。代码逻辑如下：
-
-
-```
-function loop() {		initialize();		do {	var message = get_next_message();	process_message(message);} while(message != quit)}
-
-```
-
-这种模型我们通常称之为EventLoop（事件循环）。RunLoop实际上是一个对象，这个对象管理了其需要处理的事件和消息。并提供了一个入口函数来执行上面EventLoop逻辑。在OSX/iOS系统中，提供了两个这样的对象：NSRunLoop和CFRunLoopRef。
-
-CFRunLoopRef是在CoreFoundation框架内，它提供了纯C函数的API,所有这些API都是线程安全的。
-
-NSRunLoop是基于CFRunLoopRef的封装，提供了面向对象的API，这些API不是线程安全的。
-
-苹果不允许直接创建RunLoop，只提供了两个自动获取的函数：CFRunLoopGetMain()和CFRunLoopGetCurrent()。
-
-线程和RunLoop之间是一一对应的。
-
-
-**39、#include与#import的区别？#import与@class的区别？**
-
-"#include"与"#import"功能一样，都是导出头文件。只是#import不会引起交叉编译，可以确保头文件只导入一次。#import会包含这个类的所有信息。包括实例变量和方法，而@class只是告诉编译器，它后面声明的名称是类的名称，至于类的定义，后面会告诉你。使用#import编译效率高，可以防止相互包含的编译错误。
-
-
-**40、Static与const的区别？**
-const表示只读的意思，只在声明中使用。
-
-static一般有2个作用，规定作用域和存储方法。对于局部变量，static规定其为静态存储区，每次调用的初始值为上一次调用的值，调用结束后存储空间不释放。
-
-对于全局变量，如果以文件划分作用域的话，此变量只在当前文件可见，对于static函数也是在当前模块内函数可见。
-
-
-**41、简述GET请求与POST请求的区别。**
-
-(1)POST 需要明确制定方法 GET不需要 ，并且默认就是GET方法，并且GET有缓存，POST没有缓存
-
-(2)GET的参数放在URL的后面,并且第一个参数用?拼接,后面的从第二个参数开始,直到最后一个,如果有多个,用&分割;POST 的参数放在请求体里面,并且第一个参数,不用,后面从第二开始,直到最后,如果有多个,用&分割;
-
-(3)GET 一般用于获取数据，POST向服务器提交数据用到
-
-(4)GET的参数是暴漏在地址栏的,不安全;POST的参数隐藏在请求体里面,相对安全一点;
-
-(5)GET请求没有请求体，POST请求有请求体。	
-
-(6)GET请求提交数据受浏览器限制，1k，POST请求理论上无限制。
-
-**42、属性用__block修饰时在内存中会发生什么变化？**
-
-为什么在block外面用weak修饰属性来打破循环，在block还需要把属性转换成strong。
-
-
-**43、谈谈block与函数的区别。**
-
-block可以写在方法里面，函数需要写在方法外面。block可以访问方法中的局部变量。
-
-
-**44、你了解runloop吗？它有几种模式？简要的说下它的应用场景。**
-
-runloop模式：
-
-Default：
-
-NSDefaultRunLoopMode(Cocoa)、kCFRunLoopDefaultMode(CoreFoundation)
-
-
-Connection：
-
-NSConnectionReplyMode
-
-Modal：
-
-NSModalPanelRunLoopMode
-
-Event tracking:
-
-NSEventTrackingRunLoopMode
-
-Common modes:
-
-
-NSRunLoopCommonModes(Cocoa)、kCFRunLoopCommonModes(CoreFoundation)
-
-应用场景：
-
-（1）使用端口或自定义输入源与其他线程通信。
-
-（2）在线程中使用计时器
-
-（3）使用任意的performSelector方法
-
-（4）保持线程去执行一个周期任务。
-
-**45、你工作中用到的版本管理工具是什么？**
-
-用的是git工具来进行版本管理。
-
-
-**46、你用过git工具吗？用过哪些常见的命令？**
-
-git init，git add, git commit，git merge，git branch，git checkout，git pull，git push等
-
-
-**47、CoreAnimation常用的动画有哪些类型？**
-
-所有的核心动画的动画类都从CAAnimation类继承而来。CAAnimationGroup组动画，CATransition转场动画，CABasicAnimation:基础动画，CAKeyframeAnimation关键帧动画。
-
-
-**48、GCD中系统提供了几种queue？**
-
-两种：DispatchSerialQueue、DispatchConcurrentQueue。
-
-
-**49、二叉搜索树的概念及时间复杂度是多少？**
-
-O(n)
-
-
-**50、block中的weak self，是任何时候都需要加的么？**
-
-不一定，可加可不加。将block置nil也可以打破循环引用。
-
-
-**51、GCD的queue，main queue中执行的代码，一定是在main thread么？**
-
-
-是的。一定是在main thread。
-
-
-**52、你在使用数据库的过程中有没有遇到过问题？如何解决？**
-
-遇到过多线程操作数据库读写死锁问题，采用fmdb中提供的回滚的方式解决
-
-**53、简述iOS中的沙盒机制。**
-
-iOS中的沙盒机制是一种安全体系，它规定了应用程序只能在为该应用创建的文件夹读取文件，不可以访问其他地方的内容。所有非代码文件都保存在这个地方。如图片，声音，属性列表及文本文件等。
-
-（1）每个应用程序都在自己的沙盒内
-
-（2）不能随意跨越自己的沙盒去访问别的应用程序沙盒的内容
-
-（3）应用程序向外请求或者接收数据都需要经过权限认证。
-
-沙盒目录结构这种，因为应用是在沙箱（sandbox）中的，在文件读写权限上受到限制，只能在几个目录下读写文件：
-
-Documents：应用中用户数据可以放在这里，iTunes备份和恢复的时候会包括此目录
-
-tmp：存放临时文件，iTunes不会备份和恢复此目录，此目录下文件可能会在应用退出后删除
-
-
-Library：存储程序的默认设置或其他状态信息。
-
-Library/Caches：存放缓存文件，iTunes不会备份此目录，此目录下文件不会在应用退出删除
-
-
-**54、字符串为什么要用copy修饰？**
-
-是为了防止mutablestring被无意中修改，NSMutableString是NSString的子类。因此NSString指针可以持有NSMutableString对象。
-
-**55、nonatomic与atomic有什么区别？**
-
-atomic是Objective-C使用的一种线程保护技术，它是为了防止写操作在未完成的时候被另外一个线程读取。从而造成数据错误。这种机制是非常耗费系统资源的，所以在iphone这种小的移动设备上，如果没有使用多线程间的通讯编程。建议使用nonatomic。
-
-默认的访问器是原子操作，就是说在多线程环境下，解析的访问器提供一个对属性安全访问，从获取器得到的返回值或者通过设置器设置的值可以一次完成，即便是多线程也在对其进行访问，如果不指定nonatomic ，在自己管理内存的环境中，解析的访问器保留并自动释放保留的值，如果是指定了nonatomic，访问器只是简单的返回一个值。
-
-
-**56、@synthesize与@dynamic的区别？**
-
-@synthesize：如果你没有手动实现setter方法和getter方法，编译器会自动为帮你生成setter方法和getter方法。
-
-@dynamic：告诉编译器属性的setter和getter方法由用户自己实现，不自动生成。如果一个属性声明为@dynamic var，又没有提供setter和getter方法，编译的时候不会有问题，如果程序中运行到person.name = newName;或newName=person.name时候就会导致程序崩溃。因为”unrecognized selector sent to instance …”这就是动态绑定。
-
-
-**57、@property(copy)NSMutableArray *array;这句代码有什么问题？如果有请简述原因；**
-
-（1）添加、删除、修改数组内的元素的时候，程序会因为找不到对应的方法而崩溃，因为copy就是复制一个不可变的NSArray对象。
-
-（2）没有使用nonatomic属性修饰符，默认是 atomic修饰，这样会严重影响性能。
-
-
-**58、NSString *str = @“hello world!”与NSString *str =  [[NSString alloc] initWithString:@"hello world!”];在内存管理上有什么区别？**
-
-在MRC中，前者表示，你不持有这个对象，所以不需要手动管理其内存。后者意味着你持有这个字符串，需要自己手动管理内存，对其进行释放。
-
-
-**59、对于语句NSString*obj = [[NSData alloc] init]; obj在编译时和运行时分别是什么类型的对象?**
-
-编译时是NSString类型对象，运行时时NSData类型对象首先，声明NSString*testObject是告诉编译器,obj是一个指向某个Objective-C对象的指针，因为不管指向的是什么类型的对象，一个指针所占的内存空间都是固定的，所以这里声明称任何类型的对象，最终生成的可执行代码都是没有区别的。这里限定了NSString只不过是告诉编译器，请把obj当做一个NSString来检查，如果后面调用了非NSString的方法，会产生警告，接着，你创建了一个NSData对象，然后把这个对象所在的内存地址保存在obj里。那么运行时，obj指向的内存空间就是一个NSData对象。你可以把obj当做一个NSData对象来用。
-
-**60、self.name=object与name=object在内存管理上有什么区别？**
-
-前者通过调用setter方法设置值，后者是普通的赋值操作。
-
-
-**61、为什么property声明中只有”copy”特性而没有“mutableCopy”特性？**
-
-这是由于当声明property为"copy"特性时，系统会自动根据receiver的特点决定使用copy（已含retain的情况）还是mutableCopy。
-
-
-**62、Objective-C中id与void*有什么区别？id与instancetype有什么区别？nil、null、NULL三者有什么区别？**
-
-Objective-C中id与void*区别：
-
-id是指向OC类对象的指针，它可以声明为任何类对象的指针，当在OC中使用id时，编译器会假定你知道，id指向哪个类的对象。与void*不同，void*编译器不知道也不假定指向任何类型的指针。
-
-id与instancetype区别：
-
-id返回的是id类型，instancetype返回的是所在类的类型。
-
-相同点是同样都是作为方法的返回类型。
-
-区别：
-
-(1)	instancetype可以返回和方法所在类相同类型的对象，id只能返回未知类型的对象。
-
-(2)	instancetype只能作为返回值，id可以作为参数。
-
-nil、Nil、NULL三者区别：
-
-nil是一个指向不存在的对象指针（对象空指针）。Nil是指向不存在的类指针（类空指针）。NULL指向其他类型的空指针。NSNull在集合对象中，表示空值的对象。
-
-
-**63、数据解析方式有几种？他们有什么区别？你项目中采用的是哪种数据解析方式？**
-
-JSON和XML。
-
-
-**64、用预处理指令#define声明一个常数，用以表明1年中有多少秒（忽略闰年问题）**
-
-“#define SECONDS_PER_YEAR(60*60*24*365)UL”
-
-**65、写一个”标准"宏MIN ，这个宏输入两个参数并返回较小的一个。**
-
-“#define MIN(X,Y) ((X)>(Y)?(X):(Y))”
-
-
-**66、+load和+initialize 的区别是什么？**
-
-+initialize:第一次初始化这个类之前被调用，我们用它来初始化静态变量。
-
-+load方法会在加载类的时候就被调用，也就是iOS应用启动的时候，就会加载所有的类。
-
-+initialize方法类似一个懒加载，如果没有使用这个类，系统默认不会去调用这个方法，且默认只加载一次。
-
-如果是在类别中，+load方法会全都执行，但是类别中的load方法会后于类中的方法，+initialize方法会覆盖类中的方法，只执行一个。
-
-+initialize的调用发生在+init方法之前。子类会去调用父类的+initialize方法。
-
-
-**67、new和alloc/init的区别**
-
-概括来说，new和alloc/init在功能上几乎是一致的，分配内存并完成初始化。差别在于，采用new的方式只能采用默认的init方法完成初始化。而采用alloc的方式可以用其他定制的初始化方法。
-
-
-**68、如果让你设计接口与API，应该注意点什么？**
-
-（1）用前缀避免命名空间冲突
-
-（2）提供“全能初始化方法”
-
-（3）实现description方法
-
-（4）尽量使用不可变对象
-
-（5）使用清晰而协调的命名方法
-
-（6）为私有方法名加前缀
-
-（7）错误处理
-
-（8）实现NSCopying协议。
-
-
-**69、你在项目中用过懒加载吗？能简单的说说懒加载吗？**
-
-懒加载又称为延迟加载。写的是其get方法。如果是懒加载的话则一定要注意先判断是否已经有了，如果没有那么再去进行实例化。
-
-好处是不必将创建对象的代码全部写在viewDidLoad方法中，代码的可读性更强。每个控件的getter方法中分别负责各自的实例化处理，代码彼此之间的独立性强，松耦合。
-
-
-**70、进程和线程的区别与联系。**
-
-进程是个静态的容器，里面容纳了很多个线程，线程是一系列方法的线性执行路径。
-
-
-**71、简述内存分区情况。**
-
-栈区：存放函数的参数值，局部变量的值等。由编译器自动分配释放
-
-堆区：由程序员分配释放。程序员如果不释放，则程序结束时可能由系统回收
-
-全局区：全局变量和静态变量是存储在一块的。初始化的全局变量和静态变量在一块区域，未初始化的全局变量和未初始化的静态变量在另一块区域。程序结束后由系统释放。全局区可分为未初始化全局区：.bbs段和初始化全局区：data段。
-
-常量区：存放常量字符串，程序结束后由系统释放
-
-代码区：存放函数体的二进制代码。
-
-**72、队列与栈有什么区别?**
-
-栈：限定仅在表尾进行插入或删除操作的线性表。表尾是栈顶，表头是栈底。它又称后进先出线性表。
-
-队列：是一种先进先出的线性表。它只允许在表的一端进行插入，而在另一端删除元素。
-
-
-**73、Objective-C中多线程的编程方式有几种**
-
-pthread、NSThread、NSOperation、GCD。
-
-**74、Objective-C运行时（runtime）机制了解吗？简单的说说对象调用方法的过程。**
-
-对象调用方法的过程：(<a href="http://tech.glowing.com/cn/objective-c-runtime/">Objective-C Runtime</a>)
-
-（1）在对象类的dispatch table中尝试找到该消息。如果找到了，跳到相应的函数IMP去执行实现代码
-
-（2）如果没有找到，Runtime会发送+resolveInstanceMethod: 或者 +resolveClassMethod: 尝试去resolve这个消息
-
-（3）如果resolve方法返回NO，Runtime就发送 -forwardingTargetForSelector: 允许你把这个消息转发给另一个对象；
-
-（4）如果没有新的目标对象返回，Runtime 就会发送 -methodSignatureForSelector: 和 -forwardInvocation: 消息。你可以发送 -invokeWithTarget: 消息来手动转发消息或者发送 -doesNotRecognizeSelector: 抛出异常。
-
-
-
-**参考资料如下：**
-
-
-（1）<a href="https://github.com/ChenYilong/iOSInterviewQuestions/blob/master/01《招聘一个靠谱的iOS》面试题参考答案/《招聘一个靠谱的iOS》面试题参考答案（上）.md" target="_blank">《招聘一个靠谱的 iOS》—参考答案（上）</a>
-
-
-（2）<a href="https://github.com/ChenYilong/iOSInterviewQuestions/blob/master/01《招聘一个靠谱的iOS》面试题参考答案/《招聘一个靠谱的iOS》面试题参考答案（下）.md" target="_blank">《招聘一个靠谱的 iOS》—参考答案（下）</a>
-
-
-**本文内容中部分来自网络，后续会持续更新完善。欢迎一起学习交流！**
-
-**如需转载，请注明出处**
-
-

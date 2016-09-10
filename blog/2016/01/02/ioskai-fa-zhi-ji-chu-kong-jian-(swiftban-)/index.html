@@ -1,0 +1,876 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>iOS开发之基础控件（Swift版） - 杨社兵的技术博客</title>
+  <meta name="author" content="杨社兵">
+
+  
+  <meta name="description" content="iOS开发中常见基础控件的编写（Swift版）">
+  <meta name="keywords" content="iOS开发, 基础控件, Swift">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://yangshebing.github.io/blog/2016/01/02/ioskai-fa-zhi-ji-chu-kong-jian-(swiftban-)/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="杨社兵的技术博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="http://cdn.staticfile.org/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">杨社兵的技术博客</a></h1>
+  
+    <h2>业精于勤荒于嬉，行成于思毁于随.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="yangshebing.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">我的博客</a></li>
+  <li><a href="/blog/archives">所有文章</a></li>
+  <li><a href="http://weibo.com/yangshebing" target="_blank">新浪微博</a></li>
+  <li><a href="/about">关于我</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">iOS开发之基础控件（Swift版）</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-01-02T11:08:19+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2016</span></span> <span class='time'>11:08 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>  1、文本（UILabel）：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  let titleLabel = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
+</span><span class='line'>        //设置titleLabel的文本对齐方式：左：.Left, 中:.Center, 右:.Right
+</span><span class='line'>        titleLabel.textAlignment = .Center
+</span><span class='line'>        //设置titleLabel的文本颜色
+</span><span class='line'>        titleLabel.textColor = UIColor.lightGrayColor()
+</span><span class='line'>        //设置titleLabel文字的字体为系统字体，大小为15
+</span><span class='line'>        titleLabel.font = UIFont.systemFontOfSize(15)
+</span><span class='line'>        //设置titleLabel文字的字体为"Helvetica", 大小为15
+</span><span class='line'>        titleLabel.font = UIFont(name: "Helvetica", size: 15)
+</span><span class='line'>        titleLabel.text = "心灵鸡汤，每天一起干"
+</span><span class='line'>        //titleLabel字体大小自适应宽度，根据指定宽度titleLabel自动调整字体显示大小
+</span><span class='line'>        titleLabel.adjustsFontSizeToFitWidth = true
+</span><span class='line'>        //指定titleLabel的显示行数，0代表自动折行
+</span><span class='line'>        titleLabel.numberOfLines = 1
+</span><span class='line'>        //获取系统所有字体名称
+</span><span class='line'>        let fontFamily = UIFont.familyNames()
+</span><span class='line'>        print(fontFamily)
+</span><span class='line'>        view.addSubview(titleLabel)</span></code></pre></td></tr></table></div></figure>
+
+
+<!--more-->
+
+
+<p>2、按钮（UIButton）：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>//按钮类型：常见的两种如下
+</span><span class='line'>         /**
+</span><span class='line'>         *.Custom:自定义类型
+</span><span class='line'>         *.System:系统类型（iOS7.0）
+</span><span class='line'>         **/
+</span><span class='line'>        let followButton = UIButton(type: .Custom)
+</span><span class='line'>        followButton.frame = CGRectMake(100, 100, 100, 50)
+</span><span class='line'>        //设置按钮在特定状态下的文本显示，常见的有：
+</span><span class='line'>        /**
+</span><span class='line'>         *.Normal:按钮常规显示状态
+</span><span class='line'>         *.Selected:按钮选中显示状态
+</span><span class='line'>         *.Highlighted:按钮高亮显示状态
+</span><span class='line'>         *.Disabled:按钮关闭状态显示
+</span><span class='line'>        **/
+</span><span class='line'>        followButton.setTitle("关注", forState: .Normal)
+</span><span class='line'>        //设置按钮在特定状态下的文本色值显示
+</span><span class='line'>        followButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+</span><span class='line'>        //设置按钮在特定状态下的图片显示
+</span><span class='line'>        followButton.setImage(UIImage(named: "back"), forState: .Normal)
+</span><span class='line'>        followButton.setImage(UIImage(named: "select"), forState: .Disabled)
+</span><span class='line'>        //设置按钮显示文本的字体大小
+</span><span class='line'>        followButton.titleLabel?.font = UIFont.systemFontOfSize(15)
+</span><span class='line'>        //设置按钮选中状态
+</span><span class='line'>        followButton.selected = true
+</span><span class='line'>        //设置按钮是否打开状态
+</span><span class='line'>        followButton.enabled = true
+</span><span class='line'>        //设置是否响应用户touch事件
+</span><span class='line'>        followButton.userInteractionEnabled = true
+</span><span class='line'>        //设置按钮的背景颜色
+</span><span class='line'>        followButton.backgroundColor = UIColor.grayColor()
+</span><span class='line'>        //关闭按钮处于高亮状态图片变暗显示状态
+</span><span class='line'>        followButton.adjustsImageWhenHighlighted = false
+</span><span class='line'>        //设置按钮图片的内部填充
+</span><span class='line'>        followButton.imageEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
+</span><span class='line'>        //设置按钮文本的内部填充
+</span><span class='line'>        followButton.titleEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
+</span><span class='line'>        //为按钮添加点击事件
+</span><span class='line'>        followButton.addTarget(self, action: "followAction", forControlEvents: .TouchUpInside)
+</span><span class='line'>        view.addSubview(followButton)</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>按钮点击事件响应方法：</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>func followAction(sender: UIButton) {
+</span><span class='line'>    print("关注")
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3、图片展示视图（UIImageView）：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>let imgView = UIImageView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
+</span><span class='line'>        //设置图片视图显示图片
+</span><span class='line'>        imgView.image = UIImage(named: "exam.png")
+</span><span class='line'>        //设置图片视图高亮状态显示图片
+</span><span class='line'>        imgView.highlightedImage = UIImage(named: "exam1.png")
+</span><span class='line'>        //设置图片视图内容展示模式：常见的几种内容展示模式
+</span><span class='line'>        /**
+</span><span class='line'>        *.ScaleToFill:缩放图片填满整个图片视图
+</span><span class='line'>        *.ScaleAspectFit:缩放内容以适应原图尺寸，没有铺满的地方保持透明
+</span><span class='line'>        *.ScaleAspectFill:按钮高亮显示状态
+</span><span class='line'>        **/
+</span><span class='line'>        imgView.contentMode = .ScaleAspectFit
+</span><span class='line'>        //设置图片视图是否高亮显示
+</span><span class='line'>        imgView.highlighted = true
+</span><span class='line'>        //设置是否响应用户touch事件,默认为false
+</span><span class='line'>        imgView.userInteractionEnabled = true
+</span><span class='line'>        //播放一组图片
+</span><span class='line'>        let img1 = UIImage(named: "play1.png")!
+</span><span class='line'>        let img2 = UIImage(named: "play2.png")!
+</span><span class='line'>        let img3 = UIImage(named: "play3.png")!
+</span><span class='line'>        let images = [img1, img2, img3]
+</span><span class='line'>        //设置需要播放的一组图片
+</span><span class='line'>        imgView.animationImages = images
+</span><span class='line'>        //设置播放持续时间
+</span><span class='line'>        imgView.animationDuration = 1
+</span><span class='line'>        //设置播放重复次数
+</span><span class='line'>        imgView.animationRepeatCount = 20
+</span><span class='line'>        //开始播放
+</span><span class='line'>        imgView.startAnimating()
+</span><span class='line'>        //停止播放
+</span><span class='line'>        imgView.stopAnimating()
+</span><span class='line'>        
+</span><span class='line'>        view.addSubview(imgView);</span></code></pre></td></tr></table></div></figure>
+
+
+<p>4、文字输入框（UITextField）：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>let textField = UITextField(frame: CGRectMake(20, 100, 100,30))
+</span><span class='line'>        //设置文本编辑框显示文字
+</span><span class='line'>        textField.text = "将编程进行到底"
+</span><span class='line'>        //设置文本编辑框占位文字
+</span><span class='line'>        textField.placeholder = "客官，你想不想要？"
+</span><span class='line'>        //设置文本编辑框的边框显示类型
+</span><span class='line'>        textField.borderStyle = .RoundedRect
+</span><span class='line'>        //设置文本编辑框的文字字体
+</span><span class='line'>        textField.font = UIFont.systemFontOfSize(15)
+</span><span class='line'>        //设置文本编辑框的文本颜色
+</span><span class='line'>        textField.textColor = UIColor.blackColor()
+</span><span class='line'>        //设置文本编辑框输入文本时首字母是否自动大写
+</span><span class='line'>        textField.autocapitalizationType = .None
+</span><span class='line'>        //设置文本编辑框清除按钮显示模式
+</span><span class='line'>        textField.clearButtonMode = .WhileEditing
+</span><span class='line'>        //设置文本编辑框的文本对齐方式
+</span><span class='line'>        textField.textAlignment = .Center
+</span><span class='line'>        //设置文本编辑框返回键显示类型
+</span><span class='line'>        textField.returnKeyType = .Search
+</span><span class='line'>        //设置是否为安全文本输入状态
+</span><span class='line'>        textField.secureTextEntry = true
+</span><span class='line'>        //设置输入键盘类型
+</span><span class='line'>        textField.keyboardType = .NumberPad
+</span><span class='line'>        //设置文本编辑框的代理
+</span><span class='line'>        textField.delegate = self
+</span><span class='line'>        //唤起键盘，让文本编辑框成为第一响应者
+</span><span class='line'>        textField.becomeFirstResponder()
+</span><span class='line'>        view.addSubview(textField)</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>UITextFiled代理方法（UITextFiledDelegate）:</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>//将要开始编辑代理方法,此方法会在键盘弹出之前调用
+</span><span class='line'>    func textFieldShouldBeginEditing(textField: UITextField) -&gt; Bool {
+</span><span class='line'>        return true
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    //已经开始编辑代理方法，此方法会在键盘弹出之后调用
+</span><span class='line'>    func textFieldDidBeginEditing(textField: UITextField) {
+</span><span class='line'>        print(textField.text)
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    //当return按钮被点击时调用
+</span><span class='line'>    func textFieldShouldReturn(textField: UITextField) -&gt; Bool {
+</span><span class='line'>        //收起键盘，注销文本编辑框为第一响应者
+</span><span class='line'>        textField.resignFirstResponder()
+</span><span class='line'>        return true
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    //将要结束编辑代理方法，此方法会在收起键盘的时候调用
+</span><span class='line'>    func textFieldShouldEndEditing(textField: UITextField) -&gt; Bool {
+</span><span class='line'>        return true
+</span><span class='line'>    }
+</span><span class='line'>    </span></code></pre></td></tr></table></div></figure>
+
+
+<p>5、开关控件（UISwitch）：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>    let sliderControl = UISlider(frame: CGRectMake(30, 200, 100, 30))
+</span><span class='line'>    //设置滑动条控件最大值
+</span><span class='line'>    sliderControl.maximumValue = 10
+</span><span class='line'>    //设置滑动条控件最小值
+</span><span class='line'>    sliderControl.minimumValue = 1
+</span><span class='line'>    //设置滑动条控件初始值
+</span><span class='line'>    sliderControl.value = 5
+</span><span class='line'>    //设置滑动条控件最大值方向颜色显示
+</span><span class='line'>    sliderControl.maximumTrackTintColor = UIColor.redColor()
+</span><span class='line'>    //设置滑动条控件最小值方向颜色显示
+</span><span class='line'>    sliderControl.minimumTrackTintColor = UIColor.brownColor()
+</span><span class='line'>    //设置滑动条控件拖动按钮颜色
+</span><span class='line'>    sliderControl.thumbTintColor = UIColor.blueColor()
+</span><span class='line'>    //设置滑动条控件最大值方向图片显示：正常状态
+</span><span class='line'>    sliderControl.setMaximumTrackImage(UIImage(named: "slidermax.png"), forState: .Normal)
+</span><span class='line'>    //设置滑动条控件最小值方向图片显示：正常状态
+</span><span class='line'>    sliderControl.setMinimumTrackImage(UIImage(named: "slidermin.png"), forState: .Normal)
+</span><span class='line'>    //设置滑动条控件拖动按钮显示图片：正常状态
+</span><span class='line'>    sliderControl.setThumbImage(UIImage(named: "thumb.png"), forState: .Normal)
+</span><span class='line'>    //为滑动条控件添加：值改变触发事件
+</span><span class='line'>    sliderControl.addTarget(self, action: "sliderAction:", forControlEvents: .ValueChanged)
+</span><span class='line'>    view.addSubview(sliderControl)</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>开关值改变事件响应方法：</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>func sliderAction(sliderControl: UISlider) {
+</span><span class='line'>        print("the slider value is \(sliderControl.value)")
+</span><span class='line'>    }</span></code></pre></td></tr></table></div></figure>
+
+
+<p>6、加载指示器视图（UIActivityIndicatorView）：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>let activityControl = UIActivityIndicatorView(frame: CGRectMake(100, 200, 30, 30))
+</span><span class='line'>        //设置加载指示器视图的风格
+</span><span class='line'>        activityControl.activityIndicatorViewStyle = .Gray
+</span><span class='line'>        //设置加载指示器视图的背景颜色
+</span><span class='line'>        activityControl.backgroundColor = UIColor.redColor()
+</span><span class='line'>        //开始动画
+</span><span class='line'>        activityControl.startAnimating()
+</span><span class='line'>        //停止动画
+</span><span class='line'>        activityControl.stopAnimating()
+</span><span class='line'>        view.addSubview(activityControl)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>7、分段控件视图（UISegmentedControl）:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>let items = ["全部", "电影", "新闻", "科技"]
+</span><span class='line'>        let segmentedControl = UISegmentedControl(items: items)
+</span><span class='line'>        segmentedControl.frame = CGRectMake(30, 200, 180, 30)
+</span><span class='line'>        //设置分段控件颜色
+</span><span class='line'>        segmentedControl.tintColor = UIColor.redColor()
+</span><span class='line'>        //设置分段控件默认选中索引
+</span><span class='line'>        segmentedControl.selectedSegmentIndex = 1
+</span><span class='line'>        //为分段控件添加值改变响应事件
+</span><span class='line'>        segmentedControl.addTarget(self, action: "segmentControlAction:", forControlEvents: .ValueChanged)
+</span><span class='line'>        view.addSubview(segmentedControl)</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>分段控件值改变事件响应方法：</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>func segmentControlAction(segmentedControl: UISegmentedControl) {
+</span><span class='line'>        if segmentedControl.selectedSegmentIndex == 0 {
+</span><span class='line'>
+</span><span class='line'>        } else if segmentedControl.selectedSegmentIndex == 1 {
+</span><span class='line'>
+</span><span class='line'>        } else if segmentedControl.selectedSegmentIndex == 2{
+</span><span class='line'>
+</span><span class='line'>        } else {
+</span><span class='line'>
+</span><span class='line'>        }
+</span><span class='line'>       print("the segmented Control selected Index is \(segmentedControl.selectedSegmentIndex)")
+</span><span class='line'>    }</span></code></pre></td></tr></table></div></figure>
+
+
+<p>8、页面控件（UIPageControl）：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>let pageControl = UIPageControl(frame: CGRectMake(30, 200, 180, 30))
+</span><span class='line'>        //设置页面控件的背景颜色
+</span><span class='line'>        pageControl.backgroundColor = UIColor.brownColor()
+</span><span class='line'>        //设置总页数
+</span><span class='line'>        pageControl.numberOfPages = 4
+</span><span class='line'>        //设置当前页数
+</span><span class='line'>        pageControl.currentPage = 1
+</span><span class='line'>        //设置页面控件指示器颜色
+</span><span class='line'>        pageControl.pageIndicatorTintColor = UIColor.redColor()
+</span><span class='line'>        //设置页面控件当前页面指示器颜色
+</span><span class='line'>        pageControl.currentPageIndicatorTintColor = UIColor.blueColor()
+</span><span class='line'>        //添加页面控件点击响应事件
+</span><span class='line'>        pageControl.addTarget(self, action: "changeAction:", forControlEvents: .TouchUpInside)
+</span><span class='line'>        view.addSubview(pageControl)</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>页面控件点击响应事件：</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>func changeAction(pageControl: UIPageControl) {   
+</span><span class='line'>  print("the current select page is :\(pageControl.currentPage)")
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>9、警告视图控制器（UIAlertController）：(UIAlertView 与 UIActionSheet在iOS8.0之后就弃用了，推荐使用UIAlertController)</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>    /**
+</span><span class='line'>     * .Alert
+</span><span class='line'>     * .ActionSheet
+</span><span class='line'>     */
+</span><span class='line'>    let alertCtrl = UIAlertController(title: "提示信息", message: "确定返回吗？", preferredStyle: .Alert)
+</span><span class='line'>    //初始化警告动作
+</span><span class='line'>    let cancelAction = UIAlertAction(title: "取消", style: .Cancel) { (action) -&gt; Void in
+</span><span class='line'>        //...
+</span><span class='line'>        //添加相应处理代码
+</span><span class='line'>        //...
+</span><span class='line'>        //把UIAlertController从父视图控制器中移除，防止内存泄漏
+</span><span class='line'>        alertCtrl.removeFromParentViewController()
+</span><span class='line'>    }
+</span><span class='line'>    let okAction = UIAlertAction(title: "立即返回", style: .Default) { (action) -&gt; Void in
+</span><span class='line'>        //...
+</span><span class='line'>        //添加相应处理代码
+</span><span class='line'>        //...
+</span><span class='line'>        //把UIAlertController从父视图控制器中移除，防止内存泄漏
+</span><span class='line'>        alertCtrl.removeFromParentViewController()
+</span><span class='line'>    }
+</span><span class='line'>    //添加动作
+</span><span class='line'>    alertCtrl.addAction(cancelAction)
+</span><span class='line'>    alertCtrl.addAction(okAction)
+</span><span class='line'>    //弹出警告视图控制器
+</span><span class='line'>    self.presentViewController(alertCtrl, animated: true, completion: nil)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>10、 进度条视图（UIProgressView）：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> let progressView = UIProgressView(progressViewStyle: .Bar)
+</span><span class='line'>    progressView.frame = CGRectMake(30, 200, 180, 30)
+</span><span class='line'>    //设置默认进度
+</span><span class='line'>    progressView.progress = 0.3
+</span><span class='line'>    //设置进度条加载过的颜色
+</span><span class='line'>    progressView.progressTintColor = UIColor.redColor()
+</span><span class='line'>    //设置进度条未加载过的颜色
+</span><span class='line'>    progressView.trackTintColor = UIColor.blueColor()
+</span><span class='line'>    //设置进度条加载过的图片展示
+</span><span class='line'>    progressView.progressImage = UIImage(named: "progress.png")
+</span><span class='line'>    //设置进度条未加载过的图片展示
+</span><span class='line'>    progressView.trackImage = UIImage(named: "track.png")
+</span><span class='line'>    view.addSubview(progressView)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>11、 工具条控件（UIToolBar）：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>    let toolBar = UIToolbar(frame: CGRectMake(30, 200, 180, 49))
+</span><span class='line'>    //设置工具条展示风格
+</span><span class='line'>    toolBar.barStyle = .Default
+</span><span class='line'>    //添加工具条按钮
+</span><span class='line'>    let item = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "itemButtonAction")
+</span><span class='line'>    let item1 = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "itemButtonAction")
+</span><span class='line'>    //固定间距工具条按钮
+</span><span class='line'>    let item2 = UIBarButtonItem(barButtonSystemItem: .FixedSpace, target: self, action: "itemButtonAction")
+</span><span class='line'>    item2.width = 30
+</span><span class='line'>    let customButton = UIButton(type: .DetailDisclosure)
+</span><span class='line'>    customButton.addTarget(self, action: "itemButtonAction", forControlEvents: .TouchUpInside)
+</span><span class='line'>    //自定义按钮为工具条按钮
+</span><span class='line'>    let item3 = UIBarButtonItem(customView: customButton)
+</span><span class='line'>    let items = [item, item1, item2, item3]
+</span><span class='line'>    //设置工具条要显示的所有按钮
+</span><span class='line'>    toolBar.items = items
+</span><span class='line'>    view.addSubview(toolBar)</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>工具条按钮点击响应事件：</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>func itemButtonAction() {
+</span><span class='line'>        print("tool bar button")
+</span><span class='line'>    }</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">杨社兵</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-01-02T11:08:19+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2016</span></span> <span class='time'>11:08 am</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/swift/'>swift</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+  <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <span class="jiathis_txt">分享到：</span>
+  <a class="jiathis_button_tools_1"></a>
+  <a class="jiathis_button_tools_2"></a>
+  <a class="jiathis_button_tools_3"></a>
+  <a class="jiathis_button_tools_4"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2059530"></script>
+<!-- UY END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/01/01/2015nian-zhong-zong-jie/" title="Previous Post: 2015年终总结">&laquo; 2015年终总结</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2016/01/04/swiftzhong-uitableviewde-yong-fa-zi-ding-yi-uitableviewhe-uitableviewcell/" title="Next Post: Swift中UITableView的用法(自定义UITableView和UITableViewCell)">Swift中UITableView的用法(自定义UITableView和UITableViewCell) &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/14/iostu-xing-hui-zhi-coregraphicspian/">iOS图形绘制CoreGraphics篇</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/05/14/iostu-xing-hui-zhi-uibezierpathpian/">iOS图形绘制UIBezierPath篇</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/05/09/swift2-dot-2xin-te-xing/">Swift2.2新特性</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-chang-jian-suan-fa/">iOS面试题系列之常见算法</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/04/24/iosmian-shi-ti-xi-lie-zhi-uiji-chu/">iOS面试题系列之UI相关</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+ <h1>iOS开发</h1>
+ <ul id="categories">
+  <li class='category'><a href='/blog/categories/objective-c/'>objective-c (6)</a></li>
+<li class='category'><a href='/blog/categories/others/'>others (7)</a></li>
+<li class='category'><a href='/blog/categories/swift/'>swift (5)</a></li>
+
+ </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - 杨社兵 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  <span class="credit">, 感谢 <a href="http://gitcafe.com/signup?invited_by=yangshebing" target="_blank">GitCafe</a> 为本站提供存储空间</span>
+
+  	<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?be50b7d5e40e390ecfdd9cc1a14fe0e6";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

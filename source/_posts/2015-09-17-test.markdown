@@ -1,0 +1,159 @@
+---
+layout: post
+title: "基于GitHub搭建Octopress个人技术博客(Mac版)"
+date: 2015-09-17 23:42:42 +0800
+comments: true
+tags: [iOS, Xcode, octopress]
+keywords: ios开发, octopress, github, 博客
+categories: Others
+---
+###### 作为一名屌逼的程序猿，肯定是要有一个屌逼的技术博客。在交流学习的同时，顺便见证自己成长的心路历程。废话不多说，直接进入正题。编程讲究的四门功课，“说，学，逗，唱”。不会就学嘛！没有就找嘛！网上相关的文章简直太多了！其中原理就不多说，我且按照我搭建的顺序写一下步骤吧！
+
+**注意事项：在搭建之前，检查MAC电脑是否已经安装了Git和Ruby 1.9.3及以上版本。（Mac默认均已自带，ruby请自行检查版本：ruby --version，如果缺少，当自行下载）**
+
+#### 一、开始安装octopress
+<!--more-->
+1、将Octopress从github上clone到本地
+
+ ```
+git clone git://github.com/imathis/octopress.git octopress
+cd octopress
+ ```
+2、安装Octopress
+
+```
+gem install bundler
+bundle install
+rake install
+```
+如果当你执行“bundle install”这步失败了，请更改一下本地octopress文件夹下Gemfile文件当中的源（路径：/Users/用户名/octopress/Gemfile），将文件中的```source "https://rubygems.org"```更换成 ```source "http://ruby.taobao.org/"```,然后保存文件再重新执行bundle install及其后续操作。
+
+3、部署GitHub Pages
+在CitHub中新建一个名为username.github.io的仓库（username为你的GitHub用户名）。
+
+* 开始配置GitHub Pages
+
+在终端继续输入
+
+```
+rake setup_github_pages
+```
+在Repository url后面粘贴username.github.io仓库对应的url地址
+
+```
+Enter the read/write url for your repository
+(For example, 'git@github.com:your_username/your_username.github.io.git)
+           or 'https://github.com/your_username/your_username.github.io')
+Repository url: 
+```
+把上面代码：
+
+```
+https://github.com/your_username/your_username.github.io”
+或者
+“git@github.com:your_username/your_username.github.io.git
+```
+中的your_username替换成自己GitHub用户名即可。（两种地址，前者是HTTPS地址，后者是SSH地址，任选一个粘贴即可）
+
+现在可以开始生成自己的第一篇博客并部署放至GitHub上。
+在终端输入以下命令：生成一篇新的博客
+
+```
+rake new_post['test']
+```
+其中test是默认的博客标题（当然博客的标题可以在markdown文件里面更改）。当然你也可以输入rake new_post命令，按照终端的提示输入博客的标题。生成完成的文章内容在octopress/source/_posts目录下。文件名为时间＋标题名，如“2015-09-17-test.markdown”。可以用markdown工具（本文用的markdown工具为“Mou”）进行编辑与修改。
+
+接下来在终端输入rake generate命令生成静态文件
+
+```
+rake generate
+```
+
+在部署到GitHub上之前，你可以在本地预览一下博客的效果。
+先在终端输入rake preview命令，生成预览blog。然后在浏览器中输入`http://localhost:4000`查看博客的预览效果。
+
+```
+rake preview
+```
+在终端退出预览效果：ctrl+c
+
+确认效果之后，开始部署至GitHub。rake deploy命令会将octopress/public目录下的文件上传至仓库的master分支。
+
+```
+rake deploy
+```
+最后一步，将Octopress的源码提交至GitHub
+
+```
+git add .
+git commit -m 'commit source file'
+git push origin source
+```
+完工，屌逼的第一篇博客就已经发布到GitHub Pages上了。你现在可以输入:username.github.io在线查看自己的博客了（如：yangshebing.github.io）。
+
+至于其中的相关原理分析我就不一一赘述了。请参看文章末尾的参考文章链接或者自行网上搜索。
+
+#### 二、简单的配置Octopress
+
+###### 1、修改Octopress的配置文件（路径：octopress/_config.yml）
+* 设置博客的标题，子标题以及作者相关信息。
+
+```
+title: 杨社兵的技术博客
+subtitle: 业精于勤荒于嬉，行成于思毁于随.
+author: 杨社兵
+```
+
+* 删除twitter相关信息（GFW造成页面加载慢）
+
+```
+Twitter
+twitter_user:
+twitter_tweet_button: true
+```
+
+* 修改source/_includes目录下的head.html文件：将```//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.jst```替换成```http://cdn.staticfile.org/jquery/1.9.1/jquery.min.jst```（解决页面加载过慢问题）
+* 修改source/_includes/custom目录下的自定义head.html文件，去掉google自定义字体（解决页面加载过慢问题）
+
+###### 2、添加统计工具（百度统计）
+去<a href="http://tongji.baidu.com">百度统计</a>官网申请一个账号，在管理界面选择“代码获取”，复制代码至```source/_includes/custom/footer.html```文件中。
+
+###### 3、自定义博客导航栏
+部署好博客之后，你会发现导航栏上默认的只有两项：Blog、Archives，无法满足我们的需求。比如我们想在导航栏上添加一个选项为“关于我”。
+
+打开“/source/_includes/custom”目录的navigation.html文件进行编辑：
+
+```
+*<ul class="main-navigation">
+  <li><a href="{{ root_url }}/">我的博客</a></li>
+  <li><a href="{{ root_url }}/blog/archives">所有文章</a></li>
+  <li><a href="http://weibo.com/yangshebing" target="_blank">新浪微博</a></li>
+  <li><a href="{{ root_url }}/about">关于我</a></li>
+</ul>
+
+```
+
+接下来在终端输入rake new_page命令，生成一个index.markdown文件，
+
+```
+rake new_page['about']
+```
+它的默认保存路径是：“source/about/index.markdown”，编辑index.markdown文件，即可定制“关于我”页面内容。
+
+###### 4、关于博客的评论和分享到微博功能，请参考末尾文章链接《象写程序一样写博客：搭建基于github的博客》一文。
+
+参考文章链接：
+
+（1）<a href="http://blog.devtang.com/blog/2012/02/10/setup-blog-based-on-github/" target="_blank">象写程序一样写博客：搭建基于github的博客</a>
+
+（2）<a href="http://matrixzk.github.io/blog/20141020/octopress-setup-and-analysis/#section" target="_blank">使用 Octopress 2.0 搭建基于 Github Pages 个人博客的详细过程及原理分析</a>
+
+（3）<a href="http://www.jianshu.com/p/0ac2ac1a8e45" target="_blank">octopress博客搭建和个性化配置</a>
+
+（4）<a href="https://liuchungui.github.io/blog/2015/09/11/macdian-nao-shang-da-jian-octopressbo-ke/" target="_blank">Mac电脑上搭建octopress博客</a>
+
+（5）<a href="http://www.cnblogs.com/sawyerzhu/p/3710374.html" target="_blank">Mac环境下octopress个人博客搭建</a>
+
+（6）<a href="http://foggry.com/blog/2014/04/28/custom-your-octopress-blog/" target="_blank">自定义你的Octopress博客</a>
+
+（7）<a href="http://blog.devtang.com/blog/2014/06/02/use-gitcafe-to-host-blog/" target="_blank">将博客从GitHub迁移到GitCafe</a>

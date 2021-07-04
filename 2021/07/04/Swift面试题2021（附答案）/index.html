@@ -12,13 +12,15 @@
 <li>添加static关键字函数使用直接派发</li>
 <li>添加dynamic关键字函数使用消息派发</li>
 <li>添加@objc关键字的函数使用消息派发</li>
-<li>添加@inline关键字的函数会告诉编译器可以使用直接派发<h4 id="4、Struct和Class的区别？"><a href="#4、Struct和Class的区别？" class="headerlink" title="4、Struct和Class的区别？"></a>4、Struct和Class的区别？</h4>1）Struct不支持继承，Class支持继承<br>2）Struct是值类型，Class是引用类型<br>3）Struct使用let创建不可变，Class使用let创建可变<br>4）Struct无法修改自身属性值，函数需要添加mutating关键字<br>5）Struct不需要deinit方法，因为值类型不关系引用计数，Class需要deinit方法<br>6）Struct初始化方法是基于属性的</li>
+<li>添加@inline关键字的函数会告诉编译器可以使用直接派发</li>
 </ul>
+<h4 id="4、Struct和Class的区别？"><a href="#4、Struct和Class的区别？" class="headerlink" title="4、Struct和Class的区别？"></a>4、Struct和Class的区别？</h4><p>1）Struct不支持继承，Class支持继承<br>2）Struct是值类型，Class是引用类型<br>3）Struct使用let创建不可变，Class使用let创建可变<br>4）Struct无法修改自身属性值，函数需要添加mutating关键字<br>5）Struct不需要deinit方法，因为值类型不关系引用计数，Class需要deinit方法<br>6）Struct初始化方法是基于属性的</p>
 <h4 id="5、Swift中的常量和Objective-C中的常量有啥区别？"><a href="#5、Swift中的常量和Objective-C中的常量有啥区别？" class="headerlink" title="5、Swift中的常量和Objective-C中的常量有啥区别？"></a>5、Swift中的常量和Objective-C中的常量有啥区别？</h4><p>Objective-C中的常量(const)是编译期决定的，Swift中的常量(let)是运行时确定的</p>
 <h4 id="6、-，-的区别"><a href="#6、-，-的区别" class="headerlink" title="6、?，??的区别"></a>6、?，??的区别</h4><ul>
 <li>？用来声明可选值，如果变量未初始化则自动初始化nil；在操作可选值时，如果可选值时nil则不响应后续的操作；使用as?进行向下转型操作；</li>
-<li>?? 用来判断左侧可选值非空（not nil）时返回左侧值可选值，左侧可选值为空（nil）则返回右侧的值。<h4 id="7、Swift中mutating的作用"><a href="#7、Swift中mutating的作用" class="headerlink" title="7、Swift中mutating的作用"></a>7、Swift中mutating的作用</h4>Swift中协议是可以被Struct和Enum实现的，mutating关键字是为了能在被修饰的函数中修改Struct或Enum的变量值，对Class完全透明。</li>
+<li>?? 用来判断左侧可选值非空（not nil）时返回左侧值可选值，左侧可选值为空（nil）则返回右侧的值。</li>
 </ul>
+<h4 id="7、Swift中mutating的作用"><a href="#7、Swift中mutating的作用" class="headerlink" title="7、Swift中mutating的作用"></a>7、Swift中mutating的作用</h4><p>Swift中协议是可以被Struct和Enum实现的，mutating关键字是为了能在被修饰的函数中修改Struct或Enum的变量值，对Class完全透明。</p>
 <h4 id="8、Set（集合类型）的使用场景"><a href="#8、Set（集合类型）的使用场景" class="headerlink" title="8、Set（集合类型）的使用场景"></a>8、Set（集合类型）的使用场景</h4><p>Set存储值类型相同、无序、去重</p>
 <h4 id="9、final关键词的用法"><a href="#9、final关键词的用法" class="headerlink" title="9、final关键词的用法"></a>9、final关键词的用法</h4><p>final关键词的作用：它修饰的类、方法、变量是不能被继承或重写的，编译器会报错。另外，通过它可以显示的指定函数的派发机制。</p>
 <h4 id="10、lazy关键词的用法"><a href="#10、lazy关键词的用法" class="headerlink" title="10、lazy关键词的用法"></a>10、lazy关键词的用法</h4><p>lazy关键词的作用：指定延时加载（懒加载），懒加载存储属性只会在首次使用时才会计算初始值属性。懒加载属性必须声明（var）为变量，因为常量属性（let）初始化之前会有值。<br><strong>lazy修饰的属性非线程安全的。</strong></p>
@@ -27,7 +29,7 @@
 <p><strong>本文内容中部分来自网络，后续会持续更新完善。欢迎一起学习交流！</strong></p>
 <p><strong>如需转载，请注明出处</strong></p>
 <p><a href="https://blog.csdn.net/yangshebing21/article/details/116262317" target="_blank" rel="noopener">Swift面试题2021（附答案）</a></p>
-</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://www.yangshebing.com/2021/07/04/Swift面试题2021（附答案）/" data-id="ckqp2op5b002t5q49l0hbygeb" class="article-share-link">分享到</a><div class="tags"><a href="/tags/Swift/">Swift</a><a href="/tags/Swift面试题/">Swift面试题</a><a href="/tags/面试题/">面试题</a><a href="/tags/iOS面试题/">iOS面试题</a></div><div class="post-nav"><a href="/2021/07/04/iOS汇编入门必备（指令篇）/" class="pre">iOS汇编入门必备（指令篇）</a><a href="/2021/07/04/Mach-O文件初识/" class="next">Mach-O文件初识</a></div><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" href="javascript:;" title="打赏" class="btn_donate"></a><div class="donate_txt"> &uarr;<br>小火箭走一波，一瓶可乐鼓励下~~~^_^~~~~<br></div></div><div id="donate_guide" class="donate_bar center hidden"><img src="http://ww1.sinaimg.cn/large/7f266405ly1fris2ng5wqj20ka0oidkj.jpg" title="微信打赏"></div><script type="text/javascript">document.getElementById('btn_donate').onclick = function(){
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://www.yangshebing.com/2021/07/04/Swift面试题2021（附答案）/" data-id="ckqp2tq06002q8x495ve3jvlp" class="article-share-link">分享到</a><div class="tags"><a href="/tags/Swift/">Swift</a><a href="/tags/Swift面试题/">Swift面试题</a><a href="/tags/面试题/">面试题</a><a href="/tags/iOS面试题/">iOS面试题</a></div><div class="post-nav"><a href="/2021/07/04/iOS汇编入门必备（指令篇）/" class="pre">iOS汇编入门必备（指令篇）</a><a href="/2021/07/04/Mach-O文件初识/" class="next">Mach-O文件初识</a></div><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" href="javascript:;" title="打赏" class="btn_donate"></a><div class="donate_txt"> &uarr;<br>小火箭走一波，一瓶可乐鼓励下~~~^_^~~~~<br></div></div><div id="donate_guide" class="donate_bar center hidden"><img src="http://ww1.sinaimg.cn/large/7f266405ly1fris2ng5wqj20ka0oidkj.jpg" title="微信打赏"></div><script type="text/javascript">document.getElementById('btn_donate').onclick = function(){
     $('#donate_board').addClass('hidden');
     $('#donate_guide').removeClass('hidden');
 }</script></div><div id="disqus_thread"><script>var disqus_shortname = 'yangshebing';

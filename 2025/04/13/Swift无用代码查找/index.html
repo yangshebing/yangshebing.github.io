@@ -4,10 +4,10 @@
 <p>其实Trae国际版的克劳德3.7也挺香，可以去用一下，比某da强的不是一星半点儿，不差钱的大佬直接用Cursor吧！</p>
 <p>包大小优化是日常工作中（面试）经常会碰到的场景（技多不压身），那么包大小优化都有哪些方法呢？</p>
 <p>一般我们会从资源和代码两个层面下手，比如常见的方式有：无用代码清理、无用资源清理，今天我们主要讲Swift项目的无用代码清理。</p>
-<h5 id="一、目前主流的Swift无用代码查找方案有以下几种（AI给出的答案）："><a href="#一、目前主流的Swift无用代码查找方案有以下几种（AI给出的答案）：" class="headerlink" title="一、目前主流的Swift无用代码查找方案有以下几种（AI给出的答案）："></a>一、目前主流的Swift无用代码查找方案有以下几种（AI给出的答案）：</h5><p>1、使用SwiftLint工具</p>
+<h4 id="一、目前主流的Swift无用代码查找方案有以下几种（AI给出的答案）："><a href="#一、目前主流的Swift无用代码查找方案有以下几种（AI给出的答案）：" class="headerlink" title="一、目前主流的Swift无用代码查找方案有以下几种（AI给出的答案）："></a>一、目前主流的Swift无用代码查找方案有以下几种（AI给出的答案）：</h4><p>1、使用SwiftLint工具</p>
 <p>2、使用Periphery</p>
 <p>3、使用unused脚本（纯文本搜索代码，简单易懂，好上手）</p>
-<h5 id="二、如何使用-unused-脚本：-脚本文件地址位于文章底部【参考1】"><a href="#二、如何使用-unused-脚本：-脚本文件地址位于文章底部【参考1】" class="headerlink" title="二、如何使用 unused 脚本：(脚本文件地址位于文章底部【参考1】)"></a>二、如何使用 unused 脚本：(脚本文件地址位于文章底部【参考1】)</h5><p>将Ruby脚本unused.rb放到主工程目录下，直接在终端执行以下指令：</p>
+<h4 id="二、如何使用-unused-脚本：-脚本文件地址位于文章底部【参考1】"><a href="#二、如何使用-unused-脚本：-脚本文件地址位于文章底部【参考1】" class="headerlink" title="二、如何使用 unused 脚本：(脚本文件地址位于文章底部【参考1】)"></a>二、如何使用 unused 脚本：(脚本文件地址位于文章底部【参考1】)</h4><p>将Ruby脚本unused.rb放到主工程目录下，直接在终端执行以下指令：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ruby unused.rb</span><br></pre></td></tr></table></figure>
 <p>执行完成以后，你会发现终端会直接输出项目中未使用到的变量、协议、函数、类、结构体等信息，是不是很方便？</p>
 <p>拿到了这些无用类的文件path，我们就可以直接写个shell脚本来直接删除无用类、结构体、协议。当然这里还要考虑项目中类和文件名不一致的情况，所以其实平时规范一点，一个文件一个class，这样就比较好删除了！</p>
@@ -18,19 +18,19 @@
 <p>上述脚本是纯正则匹配的文本搜索，里面可能存在误报的情况，尤其是依赖关系很复杂的情况下，漏报的也比较多，所以正常情况下还是需要开发人员进行二次确认。</p>
 <p>除此之外，我们还可以自己编写脚本（可以让AI生成），上面提到的获取class、struct、protocol的文件path，一键删除无用代码。</p>
 <p>关于包大小优化这一块，最近网上又有大佬开源了一个工具 <a href="https://github.com/helele90/APPAnalyze" target="_blank" rel="noopener">APPAnalyze</a> ，我在这里推荐一下（详见参考2），主要是学习一下人家的思路。</p>
-<h5 id="三、结语："><a href="#三、结语：" class="headerlink" title="三、结语："></a>三、结语：</h5><p>关于包大小优化，你需要掌握的关键技术点有：</p>
+<h4 id="三、结语："><a href="#三、结语：" class="headerlink" title="三、结语："></a>三、结语：</h4><p>关于包大小优化，你需要掌握的关键技术点有：</p>
 <p>Xcode构建（不同参数的设置）、LLVM编译原理（插桩查找无用代码）、cocoapods包管理（二进制化加载）、图片压缩（有损/无损）、持续集成卡口设置防裂化。</p>
 <p>看完之后，你是不是感觉头都麻了，还有这么多东西要学？那么我建议你先挑软柿子捏：</p>
 <p>1、从资源文件下手，因为经过数据对比，从资源文件下手收益是最大的。</p>
 <p>2、从代码层面下手，分析LinkMap文件，可以让我们了解类、模块及三方库的代码的占用空间大小，帮助我们快速定位要优化的类或者静态库。</p>
-<h5 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h5><p><a href="https://github.com/PaulTaykalo/swift-scripts/blob/master/unused.rb" target="_blank" rel="noopener">1、查找无用代码的脚本</a></p>
+<h4 id="四、参考："><a href="#四、参考：" class="headerlink" title="四、参考："></a>四、参考：</h4><p><a href="https://github.com/PaulTaykalo/swift-scripts/blob/master/unused.rb" target="_blank" rel="noopener">1、查找无用代码的脚本</a></p>
 <p><a href="https://github.com/helele90/APPAnalyze" target="_blank" rel="noopener">2、APPAnalyze</a></p>
 <hr>
 <p>更多好文推荐，欢迎关注 <strong>《iOS开发秘籍》</strong> 公众号，获取最新的内容</p>
 <p><strong>本文内容中部分来自网络，后续会持续更新完善。欢迎一起学习交流！</strong></p>
 <p><strong>如需转载，请注明出处</strong></p>
 <p><a href="https://blog.csdn.net/yangshebing21/article/details/147197035" target="_blank" rel="noopener">Swift 无用代码查找</a></p>
-</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://www.yangshebing.com/2025/04/13/Swift无用代码查找/" data-id="cm9frxxpu0039l46jd5287rng" class="article-share-link">分享到</a><div class="tags"><a href="/tags/iOS/">iOS</a><a href="/tags/Swift/">Swift</a><a href="/tags/Xcode/">Xcode</a><a href="/tags/iOS包大小优化/">iOS包大小优化</a></div><div class="post-nav"><a href="/2025/04/12/ITMS-91061 Missing privacy manifest for third-party SDKs/" class="next">ITMS-91061 Missing privacy manifest for third-party SDKs</a></div><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" href="javascript:;" title="打赏" class="btn_donate"></a><div class="donate_txt"> &uarr;<br>小火箭走一波，一瓶可乐鼓励下~~~^_^~~~~<br></div></div><div id="donate_guide" class="donate_bar center hidden"><img src="https://img-blog.csdnimg.cn/8253848a613e4b1693403f1ec363ed56.png" title="微信打赏"></div><script type="text/javascript">document.getElementById('btn_donate').onclick = function(){
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://www.yangshebing.com/2025/04/13/Swift无用代码查找/" data-id="cm9fscbi4008fqp6jgpz41tje" class="article-share-link">分享到</a><div class="tags"><a href="/tags/iOS/">iOS</a><a href="/tags/Swift/">Swift</a><a href="/tags/Xcode/">Xcode</a><a href="/tags/iOS包大小优化/">iOS包大小优化</a></div><div class="post-nav"><a href="/2025/04/12/ITMS-91061 Missing privacy manifest for third-party SDKs/" class="next">ITMS-91061 Missing privacy manifest for third-party SDKs</a></div><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" href="javascript:;" title="打赏" class="btn_donate"></a><div class="donate_txt"> &uarr;<br>小火箭走一波，一瓶可乐鼓励下~~~^_^~~~~<br></div></div><div id="donate_guide" class="donate_bar center hidden"><img src="https://img-blog.csdnimg.cn/8253848a613e4b1693403f1ec363ed56.png" title="微信打赏"></div><script type="text/javascript">document.getElementById('btn_donate').onclick = function(){
     $('#donate_board').addClass('hidden');
     $('#donate_guide').removeClass('hidden');
 }</script></div><div id="disqus_thread"><script>var disqus_shortname = 'yangshebing';

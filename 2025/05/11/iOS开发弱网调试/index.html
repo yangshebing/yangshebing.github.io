@@ -1,0 +1,97 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>iOS开发弱网调试 | 杨社兵的技术博客</title><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/4.2.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="/css/donate.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">iOS开发弱网调试</h1><a id="logo" href="/.">杨社兵的技术博客</a><p class="description">Spencer Yang</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">iOS开发弱网调试</h1><div class="post-meta">May 11, 2025<span> | </span><span class="category"><a href="/categories/Swift/">Swift</a></span><script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><a data-disqus-identifier="2025/05/11/iOS开发弱网调试/" href="/2025/05/11/iOS开发弱网调试/#disqus_thread" class="disqus-comment-count"></a><div class="post-content"><p>模拟弱网调试是iOS开发过程中比较常见的一种场景，比如：网络请求弱网下UI展示逻辑测试、图片弱网优化、下载文件弱网中断数据同步等，本文主要介绍iOS真机和模拟器弱网调试的方法。</p>
+<h4 id="一、iOS-真机环境下弱网环境搭建"><a href="#一、iOS-真机环境下弱网环境搭建" class="headerlink" title="一、iOS 真机环境下弱网环境搭建"></a>一、iOS 真机环境下弱网环境搭建</h4><p>对于真机的弱网调试，我们使用手机自带的弱网模拟工具 <strong>Network Link conditioner</strong> （网络链接调节器）即可。</p>
+<ul>
+<li><p>进入系统“设置”</p>
+</li>
+<li><p>点击“开发者”选项</p>
+</li>
+<li><p>选择“Network Link conditioner”（网络链接调节器）</p>
+</li>
+<li><p>选择对应的不同场景描述文件（WIFI/3G/Edge/DSL/100% Loss），然后打开“启用”开关（Enable）即可。可自行添加自定义场景描述文件或对已有场景进行参数配置</p>
+</li>
+</ul>
+<p><strong>注意：iOS 16 以上系统需要在“设置”中将“隐私与安全性”中的“开发者模式”打开</strong></p>
+<h5 id="二、iOS-模拟器弱网环境搭建："><a href="#二、iOS-模拟器弱网环境搭建：" class="headerlink" title="二、iOS 模拟器弱网环境搭建："></a>二、iOS 模拟器弱网环境搭建：</h5><p>常见方案有两种：</p>
+<ul>
+<li><p><strong>方案一：Charles (iOS真机和模拟器都适用)</strong></p>
+</li>
+<li><p><strong>方案二：Mac上安装Network Link conditioner工具</strong></p>
+</li>
+</ul>
+<h5 id="1、使用-Charles-工具"><a href="#1、使用-Charles-工具" class="headerlink" title="1、使用 Charles 工具"></a>1、使用 Charles 工具</h5><p>（1）启用Throttling设置：<br>选择“Proxy”选项卡 –&gt; “Throttle Settings”–&gt;“Enable Throttling”</p>
+<p>（2）选择“Throttle preset”：ADSL/DSL/VDSL/Fibre/3G/4G，也可以通过“Add Preset”来新增自定义模式。</p>
+<p><strong>相关设置参数说明：</strong></p>
+<ul>
+<li><p>Banwidth（kbps）：带宽（上行/下行数据传输速率）</p>
+</li>
+<li><p>Utilisation（%）：利用率（可用带宽占总带宽百分比）</p>
+</li>
+<li><p>Round-trip latency（ms）：往返延迟（数据从客户端到服务器再返回的传输时间）</p>
+</li>
+<li><p>MTU（bytes）：最大传输单元（单个TCP包的最大 size）</p>
+</li>
+<li><p>Reliabilit（%）：可靠性（数据包传输成功概率）</p>
+</li>
+<li><p>Stability（%）：稳定性（网络连接波动概率）</p>
+</li>
+<li><p>Unstable quality range（%）：不稳定性范围（网络质量随机下降的波动区间）</p>
+</li>
+</ul>
+<p>（3）默认作用于全局，如果需要作用于指定域名，请勾选“Only for selected hosts”</p>
+<h5 id="2、Mac上安装Network-Link-Conditioner工具"><a href="#2、Mac上安装Network-Link-Conditioner工具" class="headerlink" title="2、Mac上安装Network Link Conditioner工具"></a>2、Mac上安装Network Link Conditioner工具</h5><p>直接去官网下载Xcode Additional tool工具（需要对应Xcode版本）：<a href="https://developer.apple.com/download/more/" target="_blank" rel="noopener">https://developer.apple.com/download/more/</a></p>
+<p><strong>Network Link Conditioner 安装方法：</strong></p>
+<p>（1）找到下载目录中的 Additional_Tools_for_Xcode.dmg 文件并打开</p>
+<p>（2）找到Hardware文件夹中的 Network Link Conditioner.prefPane 应用并点击安装</p>
+<p>（3）安装完成后，直接去Mac的“系统设置”里面找到 Network Link Conditioner 项</p>
+<p>（4）选择对应的描述文件（WIFI/3G/Edge/DSL/100% Loss），点击开关即可开启（OFF/ON）</p>
+<p>（5）“Manage Profiles…”选项可以编辑不同场景的描述文件或者添加自定义场景描述文件</p>
+<p><strong>Network Link Conditioner 相关设置参数说明</strong></p>
+<p>带宽单位为Kbps，丢包率单位是百分比，延迟单位是ms</p>
+<ul>
+<li><p>Downlink Bandwidth （下行宽带）：设备从服务器接收数据的最大速率（Kbps），限制下载速度。</p>
+</li>
+<li><p>Downlink Packets Dropped （下行丢包率）：下行链路中数据包丢失比例（百分比）</p>
+</li>
+<li><p>Downlink Delay （下行延迟）：服务器到达设备的单向传输时间（毫秒）</p>
+</li>
+<li><p>Uplink Bandwidth （上行宽带）：设备向服务器发送数据的最大速率（Kbps），限制上传速度。</p>
+</li>
+<li><p>Uplink Packets Dropped （上行丢包率）：上行链路中数据包丢失比例（百分比）</p>
+</li>
+<li><p>Uplink Delay （上行延迟）：设备发送数据到服务器的单向传输时间（毫秒）</p>
+</li>
+<li><p>DNS Delay (DNS解析延迟)：域名解析为IP地址所需要的时间（毫秒）</p>
+</li>
+</ul>
+<p>——————————————————————————————————</p>
+<p><strong>完整版及更多好文推荐：</strong></p>
+<p>欢迎关注 <strong>《iOS开发秘籍》</strong> 公众号，获取最新首发内容，点关注不迷路！</p>
+<p>欢迎关注 <strong>《iOS开发秘籍》</strong> 公众号，获取最新首发内容，点关注不迷路！</p>
+<p>欢迎关注 <strong>《iOS开发秘籍》</strong> 公众号，获取最新首发内容，点关注不迷路！</p>
+<p><strong>本文内容中部分来自网络，后续会持续更新完善。欢迎一起学习交流！</strong></p>
+<p><strong>如需转载，请注明出处</strong></p>
+<p><a href="https://blog.csdn.net/yangshebing21/article/details/149037749" target="_blank" rel="noopener">iOS开发弱网调试你需要知道这些</a></p>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://www.yangshebing.com/2025/05/11/iOS开发弱网调试/" data-id="cmcq5gep500776l49yqospo0i" class="article-share-link">分享到</a><div class="tags"><a href="/tags/iOS/">iOS</a><a href="/tags/Swift/">Swift</a><a href="/tags/iOS开发/">iOS开发</a><a href="/tags/iPhone/">iPhone</a></div><div class="post-nav"><a href="/2025/05/11/Swift面试题2025（附答案）/" class="pre">Swift面试题2025（附答案）</a><a href="/2025/04/21/Invalid Executable：Xcode16 Bitcode 解决方案/" class="next">Invalid Executable：Xcode16 Bitcode 解决方案</a></div><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" href="javascript:;" title="打赏" class="btn_donate"></a><div class="donate_txt"> &uarr;<br>小火箭走一波，一瓶可乐鼓励下~~~^_^~~~~<br></div></div><div id="donate_guide" class="donate_bar center hidden"><img src="https://img-blog.csdnimg.cn/8253848a613e4b1693403f1ec363ed56.png" title="微信打赏"></div><script type="text/javascript">document.getElementById('btn_donate').onclick = function(){
+    $('#donate_board').addClass('hidden');
+    $('#donate_guide').removeClass('hidden');
+}</script></div><div id="disqus_thread"><script>var disqus_shortname = 'yangshebing';
+var disqus_identifier = '2025/05/11/iOS开发弱网调试/';
+var disqus_title = 'iOS开发弱网调试';
+var disqus_url = 'http://www.yangshebing.com/2025/05/11/iOS开发弱网调试/';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//yangshebing.disqus.com/count.js" async></script></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="text" name="q" maxlength="20" placeholder="搜索"><input type="hidden" name="sitesearch" value="http://www.yangshebing.com"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Objective-C/">Objective-C</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Others/">Others</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Swift/">Swift</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最新发布</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2025/05/11/Swift面试题2025（附答案）/">Swift面试题2025（附答案）</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/05/11/iOS开发弱网调试/">iOS开发弱网调试</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/04/21/Invalid Executable：Xcode16 Bitcode 解决方案/">Invalid Executable：Xcode16 Bitcode 解决方案</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/04/13/Swift无用代码查找/">Swift 无用代码查找</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/04/12/ITMS-91061 Missing privacy manifest for third-party SDKs/">ITMS-91061 Missing privacy manifest for third-party SDKs</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/01/Swift面试题2024（附答案）/">Swift面试题2024（附答案）</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/08/25/Swift算法面试题2022（附答案）/">Swift算法面试题2022（附答案）</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/08/03/iOS-编译一览/">iOS 编译一览</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/04/29/iOS-开发必备tips/">iOS 开发必备tips</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/08/29/iOS面试题（多线程篇）/">iOS面试题（多线程篇）</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> 最近评论</i></div><script type="text/javascript" src="//yangshebing.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.liuchungui.com/" title="刘春桂的技术博客" target="_blank">刘春桂的技术博客</a><ul></ul><a href="http://blog.csdn.net/yangshebing21" title="我的CSDN博客" target="_blank">我的CSDN博客</a><ul></ul><a href="http://weibo.com/yangshebing" title="我的微博" target="_blank">我的微博</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© <a href="/." rel="nofollow">杨社兵的技术博客.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.0"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create','UA-112380437-1','auto');ga('send','pageview');
+</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?ad5152aa4d2164ce1cc1c3fbada6f5ec";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+  })();
+</script><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

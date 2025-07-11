@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>你最想知道的 Xcode 26 AI 助手尝鲜攻略 | 杨社兵的技术博客</title><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/4.2.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="/css/donate.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">你最想知道的 Xcode 26 AI 助手尝鲜攻略</h1><a id="logo" href="/.">杨社兵的技术博客</a><p class="description">Spencer Yang</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">你最想知道的 Xcode 26 AI 助手尝鲜攻略</h1><div class="post-meta">Jul 5, 2025<span> | </span><span class="category"><a href="/categories/Swift/">Swift</a></span><script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><a data-disqus-identifier="2025/07/05/你最想知道的 Xcode 26 AI 助手尝鲜攻略/" href="/2025/07/05/你最想知道的 Xcode 26 AI 助手尝鲜攻略/#disqus_thread" class="disqus-comment-count"></a><div class="post-content"><p>阅读完本文你可以学到国行 Mac 电脑如何尝鲜 Xcode 26 AI Assistant 方法，另外还有大家最感兴趣的 Xcode 26 AI Assistant 如何接入 DeepSeek 大模型方法。</p>
+<h4 id="一、国行-Mac-电脑尝鲜-Xcode-26-AI-助手"><a href="#一、国行-Mac-电脑尝鲜-Xcode-26-AI-助手" class="headerlink" title="一、国行 Mac 电脑尝鲜 Xcode 26 AI 助手"></a>一、国行 Mac 电脑尝鲜 Xcode 26 AI 助手</h4><p>目前国行 Mac 电脑是不支持使用Xcode的AI助手功能的，但是我们又想尝鲜Xcode 26 AI 助手的功能，作为学习型野生程序员，我们自然要想点办法。好在网上大牛很多，目前已经有比较成熟的解决方案（仅供学习使用，法律风险自行承担，作者不建议大家使用）。</p>
+<p>如果要使用Xcode自带的AI助手功能，首先我们需要把Mac 系统升级到最新的beta版本，然后再下载一个Xcode 26 beta版。由于Xcode的 AI 功能依赖 Apple Intelligence <strong>【文末参考资料 2】</strong>，你会发现，我们依然无法使用Xcode AI 助手功能。</p>
+<p>因为 Apple 已经限制了在国行 Mac 设备上使用 Apple Intelligence 和 Xcode LLM（Predictive Code Completion）功能。只要你是在大陆（限制地区）买的 Mac 设备，就算你在西海岸，也仍然无法使用 Apple Intelligence 和 Xcode Predictive Code Completion 功能。</p>
+<p>经过查阅网络资料，我们发现目前以下方案可以解决国行Mac无法使用Apple Intelligence问题（Mac需要登录美区的Apple ID，地区设置成美国，系统语言需要设置成英语）：</p>
+<p><strong>方案一：</strong>zouxian<strong>【详见文末参考资料 4】</strong></p>
+<p><strong>方案二：</strong>enableAppleAI<strong>【详见文末参考资料 5】</strong></p>
+<p><strong>方案三：</strong>XcodeLLMEligible<strong>【详见文末参考资料 6】</strong></p>
+<p><strong>方案四：</strong>在 macOS 15.4.1 上为受地区限制的 Mac 解锁 Apple Intelligence<strong>【详见文末参考资料 3】</strong></p>
+<p>以上几种方案均来自网络，总有一款适合你。</p>
+<p>可以优先使用 <strong>enableAppleAI</strong>，其次可以使用 <strong>zouxian</strong>。</p>
+<p><strong>zouxian</strong> 和 <strong>enableAppleAI</strong> 的区别：</p>
+<ul>
+<li><p><strong>enableAppleAI</strong> 无需长期禁用SIP</p>
+</li>
+<li><p><strong>enableAppleAI</strong> 会下载并执行 <strong>zouxian</strong> （其 README 文档中的工作原理有概述）</p>
+</li>
+</ul>
+<p>对于上述方案原理本文不做详细的介绍，如果大家对具体原理感兴趣可以看看文末的参考资料【在 macOS 15.4.1 上为受地区限制的 Mac 解锁 Apple Intelligence】。</p>
+<h4 id="二、Xcode-26-AI-助手接入DeepSeek方案"><a href="#二、Xcode-26-AI-助手接入DeepSeek方案" class="headerlink" title="二、Xcode 26 AI 助手接入DeepSeek方案"></a>二、Xcode 26 AI 助手接入DeepSeek方案</h4><p>目前已知 Xcode 26 beta 版对 ChatGPT、Claude 支持比较友好，直接按官网文档添加对应的模型即可。但是想接入一些其他的 AI 大模型则不太理想，我们曾尝试过接入 Gemini、DeepSeek 都以失败告终。因为 Xcode 26 beta 版本把接入 AI 大模型的相关请求 API 都封装在 Xcode 里面。</p>
+<p>功夫不负有心人，我在网上找到两篇相关的博客：</p>
+<p>1、《即使没有 Apple Intelligence，也可以在 Xcode 26 中使用任何与 OpenAI 兼容的 LLM 提供程序》<strong>【详见文末参考资料 8】</strong>。</p>
+<p>2、《如何在Xcode 26 beta中使用Google Gemini》<strong>【详见文末参考资料 3】</strong></p>
+<p>它的主要思路是通过网络代理软件重写网络请求，重定向到指定的API。（本质上还是因为各家的 AI 大模型网络请求 API 不一致，Xcode 以 ChatGPT 大模型为主）</p>
+<p>步骤有以下几步：</p>
+<p>（1）打开 Charles 的 Rewrite 功能</p>
+<p>选择“Tools”选项卡 –&gt; “Rewrite…” –&gt; “Enable Rewrite”</p>
+<p>具体如何使用 Charles 来重定向网络请求这里就不过多赘述，请自行网上找教程学习一下。</p>
+<p>（2）Xcode 设置里面的添加模型的 URL 设置成：<a href="https://api.deepseek.com/" target="_blank" rel="noopener">https://api.deepseek.com/</a></p>
+<p>（3）通过 Charles 把 Xcode 请求 DeepSeek 域名的网络请求 Path /v1/models 通过重定向改成 /models</p>
+<p>（4）通过 Charles 把 Xcode 请求 DeepSeek 域名的网络请求 Path /v1/chat/completions 通过重定向改成 /chat/completions</p>
+<p>重点关注事项：</p>
+<ul>
+<li>Header 中的 Authorization 参数值需要重写成: Bearer + 空格 + Deepseek 的 API Token</li>
+<li>每次添加大模型都需要重启 Xcode</li>
+</ul>
+<p>完成以上几步以后，重启 Xcode 即可。</p>
+<h4 id="法律免责声明"><a href="#法律免责声明" class="headerlink" title="法律免责声明"></a>法律免责声明</h4><p>本文仅供学习教育用途，阅读并使用本文内容即表示您已经同意作者对因使用此解决方案而导致的任何法律后果或违反 Apple 服务条款的行为不承担任何责任。使用本文记录的任何内容风险由您自行承担。</p>
+<p>——————————————————————————————————</p>
+<p><strong>完整版及更多好文推荐：</strong></p>
+<p>欢迎关注 <strong>《iOS开发秘籍》</strong> 公众号，获取最新首发内容，点关注不迷路！</p>
+<p>欢迎关注 <strong>《iOS开发秘籍》</strong> 公众号，获取最新首发内容，点关注不迷路！</p>
+<p>欢迎关注 <strong>《iOS开发秘籍》</strong> 公众号，获取最新首发内容，点关注不迷路！</p>
+<p><strong>本文内容中部分来自网络，后续会持续更新完善。欢迎一起学习交流！</strong></p>
+<p><strong>如需转载，请注明出处</strong></p>
+<p><a href="https://blog.csdn.net/yangshebing21/article/details/149265737" target="_blank" rel="noopener">你最想知道的 Xcode 26 AI 助手尝鲜攻略</a></p>
+<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><p>1、<a href="https://developer.apple.com/documentation/xcode/writing-code-with-intelligence-in-xcode" target="_blank" rel="noopener">苹果官方文档：Xcode 智能编码</a></p>
+<p>2、<a href="https://developer.apple.com/documentation/xcode-release-notes/xcode-26-release-notes" target="_blank" rel="noopener">苹果官方文档：Xcode 26 发布纪要</a></p>
+<p>3、<a href="https://willian.space/utility/2025/04/23/unlock-ai-on-mac.html" target="_blank" rel="noopener">在 macOS 15.4.1 上为受地区限制的 Mac 解锁 Apple Intelligence</a></p>
+<p>4、<a href="https://github.com/CatMe0w/zouxian" target="_blank" rel="noopener">zouxian</a></p>
+<p>5、<a href="https://github.com/kanshurichard/enableAppleAI" target="_blank" rel="noopener">enableAppleAI</a></p>
+<p>6、<a href="https://github.com/Kyle-Ye/XcodeLLMEligible" target="_blank" rel="noopener">XcodeLLMEligible</a></p>
+<p>7、<a href="https://zottmann.org/2025/06/13/how-to-use-google-gemini.html" target="_blank" rel="noopener">Xcode beta版本添加Gemini</a></p>
+<p>8、<a href="https://zottmann.org/2025/06/11/use-any-openaicompatible-llm-provider.html" target="_blank" rel="noopener">Use any OpenAI-compatible LLM provider in Xcode 26, even without Apple Intelligence</a></p>
+<p>9、<a href="https://zottmann.org/2025/06/13/how-to-use-google-gemini.html" target="_blank" rel="noopener">How to use Google Gemini in Xcode 26 beta</a></p>
+<p>10、<a href="https://api-docs.deepseek.com/zh-cn/api/list-models" target="_blank" rel="noopener">DeepSeek模型列表API</a></p>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://www.yangshebing.com/2025/07/05/你最想知道的 Xcode 26 AI 助手尝鲜攻略/" data-id="cmcy306ga003lwz493vv1msnl" class="article-share-link">分享到</a><div class="tags"><a href="/tags/iOS/">iOS</a><a href="/tags/Xcode/">Xcode</a><a href="/tags/Swift/">Swift</a><a href="/tags/iOS开发/">iOS开发</a><a href="/tags/iPhone/">iPhone</a></div><div class="post-nav"><a href="/2025/07/05/iOS开发弱网调试/" class="pre">iOS开发弱网调试</a><a href="/2025/05/11/Swift面试题2025（附答案）/" class="next">Swift面试题2025（附答案）</a></div><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" href="javascript:;" title="打赏" class="btn_donate"></a><div class="donate_txt"> &uarr;<br>小火箭走一波，一瓶可乐鼓励下~~~^_^~~~~<br></div></div><div id="donate_guide" class="donate_bar center hidden"><img src="https://img-blog.csdnimg.cn/8253848a613e4b1693403f1ec363ed56.png" title="微信打赏"></div><script type="text/javascript">document.getElementById('btn_donate').onclick = function(){
+    $('#donate_board').addClass('hidden');
+    $('#donate_guide').removeClass('hidden');
+}</script></div><div id="disqus_thread"><script>var disqus_shortname = 'yangshebing';
+var disqus_identifier = '2025/07/05/你最想知道的 Xcode 26 AI 助手尝鲜攻略/';
+var disqus_title = '你最想知道的 Xcode 26 AI 助手尝鲜攻略';
+var disqus_url = 'http://www.yangshebing.com/2025/07/05/你最想知道的 Xcode 26 AI 助手尝鲜攻略/';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//yangshebing.disqus.com/count.js" async></script></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="text" name="q" maxlength="20" placeholder="搜索"><input type="hidden" name="sitesearch" value="http://www.yangshebing.com"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Objective-C/">Objective-C</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Others/">Others</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Swift/">Swift</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最新发布</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2025/07/05/iOS开发弱网调试/">iOS开发弱网调试</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/07/05/你最想知道的 Xcode 26 AI 助手尝鲜攻略/">你最想知道的 Xcode 26 AI 助手尝鲜攻略</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/05/11/Swift面试题2025（附答案）/">Swift面试题2025（附答案）</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/04/21/Invalid Executable：Xcode16 Bitcode 解决方案/">Invalid Executable：Xcode16 Bitcode 解决方案</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/04/13/Swift无用代码查找/">Swift 无用代码查找</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/04/12/ITMS-91061 Missing privacy manifest for third-party SDKs/">ITMS-91061 Missing privacy manifest for third-party SDKs</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/01/Swift面试题2024（附答案）/">Swift面试题2024（附答案）</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/08/25/Swift算法面试题2022（附答案）/">Swift算法面试题2022（附答案）</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/08/03/iOS-编译一览/">iOS 编译一览</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/04/29/iOS-开发必备tips/">iOS 开发必备tips</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> 最近评论</i></div><script type="text/javascript" src="//yangshebing.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.liuchungui.com/" title="刘春桂的技术博客" target="_blank">刘春桂的技术博客</a><ul></ul><a href="http://blog.csdn.net/yangshebing21" title="我的CSDN博客" target="_blank">我的CSDN博客</a><ul></ul><a href="http://weibo.com/yangshebing" title="我的微博" target="_blank">我的微博</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© <a href="/." rel="nofollow">杨社兵的技术博客.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.0"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create','UA-112380437-1','auto');ga('send','pageview');
+</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?ad5152aa4d2164ce1cc1c3fbada6f5ec";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+  })();
+</script><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
